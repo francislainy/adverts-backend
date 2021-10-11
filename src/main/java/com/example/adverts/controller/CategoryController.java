@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -38,7 +39,7 @@ public class CategoryController {
         Integer id = categoryDao.getAllCategories().getCategoryList().size() + 1;
         category.setId(id);
 
-        categoryDao.addEmployee(category);
+        categoryDao.addCategory(category);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -48,4 +49,9 @@ public class CategoryController {
         return ResponseEntity.created(location).build();
     }
 
+
+    @GetMapping("/{id}")
+    public Category category(@PathVariable(value = "id") Long id) {
+        return categoryDao.getCategory(id);
+    }
 }

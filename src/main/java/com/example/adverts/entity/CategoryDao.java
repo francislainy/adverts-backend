@@ -21,7 +21,18 @@ public class CategoryDao
         return list;
     }
 
-    public void addEmployee(Category category) {
+    public Category getCategory(Long id) {
+
+        for (Category c: list.getCategoryList()) {
+            if (c.getId() == id) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
+    public void addCategory(Category category) {
         list.getCategoryList().add(category);
     }
 }
