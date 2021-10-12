@@ -7,10 +7,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class Category {
+public class SubCategory {
 
     private long id;
     private String name;
-    private List<SubCategory> subCategoryList;
 
 }

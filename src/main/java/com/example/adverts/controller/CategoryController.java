@@ -9,20 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CategoryController {
-
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-
-    @GetMapping("/category")
-    public Category greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Category(counter.incrementAndGet(), String.format(template, name));
-    }
-
 
     @Autowired
     private CategoryDao categoryDao;
@@ -32,9 +21,13 @@ public class CategoryController {
         return categoryDao.getAllCategories();
     }
 
+    @GetMapping("/{id}")
+    public Category category(@PathVariable(value = "id") Long id) {
+        return categoryDao.getCategory(id);
+    }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> addEmployee(@RequestBody Category category)
+    public ResponseEntity<Object> addCategory(@RequestBody Category category)
     {
         Integer id = categoryDao.getAllCategories().getCategoryList().size() + 1;
         category.setId(id);
@@ -49,9 +42,4 @@ public class CategoryController {
         return ResponseEntity.created(location).build();
     }
 
-
-    @GetMapping("/{id}")
-    public Category category(@PathVariable(value = "id") Long id) {
-        return categoryDao.getCategory(id);
-    }
 }
