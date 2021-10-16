@@ -1,4 +1,4 @@
-package com.example.adverts.entity;
+package com.example.adverts.repository;
 
 import com.example.adverts.model.Categories;
 import com.example.adverts.model.Category;

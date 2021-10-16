@@ -1,9 +1,8 @@
-package com.example.adverts.entity;
+package com.example.adverts.repository;
 
 import com.example.adverts.model.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository

@@ -1,6 +1,6 @@
 package com.example.adverts.controller;
 
-import com.example.adverts.entity.SubCategoryDao;
+import com.example.adverts.repository.SubCategoryDao;
 import com.example.adverts.model.SubCategories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,4 +16,8 @@ public class SubCategoryController {
         return subCategoryDao.getAllSubCategoriesForCategory(id);
     }
 
+//    @GetMapping("subcategory/{id}")
+//    public Category category(@PathVariable(value = "id") Long id) {
+//        return subCategoryDao.getCategory(id);
+//    }
 }

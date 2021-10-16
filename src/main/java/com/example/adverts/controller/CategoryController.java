@@ -1,6 +1,6 @@
 package com.example.adverts.controller;
 
-import com.example.adverts.entity.CategoryDao;
+import com.example.adverts.repository.CategoryDao;
 import com.example.adverts.model.Categories;
 import com.example.adverts.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
