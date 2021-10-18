@@ -1,6 +1,7 @@
 package com.example.adverts.service.impl.category;
 
 import com.example.adverts.model.dto.category.CategoryCreateDto;
+import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
@@ -19,14 +20,32 @@ public class CategoryCommandImpl implements CategoryCommandService {
     @Override
     public CategoryCreateDto createCategory(CategoryCreateDto categoryCreateDto) {
 
-        Category newCategory = new Category();
-//        newCategory.setId(UUID.randomUUID());
-        newCategory.setTitle(categoryCreateDto.getTitle());
+        Category category = new Category();
+        category.setTitle(categoryCreateDto.getTitle());
 
-        newCategory = categoryRepository.save(newCategory);
+        category = categoryRepository.save(category);
 
-        return new CategoryCreateDto(newCategory.getId(), newCategory.getTitle());
-
+        return new CategoryCreateDto(category.getId(), category.getTitle());
     }
+
+
+    @Override
+    public CategoryUpdateDto updateCategory(UUID id, CategoryUpdateDto categoryUpdateDto) {
+
+        if (categoryRepository.findById(id).isPresent()) {
+
+            Category category = categoryRepository.findById(id).get();
+
+            category.setTitle(categoryUpdateDto.getTitle());
+
+            category = categoryRepository.save(category);
+
+            return new CategoryUpdateDto(category.getId(), category.getTitle());
+
+        } else {
+            return null;
+        }
+    }
+
 
 }
