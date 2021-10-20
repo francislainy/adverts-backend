@@ -26,8 +26,8 @@ public class CategoryQueryController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, List<CategoryQueryDto>> listAllCategories() {
 
-        Map result = new HashMap();
-        result.put("categories", categoryQueryService.listAllCategories());
+        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
+        result.put("categories", categoryQueryService.getAllCategories());
         return result;
 
     }

@@ -33,7 +33,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
 
     @Override
-    public List<CategoryQueryDto> listAllCategories() {
+    public List<CategoryQueryDto> getAllCategories() {
 
         List<CategoryQueryDto> categoryList = new ArrayList<>();
 

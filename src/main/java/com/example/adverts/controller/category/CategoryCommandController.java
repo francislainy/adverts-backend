@@ -1,5 +1,6 @@
 package com.example.adverts.controller.category;
 
+import com.example.adverts.model.FeedbackMessage;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
@@ -30,6 +31,13 @@ public class CategoryCommandController {
     public ResponseEntity<CategoryUpdateDto> updateCategory(@PathVariable(value = "id") UUID id,
                                                             @RequestBody CategoryUpdateDto categoryUpdateDto) {
         return new ResponseEntity<>(categoryCommandService.updateCategory(id, categoryUpdateDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<FeedbackMessage> deleteCategory(@PathVariable(value = "id") UUID id) {
+
+        return new ResponseEntity<>(categoryCommandService.deleteCategory(id), HttpStatus.NO_CONTENT);
     }
 
 }
