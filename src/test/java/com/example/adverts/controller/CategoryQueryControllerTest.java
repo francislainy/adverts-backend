@@ -5,8 +5,6 @@ import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.service.interfaces.category.CategoryQueryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +31,6 @@ public class CategoryQueryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        RestAssuredMockMvc.mockMvc(mockMvc);
-    }
 
     @Test
     public void testGetAllCategoriesWhenOneItemOnly() throws Exception {
