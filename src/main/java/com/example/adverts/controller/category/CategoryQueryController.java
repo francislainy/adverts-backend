@@ -34,7 +34,7 @@ public class CategoryQueryController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CategoryQueryDto> getCategory(@PathVariable(value = "id") UUID id) throws JsonProcessingException {
+    public ResponseEntity<CategoryQueryDto> getCategory(@PathVariable(value = "id") UUID id) {
         return new ResponseEntity<>(categoryQueryService.getCategory(id), HttpStatus.OK);
     }
 

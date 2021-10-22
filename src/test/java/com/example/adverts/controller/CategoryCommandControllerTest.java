@@ -1,12 +1,10 @@
 package com.example.adverts.controller;
 
-import com.example.adverts.controller.category.CategoryQueryController;
-import com.example.adverts.model.dto.category.CategoryQueryDto;
-import com.example.adverts.service.interfaces.category.CategoryQueryService;
+import com.example.adverts.controller.category.CategoryCommandController;
+import com.example.adverts.model.dto.category.CategoryCreateDto;
+import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,58 +16,47 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CategoryQueryController.class)
+@WebMvcTest(CategoryCommandController.class)
 public class CategoryCommandControllerTest {
 
     @MockBean
-    private CategoryQueryService categoryQueryService;
+    private CategoryCommandService categoryCommandService;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        RestAssuredMockMvc.mockMvc(mockMvc);
-    }
-
     @Test
-    public void testGetAllCategoriesWhenOneItemOnly() throws Exception {
+    public void testCreateCategory() throws Exception {
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
-        List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
-        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
-        result.put("categories", categoryQueryDtoList);
+        CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
+        CategoryCreateDto categoryCreateResponseDto = new CategoryCreateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(result);
+        String jsonResponse = ow.writeValueAsString(categoryCreateResponseDto);
+        String jsonCreate = ow.writeValueAsString(categoryCreateDto);
 
-
-        Mockito.when(categoryQueryService.getAllCategories()).thenReturn(
-                categoryQueryDtoList);
+        Mockito.when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
+                categoryCreateResponseDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/adverts/category")
+                .post("/api/adverts/category")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().json(json, true))
-                .andExpect(jsonPath("$.categories.size()").value(1))
-                .andExpect(jsonPath("$.categories[0].id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
-                .andExpect(jsonPath("$.categories[0].title").value("category"))
+                .andExpect(content().json(jsonResponse, true))
+                .andExpect(jsonPath("$.id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
 
     }
-
-
-
 
 
 }
