@@ -126,5 +126,4 @@ public class CategoryQueryControllerTest {
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
-
 }

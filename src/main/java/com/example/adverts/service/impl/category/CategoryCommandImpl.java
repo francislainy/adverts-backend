@@ -6,8 +6,6 @@ import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,8 +13,11 @@ import java.util.UUID;
 @Service
 public class CategoryCommandImpl implements CategoryCommandService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryCommandImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
 
     @Override

@@ -14,8 +14,11 @@ import java.util.UUID;
 @Service
 public class CategoryQueryServiceImpl implements CategoryQueryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryQueryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public CategoryQueryDto getCategory(UUID id) {
