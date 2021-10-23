@@ -56,6 +56,7 @@ public class CategoryCommandControllerTest {
                 .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
 
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
 

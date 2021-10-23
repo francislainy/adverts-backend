@@ -60,6 +60,7 @@ public class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.categories[0].title").value("category"))
                 .andReturn();
 
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -87,13 +88,14 @@ public class CategoryQueryControllerTest {
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(json, true))
-                .andExpect(jsonPath("$.categories.size()").value(1))
+                .andExpect(jsonPath("$.categories.size()").value(2))
                 .andExpect(jsonPath("$.categories[0].id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andExpect(jsonPath("$.categories[0].title").value("category1"))
                 .andExpect(jsonPath("$.categories[1].id").value("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"))
                 .andExpect(jsonPath("$.categories[1].title").value("category2"))
                 .andReturn();
 
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -121,6 +123,7 @@ public class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
 
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
 
