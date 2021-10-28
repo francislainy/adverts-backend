@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
+import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -62,15 +63,6 @@ public class SubCategoryCommandControllerTest {
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
-    }
-
-
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

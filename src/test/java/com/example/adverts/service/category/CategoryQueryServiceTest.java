@@ -28,9 +28,6 @@ public class CategoryQueryServiceTest {
     @MockBean
     private CategoryQueryService categoryQueryService;
 
-//    @InjectMocks
-//    private CategoryQueryServiceImpl categoryQueryServiceImpl;
-
     @BeforeEach
     void initUseCase() {
         categoryQueryService = new CategoryQueryServiceImpl(categoryRepository);

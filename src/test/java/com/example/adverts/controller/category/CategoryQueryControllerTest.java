@@ -1,10 +1,7 @@
 package com.example.adverts.controller.category;
 
-import com.example.adverts.controller.category.CategoryQueryController;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.service.interfaces.category.CategoryQueryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.adverts.Utils.asJsonString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -40,9 +38,7 @@ public class CategoryQueryControllerTest {
         HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
         result.put("categories", categoryQueryDtoList);
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(result);
-
+        String json = asJsonString(result);
 
         Mockito.when(categoryQueryService.getAllCategories()).thenReturn(
                 categoryQueryDtoList);
@@ -73,9 +69,7 @@ public class CategoryQueryControllerTest {
         HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
         result.put("categories", categoryQueryDtoList);
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(result);
-
+        String json = asJsonString(result);
 
         Mockito.when(categoryQueryService.getAllCategories()).thenReturn(
                 categoryQueryDtoList);
@@ -104,9 +98,7 @@ public class CategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(categoryQueryDto);
-
+        String json = asJsonString(categoryQueryDto);
 
         Mockito.when(categoryQueryService.getCategory(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))).thenReturn(
                 categoryQueryDto);

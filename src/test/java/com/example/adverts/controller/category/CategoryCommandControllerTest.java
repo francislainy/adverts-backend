@@ -1,11 +1,8 @@
 package com.example.adverts.controller.category;
 
-import com.example.adverts.controller.category.CategoryCommandController;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
+import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,9 +36,8 @@ public class CategoryCommandControllerTest {
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
         CategoryCreateDto categoryCreateResponseDto = new CategoryCreateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String jsonResponse = ow.writeValueAsString(categoryCreateResponseDto);
-        String jsonCreate = ow.writeValueAsString(categoryCreateDto);
+        String jsonResponse = asJsonString(categoryCreateResponseDto);
+        String jsonCreate = asJsonString(categoryCreateDto);
 
         Mockito.when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
                 categoryCreateResponseDto);
@@ -70,9 +67,8 @@ public class CategoryCommandControllerTest {
         categoryUpdateDto.setTitle("updated category");
         CategoryUpdateDto categoryUpdateResponseDto = new CategoryUpdateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "updated category");
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String jsonUpdateBody = ow.writeValueAsString(categoryUpdateDto);
-        String jsonResponse = ow.writeValueAsString(categoryUpdateResponseDto);
+        String jsonUpdateBody = asJsonString(categoryUpdateDto);
+        String jsonResponse = asJsonString(categoryUpdateResponseDto);
 
         Mockito.when(categoryCommandService.updateCategory(any(UUID.class), eq(categoryUpdateDto))).thenReturn(
                 categoryUpdateResponseDto);
