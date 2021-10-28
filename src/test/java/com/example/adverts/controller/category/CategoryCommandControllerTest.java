@@ -1,4 +1,4 @@
-package com.example.adverts.controller;
+package com.example.adverts.controller.category;
 
 import com.example.adverts.controller.category.CategoryCommandController;
 import com.example.adverts.model.dto.category.CategoryCreateDto;

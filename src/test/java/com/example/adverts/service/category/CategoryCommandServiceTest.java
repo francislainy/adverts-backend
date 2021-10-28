@@ -1,4 +1,4 @@
-package com.example.adverts.service;
+package com.example.adverts.service.category;
 
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.entity.category.Category;
