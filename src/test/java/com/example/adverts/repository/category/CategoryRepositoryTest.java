@@ -1,7 +1,6 @@
 package com.example.adverts.repository.category;
 
 import com.example.adverts.model.entity.category.Category;
-import com.example.adverts.repository.category.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

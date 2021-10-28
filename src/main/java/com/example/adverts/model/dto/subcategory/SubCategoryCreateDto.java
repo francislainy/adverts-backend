@@ -15,4 +15,9 @@ public class SubCategoryCreateDto {
     private String title;
     private UUID categoryId;
 
+    public SubCategoryCreateDto(String title, UUID categoryId) {
+        this.title = title;
+        this.categoryId = categoryId;
+    }
+
 }
