@@ -3,6 +3,7 @@ package com.example.adverts.controller.category;
 import com.example.adverts.model.FeedbackMessage;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
+import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class CategoryCommandController {
     @Autowired
     private CategoryCommandService categoryCommandService;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CategoryCreateDto> createCategory(@RequestBody CategoryCreateDto categoryCreateDto) {
@@ -34,10 +38,16 @@ public class CategoryCommandController {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<FeedbackMessage> deleteCategory(@PathVariable(value = "id") UUID id) {
-
-        return new ResponseEntity<>(categoryCommandService.deleteCategory(id), HttpStatus.NO_CONTENT);
+        if (categoryRepository.findById(id).isPresent()) {
+            if (categoryCommandService.deleteCategory(id)) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(new FeedbackMessage("Item not deleted"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>(new FeedbackMessage("Item not found"), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

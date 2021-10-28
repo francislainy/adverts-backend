@@ -2,6 +2,7 @@ package com.example.adverts.controller.category;
 
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
+import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,6 +30,9 @@ public class CategoryCommandControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private CategoryRepository categoryRepository;
 
     @Test
     public void testCreateCategory() throws Exception {
