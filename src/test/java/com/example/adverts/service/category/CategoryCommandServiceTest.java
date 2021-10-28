@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(CategoryQueryService.class)
+@WebMvcTest(CategoryCommandService.class)
 public class CategoryCommandServiceTest {
 
     @Mock
