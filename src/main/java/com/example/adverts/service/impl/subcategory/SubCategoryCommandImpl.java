@@ -26,12 +26,12 @@ public class SubCategoryCommandImpl implements SubCategoryCommandService {
         if (categoryRepository.findById(categoryId).isPresent()) {
 
             SubCategory subCategory = new SubCategory();
-            subCategory.setCategoryId(categoryId);
+            subCategory.setCategory(categoryRepository.findById(categoryId).get());
             subCategory.setTitle(subCategoryCreateDto.getTitle());
 
             subCategory = subCategoryRepository.save(subCategory);
 
-            return new SubCategoryCreateDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategoryId());
+            return new SubCategoryCreateDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory().getId());
         } else {
             return null;
         }

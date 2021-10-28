@@ -41,7 +41,7 @@ public class CategoryCommandServiceTest {
     @Test
     public void testCategoryItemSavedToDb() {
 
-        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category");
+        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null);
 
         when(categoryRepository.save(any(Category.class))).thenReturn(categoryMocked);
 

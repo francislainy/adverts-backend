@@ -1,10 +1,12 @@
 package com.example.adverts.model.entity.category;
 
+import com.example.adverts.model.entity.subcategory.SubCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,5 +22,8 @@ public class Category {
     private UUID id;
     @Column(name = "title")
     private String title;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<SubCategory> subCategories;
 
 }
