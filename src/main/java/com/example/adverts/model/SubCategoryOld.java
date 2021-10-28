@@ -3,18 +3,19 @@ package com.example.adverts.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
 import java.util.List;
+import java.util.UUID;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Category {
+public class SubCategoryOld {
 
-    @Id
-    private long id;
+    private Long id;
     private String name;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<SubCategory> subCategoryList;
+    private List<Product> productList;
 
 }
