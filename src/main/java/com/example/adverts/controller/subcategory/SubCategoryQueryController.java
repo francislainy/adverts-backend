@@ -25,7 +25,7 @@ public class SubCategoryQueryController {
     public Map<String, List<SubCategoryQueryDto>> listAllSubCategories() {
 
         HashMap<String, List<SubCategoryQueryDto>> result = new HashMap<>();
-        result.put("subcategories", subCategoryQueryService.getAllSubCategories());
+        result.put("subCategories", subCategoryQueryService.getAllSubCategories());
         return result;
 
     }

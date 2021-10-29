@@ -35,10 +35,6 @@ public class CategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
-        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
-        result.put("categories", categoryQueryDtoList);
-
-        String json = asJsonString(result);
 
         Mockito.when(categoryQueryService.getAllCategories()).thenReturn(
                 categoryQueryDtoList);
@@ -47,6 +43,11 @@ public class CategoryQueryControllerTest {
                 .get("/api/adverts/category")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
+
+        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
+        result.put("categories", categoryQueryDtoList);
+
+        String json = asJsonString(result);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
