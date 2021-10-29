@@ -67,10 +67,6 @@ public class CategoryQueryControllerTest {
         CategoryQueryDto categoryQueryDto1 = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category1");
         CategoryQueryDto categoryQueryDto2 = new CategoryQueryDto(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "category2");
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto1, categoryQueryDto2);
-        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
-        result.put("categories", categoryQueryDtoList);
-
-        String json = asJsonString(result);
 
         Mockito.when(categoryQueryService.getAllCategories()).thenReturn(
                 categoryQueryDtoList);
@@ -79,6 +75,11 @@ public class CategoryQueryControllerTest {
                 .get("/api/adverts/category")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
+
+        HashMap<String, List<CategoryQueryDto>> result = new HashMap<>();
+        result.put("categories", categoryQueryDtoList);
+
+        String json = asJsonString(result);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
@@ -99,8 +100,6 @@ public class CategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 
-        String json = asJsonString(categoryQueryDto);
-
         Mockito.when(categoryQueryService.getCategory(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))).thenReturn(
                 categoryQueryDto);
 
@@ -108,6 +107,8 @@ public class CategoryQueryControllerTest {
                 .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
+
+        String json = asJsonString(categoryQueryDto);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
