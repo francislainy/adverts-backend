@@ -75,7 +75,7 @@ public class SubCategoryCommandServiceTest {
         when(categoryRepository.findById(categoryUuid))
                 .thenReturn(java.util.Optional.of(categoryRetrievedMocked));
 
-        UUID subCategoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        UUID subCategoryUuid = UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb");
         SubCategory subCategoryRetrievedMocked = new SubCategory(subCategoryUuid, "title", categoryRetrievedMocked);
         SubCategory subCategoryUpdatedMocked = new SubCategory(subCategoryUuid, "updated", categoryRetrievedMocked);
 
