@@ -1,6 +1,5 @@
 package com.example.adverts.service.subcategory;
 
-import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
@@ -82,8 +81,7 @@ public class SubCategoryCommandServiceTest {
 
         when(subCategoryRepository.findById(subCategoryUuid))
                 .thenReturn(java.util.Optional.of(subCategoryRetrievedMocked));
-//        when(subCategoryRepository.save(subCategoryUpdatedMocked)).thenReturn(subCategoryRetrievedMocked);
-        when(subCategoryRepository.save(any(SubCategory.class))).thenReturn(subCategoryRetrievedMocked);
+        when(subCategoryRepository.save(subCategoryUpdatedMocked)).thenReturn(subCategoryRetrievedMocked);
 
         SubCategoryUpdateDto subCategoryUpdateDto = new SubCategoryUpdateDto("updated");
         subCategoryUpdateDto = subCategoryCommandService.updateSubCategory(subCategoryUuid, subCategoryUpdateDto, categoryUuid);
