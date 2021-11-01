@@ -14,4 +14,7 @@ public class CategoryUpdateDto {
     private UUID id;
     private String title;
 
+    public CategoryUpdateDto(String title) {
+        this.title = title;
+    }
 }

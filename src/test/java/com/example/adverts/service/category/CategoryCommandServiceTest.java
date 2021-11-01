@@ -58,22 +58,20 @@ public class CategoryCommandServiceTest {
 
     @Test
     public void testCategoryItemUpdated() {
+        UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        Category categoryRetrievedMocked = new Category(categoryUuid, "title", null);
+        Category categoryUpdatedMocked = new Category(categoryUuid, "updated", null);
 
-        Category categoryRetrievedMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null);
-        Category categoryUpdatedMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "updated category", null);
+        when(categoryRepository.findById(categoryUuid))
+                .thenReturn(java.util.Optional.of(categoryRetrievedMocked));
+        when(categoryRepository.save(categoryUpdatedMocked)).thenReturn(categoryUpdatedMocked);
 
-        when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(categoryRetrievedMocked));
-        when(categoryRepository.save(any(Category.class))).thenReturn(categoryUpdatedMocked);
-
-        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "updated");
-
-        categoryUpdateDto = categoryCommandService.updateCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), categoryUpdateDto);
-
+        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto( "updated");
+        categoryUpdateDto = categoryCommandService.updateCategory(categoryUuid, categoryUpdateDto);
 
         assertNotNull(categoryUpdateDto);
         assertEquals(categoryUpdatedMocked.getId(), categoryUpdateDto.getId());
         assertEquals(categoryUpdatedMocked.getTitle(), categoryUpdateDto.getTitle());
     }
-
 
 }
