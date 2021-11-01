@@ -41,20 +41,16 @@ public class SubCategoryCommandImpl implements SubCategoryCommandService {
 
     @Override
     public SubCategoryUpdateDto updateSubCategory(UUID subCategoryId, SubCategoryUpdateDto subCategoryUpdateDto, UUID categoryId) {
-        if (categoryRepository.findById(categoryId).isPresent()) {
 
-            if (subCategoryRepository.findById(subCategoryId).isPresent()) {
+        if (categoryRepository.findById(categoryId).isPresent() && subCategoryRepository.findById(subCategoryId).isPresent()) {
 
-                SubCategory subCategory = subCategoryRepository.findById(subCategoryId).get();
+            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).get();
 
-                subCategory.setTitle(subCategoryUpdateDto.getTitle());
+            subCategory.setTitle(subCategoryUpdateDto.getTitle());
 
-                subCategory = subCategoryRepository.save(subCategory);
+            subCategory = subCategoryRepository.save(subCategory);
 
-                return new SubCategoryUpdateDto(subCategory.getId(), subCategory.getTitle());
-            } else {
-                return null;
-            }
+            return new SubCategoryUpdateDto(subCategory.getId(), subCategory.getTitle());
 
         } else {
             return null;
