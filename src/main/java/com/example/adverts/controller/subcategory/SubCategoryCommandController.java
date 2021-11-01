@@ -1,6 +1,7 @@
 package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class SubCategoryCommandController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<SubCategoryCreateDto> createSubCategory(@RequestBody SubCategoryCreateDto subCategoryCreateDto, @PathVariable UUID id) {
         return new ResponseEntity<>(subCategoryCommandService.createSubCategory(subCategoryCreateDto, id), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/{subCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<SubCategoryUpdateDto> updateSubCategory(@PathVariable(value = "subCategoryId") UUID subCategoryId,
+                                                                  @RequestBody SubCategoryUpdateDto subCategoryUpdateDto, @PathVariable(value = "id") UUID id) {
+        return new ResponseEntity<>(subCategoryCommandService.updateSubCategory(subCategoryId, subCategoryUpdateDto, id), HttpStatus.OK);
     }
 
 }
