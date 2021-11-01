@@ -1,6 +1,7 @@
 package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
 import org.junit.jupiter.api.Test;
@@ -52,13 +53,43 @@ public class SubCategoryCommandControllerTest {
                 subCategoryCreateResponseDto);
 
         String jsonResponse = asJsonString(subCategoryCreateResponseDto);
-
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
                 .andExpect(jsonPath("$.id").value("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andExpect(jsonPath("$.title").value("subcategory"))
                 .andExpect(jsonPath("$.categoryId").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void testUpdateSubCategory() throws Exception {
+
+        SubCategoryUpdateDto subCategoryUpdateDto = new SubCategoryUpdateDto();
+        subCategoryUpdateDto.setTitle("updated subCategory");
+        SubCategoryUpdateDto subCategoryUpdateResponseDto = new SubCategoryUpdateDto(UUID.fromString("e7bd0ce8-579c-4554-b8ee-d70a537a3aaf"), "updated subCategory");
+
+        String jsonUpdateBody = asJsonString(subCategoryUpdateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory/e7bd0ce8-579c-4554-b8ee-d70a537a3aaf")
+                .content(jsonUpdateBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+
+        when(subCategoryCommandService.updateSubCategory(any(UUID.class), eq(subCategoryUpdateDto), any(UUID.class))).thenReturn(
+                subCategoryUpdateResponseDto);
+
+        String jsonResponse = asJsonString(subCategoryUpdateResponseDto);
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(jsonResponse, true))
+                .andExpect(jsonPath("$.id").value("e7bd0ce8-579c-4554-b8ee-d70a537a3aaf"))
+                .andExpect(jsonPath("$.title").value("updated subCategory"))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
