@@ -52,12 +52,12 @@ public class SubCategoryCommandServiceTest {
         Category category = new Category();
         category.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
-        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"), "subcategory", category);
+        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", category);
 
         when(subCategoryRepository.save(any(SubCategory.class))).thenReturn(subCategoryMocked);
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
 
-        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subcategory", UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"));
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
         subCategoryCreateDto = subCategoryCommandService.createSubCategory(subCategoryCreateDto, UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 

@@ -37,17 +37,17 @@ public class SubCategoryCommandControllerTest {
     @Test
     public void testCreateSubCategory() throws Exception {
 
-        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subcategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
         String jsonCreate = asJsonString(subCategoryCreateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory")
+                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subcategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
                 subCategoryCreateResponseDto);
@@ -57,7 +57,7 @@ public class SubCategoryCommandControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
                 .andExpect(jsonPath("$.id").value("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"))
-                .andExpect(jsonPath("$.title").value("subcategory"))
+                .andExpect(jsonPath("$.title").value("subCategory"))
                 .andExpect(jsonPath("$.categoryId").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andReturn();
 
@@ -75,7 +75,7 @@ public class SubCategoryCommandControllerTest {
         String jsonUpdateBody = asJsonString(subCategoryUpdateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory/e7bd0ce8-579c-4554-b8ee-d70a537a3aaf")
+                .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory/e7bd0ce8-579c-4554-b8ee-d70a537a3aaf")
                 .content(jsonUpdateBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
