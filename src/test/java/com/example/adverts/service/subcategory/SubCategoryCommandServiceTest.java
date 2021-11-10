@@ -52,7 +52,7 @@ public class SubCategoryCommandServiceTest {
         Category category = new Category();
         category.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
-        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", category);
+        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", category, null);
 
         when(subCategoryRepository.save(any(SubCategory.class))).thenReturn(subCategoryMocked);
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
@@ -70,14 +70,14 @@ public class SubCategoryCommandServiceTest {
     @Test
     public void testSubCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        Category categoryRetrievedMocked = new Category(categoryUuid, "title", null);
+        Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
 
         when(categoryRepository.findById(categoryUuid))
                 .thenReturn(java.util.Optional.of(categoryRetrievedMocked));
 
         UUID subCategoryUuid = UUID.fromString("03c903f7-7a55-470d-8449-cf7587f5a3fb");
-        SubCategory subCategoryRetrievedMocked = new SubCategory(subCategoryUuid, "title", categoryRetrievedMocked);
-        SubCategory subCategoryUpdatedMocked = new SubCategory(subCategoryUuid, "updated", categoryRetrievedMocked);
+        SubCategory subCategoryRetrievedMocked = new SubCategory(subCategoryUuid, "title", categoryRetrievedMocked, null);
+        SubCategory subCategoryUpdatedMocked = new SubCategory(subCategoryUuid, "updated", categoryRetrievedMocked, null);
 
         when(subCategoryRepository.findById(subCategoryUuid))
                 .thenReturn(java.util.Optional.of(subCategoryRetrievedMocked));

@@ -48,7 +48,7 @@ public class SubCategoryQueryServiceTest {
 
     @Test
     public void testSubCategoryItemFoundOnDb() {
-        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null);
+        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
 
         when(subCategoryRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(subCategoryMocked));
 
@@ -63,8 +63,8 @@ public class SubCategoryQueryServiceTest {
     @Test
     public void testSubCategoryMultipleItemFoundOnDb() {
 
-        SubCategory subCategoryMocked1 = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "sunCategory1", null);
-        SubCategory subCategoryMocked2 = new SubCategory(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "subCategory2", null);
+        SubCategory subCategoryMocked1 = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "sunCategory1", null, null);
+        SubCategory subCategoryMocked2 = new SubCategory(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "subCategory2", null, null);
 
         List<SubCategory> subCategoryMockedList = List.of(subCategoryMocked1, subCategoryMocked2);
 
@@ -84,7 +84,7 @@ public class SubCategoryQueryServiceTest {
     @Test
     public void testCategoryItemSavedToDb() {
 
-        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null);
+        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
 
         when(subCategoryRepository.save(subCategoryMocked)).thenReturn(subCategoryMocked);
 

@@ -41,7 +41,7 @@ public class SubCategoryRepositoryTest {
         Category category = new Category();
         category.setId(UUID.randomUUID());
         List<SubCategory> subCategoryList = List.of(
-                new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subcategory", category)
+                new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subcategory", category, null)
         );
         subCategoryRepository.saveAll(subCategoryList);
         List<SubCategory> allCategories = (List<SubCategory>) subCategoryRepository.findAll();

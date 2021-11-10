@@ -31,7 +31,7 @@ public class CategoryRepositoryTest {
     @Test
     void findAll() {
         List<Category> categoryList = List.of(
-                new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null)
+                new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null)
         );
         categoryRepository.saveAll(categoryList);
         List<Category> allCategories = (List<Category>) categoryRepository.findAll();

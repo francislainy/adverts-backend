@@ -42,7 +42,7 @@ public class CategoryCommandServiceTest {
     @Test
     public void testCategoryItemSavedToDb() {
 
-        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null);
+        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
         when(categoryRepository.save(any(Category.class))).thenReturn(categoryMocked);
 
@@ -59,8 +59,8 @@ public class CategoryCommandServiceTest {
     @Test
     public void testCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        Category categoryRetrievedMocked = new Category(categoryUuid, "title", null);
-        Category categoryUpdatedMocked = new Category(categoryUuid, "updated", null);
+        Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
+        Category categoryUpdatedMocked = new Category(categoryUuid, "updated", null, null);
 
         when(categoryRepository.findById(categoryUuid))
                 .thenReturn(java.util.Optional.of(categoryRetrievedMocked));

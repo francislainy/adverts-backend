@@ -1,5 +1,6 @@
 package com.example.adverts.model.entity.category;
 
+import com.example.adverts.model.entity.product.Product;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,5 +26,8 @@ public class Category {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<SubCategory> subCategories;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Product> products;
 
 }
