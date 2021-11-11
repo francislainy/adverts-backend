@@ -16,9 +16,8 @@ public class ProductCreateDto {
     private UUID subCategoryId;
     private UUID categoryId;
 
-    public ProductCreateDto(String title, UUID subCategoryId) {
+    public ProductCreateDto(String title) {
         this.title = title;
-        this.subCategoryId = subCategoryId;
     }
 
 }

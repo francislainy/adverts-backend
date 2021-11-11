@@ -20,6 +20,7 @@ import java.util.UUID;
 import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CategoryCommandController.class)
@@ -40,11 +41,8 @@ public class CategoryCommandControllerTest {
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
         CategoryCreateDto categoryCreateResponseDto = new CategoryCreateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 
-        String jsonResponse = asJsonString(categoryCreateResponseDto);
         String jsonCreate = asJsonString(categoryCreateDto);
-
-        Mockito.when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
-                categoryCreateResponseDto);
+        String jsonResponse = asJsonString(categoryCreateResponseDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category")
@@ -52,6 +50,9 @@ public class CategoryCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
+
+        when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
+                categoryCreateResponseDto);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
@@ -74,15 +75,15 @@ public class CategoryCommandControllerTest {
         String jsonUpdateBody = asJsonString(categoryUpdateDto);
         String jsonResponse = asJsonString(categoryUpdateResponseDto);
 
-        Mockito.when(categoryCommandService.updateCategory(any(UUID.class), eq(categoryUpdateDto))).thenReturn(
-                categoryUpdateResponseDto);
-
         RequestBuilder request = MockMvcRequestBuilders
                 .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41")
                 .content(jsonUpdateBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
+
+        when(categoryCommandService.updateCategory(any(UUID.class), eq(categoryUpdateDto))).thenReturn(
+                categoryUpdateResponseDto);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
