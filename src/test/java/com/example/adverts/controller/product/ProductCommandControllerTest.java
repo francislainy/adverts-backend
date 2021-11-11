@@ -1,19 +1,13 @@
 package com.example.adverts.controller.product;
 
 import com.example.adverts.controller.category.CategoryCommandController;
-import com.example.adverts.model.dto.category.CategoryCreateDto;
-import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.dto.product.ProductCreateDto;
 import com.example.adverts.repository.category.CategoryRepository;
-import com.example.adverts.repository.product.ProductRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
-import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.product.ProductCommandService;
-import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -199,7 +193,7 @@ public class ProductCommandControllerTest {
         ProductCreateDto productCreateDto = new ProductCreateDto();
         productCreateDto.setSubCategoryId(UUID.randomUUID());
         productCreateDto.setId(UUID.randomUUID());
-        productCreateDto.setTitle("Dr");
+        productCreateDto.setTitle("Product");
         productCreateDto.setCategoryId(UUID.randomUUID());
         String content = (new ObjectMapper()).writeValueAsString(productCreateDto);
         UUID randomUUIDResult = UUID.randomUUID();
