@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

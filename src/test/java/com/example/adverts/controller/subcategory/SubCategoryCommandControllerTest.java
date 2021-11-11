@@ -2,6 +2,7 @@ package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
+import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,9 @@ public class SubCategoryCommandControllerTest {
     @MockBean
     private CategoryCommandService categoryCommandService;
 
+    @MockBean
+    private CategoryRepository categoryRepository;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -52,6 +56,8 @@ public class SubCategoryCommandControllerTest {
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
                 subCategoryCreateResponseDto);
 
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+
         String jsonResponse = asJsonString(subCategoryCreateResponseDto);
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
@@ -59,6 +65,62 @@ public class SubCategoryCommandControllerTest {
                 .andExpect(jsonPath("$.id").value("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andExpect(jsonPath("$.title").value("subCategory"))
                 .andExpect(jsonPath("$.categoryId").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void testCreateSubCategoryThrowsErrorWhenCategoryDoesNotExist() throws Exception {
+
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        String jsonCreate = asJsonString(subCategoryCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+
+        when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
+                subCategoryCreateResponseDto);
+
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(false);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{\"message\": \"Entity not found\"}", true))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void testCreateSubCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
+
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto(null, UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        String jsonCreate = asJsonString(subCategoryCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+
+        when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
+                subCategoryCreateResponseDto);
+
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{\"message\": \"Missing title\"}", true))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());

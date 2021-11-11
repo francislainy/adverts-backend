@@ -25,10 +25,17 @@ public class CategoryCommandController {
     private CategoryRepository categoryRepository;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CategoryCreateDto> createCategory(@RequestBody CategoryCreateDto categoryCreateDto) {
-        return new ResponseEntity<>(categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
+    public ResponseEntity<Object> createCategory(@RequestBody CategoryCreateDto categoryCreateDto) {
+
+        if (categoryCreateDto.getTitle() != null) {
+            return new ResponseEntity<>(categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(new FeedbackMessage("Missing title"), HttpStatus.BAD_REQUEST);
+        }
+
     }
+
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

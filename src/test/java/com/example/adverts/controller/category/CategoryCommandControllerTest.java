@@ -5,7 +5,6 @@ import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -60,6 +59,31 @@ public class CategoryCommandControllerTest {
                 .andExpect(jsonPath("$.id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void testCreateCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
+
+        CategoryCreateDto categoryCreateDto = new CategoryCreateDto();
+        String jsonCreate = asJsonString(categoryCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+
+        when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(null);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{\"message\": \"Missing title\"}", true))
+                .andReturn();
+
 
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
