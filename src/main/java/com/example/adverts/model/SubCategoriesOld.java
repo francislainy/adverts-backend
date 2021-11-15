@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Setter
-public class SubCategories
+public class SubCategoriesOld
 {
-    private List<SubCategory> list;
+    private List<SubCategoryOld> list;
 
-    public List<SubCategory> getList() {
+    public List<SubCategoryOld> getList() {
         if(list == null) {
             list = new ArrayList<>();
         }

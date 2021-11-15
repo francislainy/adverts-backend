@@ -1,6 +1,5 @@
 package com.example.adverts.service.interfaces.category;
 
-import com.example.adverts.model.FeedbackMessage;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import org.springframework.stereotype.Repository;
@@ -14,5 +13,5 @@ public interface CategoryCommandService {
 
     CategoryUpdateDto updateCategory(UUID id, CategoryUpdateDto categoryUpdateDto);
 
-    FeedbackMessage deleteCategory(UUID id);
+    boolean deleteCategory(UUID id);
 }

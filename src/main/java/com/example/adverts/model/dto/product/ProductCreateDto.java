@@ -1,4 +1,4 @@
-package com.example.adverts.model.dto.category;
+package com.example.adverts.model.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CategoryUpdateDto {
+public class ProductCreateDto {
 
     private UUID id;
     private String title;
+    private UUID subCategoryId;
+    private UUID categoryId;
 
-    public CategoryUpdateDto(String title) {
+    public ProductCreateDto(String title) {
         this.title = title;
     }
+
 }

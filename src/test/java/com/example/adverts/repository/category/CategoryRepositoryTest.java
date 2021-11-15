@@ -1,7 +1,6 @@
-package com.example.adverts.repository;
+package com.example.adverts.repository.category;
 
 import com.example.adverts.model.entity.category.Category;
-import com.example.adverts.repository.category.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -32,7 +31,7 @@ public class CategoryRepositoryTest {
     @Test
     void findAll() {
         List<Category> categoryList = List.of(
-                new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category")
+                new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null)
         );
         categoryRepository.saveAll(categoryList);
         List<Category> allCategories = (List<Category>) categoryRepository.findAll();

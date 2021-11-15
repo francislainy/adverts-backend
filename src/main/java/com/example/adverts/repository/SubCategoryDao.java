@@ -9,14 +9,14 @@ import java.util.List;
 public class SubCategoryDao
 {
 
-    public SubCategories getAllSubCategoriesForCategory(Long id)
+    public SubCategoriesOld getAllSubCategoriesForCategory(Long id)
     {
         CategoryDao categoryDao = new CategoryDao();
-        Category c = categoryDao.getCategory(id);
+        CategoryOld c = categoryDao.getCategory(id);
 
-        List<SubCategory> subCategoryList = c.getSubCategoryList();
+        List<SubCategoryOld> subCategoryList = c.getSubCategoryList();
 
-        SubCategories subCategories = new SubCategories();
+        SubCategoriesOld subCategories = new SubCategoriesOld();
         subCategories.getList().addAll(subCategoryList);
 
         return subCategories;

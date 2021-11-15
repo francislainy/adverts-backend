@@ -1,8 +1,8 @@
 package com.example.adverts.controller;
 
+import com.example.adverts.model.CategoriesOld;
+import com.example.adverts.model.CategoryOld;
 import com.example.adverts.repository.CategoryDao;
-import com.example.adverts.model.Categories;
-import com.example.adverts.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,23 +11,23 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-public class CategoryController {
+public class CategoryControllerOld {
 
     @Autowired
     private CategoryDao categoryDao;
 
     @GetMapping(produces = "application/json")
-    public Categories getCategories() {
+    public CategoriesOld getCategories() {
         return categoryDao.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category category(@PathVariable(value = "id") Long id) {
+    public CategoryOld category(@PathVariable(value = "id") Long id) {
         return categoryDao.getCategory(id);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> addCategory(@RequestBody Category category)
+    public ResponseEntity<Object> addCategory(@RequestBody CategoryOld category)
     {
         Integer id = categoryDao.getAllCategories().getCategoryList().size() + 1;
         category.setId(id);

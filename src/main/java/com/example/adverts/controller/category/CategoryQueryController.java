@@ -2,7 +2,6 @@ package com.example.adverts.controller.category;
 
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.service.interfaces.category.CategoryQueryService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

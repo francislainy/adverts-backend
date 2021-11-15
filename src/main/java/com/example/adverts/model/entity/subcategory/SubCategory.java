@@ -1,7 +1,7 @@
-package com.example.adverts.model.entity.category;
+package com.example.adverts.model.entity.subcategory;
 
+import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
-import com.example.adverts.model.entity.subcategory.SubCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "subcategory")
+public class SubCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,10 +24,10 @@ public class Category {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Collection<SubCategory> subCategories;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Product> products;
-
 }

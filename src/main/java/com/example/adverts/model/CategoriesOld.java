@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Setter
-public class Categories
+public class CategoriesOld
 {
-    private List<Category> categoryList;
+    private List<CategoryOld> categoryList;
 
-    public List<Category> getCategoryList() {
+    public List<CategoryOld> getCategoryList() {
         if(categoryList == null) {
             categoryList = new ArrayList<>();
         }

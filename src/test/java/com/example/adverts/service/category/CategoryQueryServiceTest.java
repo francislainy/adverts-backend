@@ -1,4 +1,4 @@
-package com.example.adverts.service;
+package com.example.adverts.service.category;
 
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.entity.category.Category;
@@ -28,9 +28,6 @@ public class CategoryQueryServiceTest {
     @MockBean
     private CategoryQueryService categoryQueryService;
 
-//    @InjectMocks
-//    private CategoryQueryServiceImpl categoryQueryServiceImpl;
-
     @BeforeEach
     void initUseCase() {
         categoryQueryService = new CategoryQueryServiceImpl(categoryRepository);
@@ -38,7 +35,7 @@ public class CategoryQueryServiceTest {
 
     @Test
     public void testCategoryItemFoundOnDb() {
-        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category");
+        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
         when(categoryRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(categoryMocked));
 
@@ -52,8 +49,8 @@ public class CategoryQueryServiceTest {
     @Test
     public void testCategoryMultipleItemFoundOnDb() {
 
-        Category categoryMocked1 = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category1");
-        Category categoryMocked2 = new Category(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "category2");
+        Category categoryMocked1 = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category1", null, null);
+        Category categoryMocked2 = new Category(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "category2", null, null);
 
         List<Category> categoryMockedList = List.of(categoryMocked1, categoryMocked2);
 
@@ -72,7 +69,7 @@ public class CategoryQueryServiceTest {
     @Test
     public void testCategoryItemSavedToDb() {
 
-        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category");
+        Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
         when(categoryRepository.save(categoryMocked)).thenReturn(categoryMocked);
 
