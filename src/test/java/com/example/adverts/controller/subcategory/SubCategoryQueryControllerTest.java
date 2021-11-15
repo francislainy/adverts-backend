@@ -32,8 +32,8 @@ public class SubCategoryQueryControllerTest {
     @Test
     public void testGetAllSubCategoriesWhenOneItemOnly() throws Exception {
 
-        SubCategoryQueryDto SubCategoryQueryDto = new SubCategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory");
-        List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(SubCategoryQueryDto);
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory");
+        List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         //todo: this should have an id for the category -
         Mockito.when(subCategoryQueryService.getAllSubCategories()).thenReturn(

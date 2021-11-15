@@ -13,8 +13,8 @@ public class ProductCreateDto {
 
     private UUID id;
     private String title;
-    private UUID subCategoryId;
     private UUID categoryId;
+    private UUID subCategoryId;
 
     public ProductCreateDto(String title) {
         this.title = title;

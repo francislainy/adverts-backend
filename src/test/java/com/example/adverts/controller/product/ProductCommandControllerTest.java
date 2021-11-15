@@ -59,7 +59,7 @@ public class ProductCommandControllerTest {
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
         ProductCreateDto productCreateDto = new ProductCreateDto("product");
-        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", subCategoryId, categoryId);
+        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", categoryId, subCategoryId);
 
         String jsonCreate = asJsonString(productCreateDto);
         String jsonResponse = asJsonString(productCreateResponseDto);
