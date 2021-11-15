@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @CrossOrigin
-@RequestMapping("/api/adverts/category/{id}/subcategory")
+@RequestMapping("/api/adverts/category/{id}/subCategory")
 @RestController
 public class SubCategoryQueryController {
 

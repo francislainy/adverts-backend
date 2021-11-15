@@ -40,7 +40,7 @@ public class SubCategoryQueryControllerTest {
                 subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory")
+                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
@@ -72,7 +72,7 @@ public class SubCategoryQueryControllerTest {
                 subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory")
+                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
@@ -104,7 +104,7 @@ public class SubCategoryQueryControllerTest {
                 subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subcategory/3ba4002a-31c5-4cc7-9b92-cbf0db998c41")
+                .get("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory/3ba4002a-31c5-4cc7-9b92-cbf0db998c41")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
