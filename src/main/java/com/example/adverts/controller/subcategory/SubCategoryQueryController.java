@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @CrossOrigin
-@RequestMapping("/api/adverts/category/{id}/subCategory")
+@RequestMapping("/api/adverts/category/{categoryId}/subCategory")
 @RestController
 public class SubCategoryQueryController {
 
@@ -22,18 +22,18 @@ public class SubCategoryQueryController {
     private SubCategoryQueryService subCategoryQueryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<SubCategoryQueryDto>> listAllSubCategories() {
+    public Map<String, List<SubCategoryQueryDto>> listAllSubCategories(@PathVariable(value = "categoryId") UUID categoryId) {
 
         HashMap<String, List<SubCategoryQueryDto>> result = new HashMap<>();
-        result.put("subCategories", subCategoryQueryService.getAllSubCategories());
+        result.put("subCategories", subCategoryQueryService.getAllSubCategories(categoryId));
         return result;
 
     }
 
     @GetMapping(value = "/{subCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<SubCategoryQueryDto> getCategory(@PathVariable(value = "subCategoryId") UUID id) {
-        return new ResponseEntity<>(subCategoryQueryService.getSubCategory(id), HttpStatus.OK);
+    public ResponseEntity<SubCategoryQueryDto> getCategory(@PathVariable(value = "categoryId") UUID categoryId, @PathVariable(value = "subCategoryId") UUID subCategoryId) {
+        return new ResponseEntity<>(subCategoryQueryService.getSubCategory(subCategoryId, categoryId), HttpStatus.OK);
     }
 
 }

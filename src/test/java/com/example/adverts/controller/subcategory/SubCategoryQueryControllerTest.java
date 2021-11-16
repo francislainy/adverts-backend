@@ -45,7 +45,7 @@ public class SubCategoryQueryControllerTest {
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         //todo: this should have an id for the category -
-        Mockito.when(subCategoryQueryService.getAllSubCategories()).thenReturn(
+        Mockito.when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(
                 subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -87,7 +87,7 @@ public class SubCategoryQueryControllerTest {
         SubCategoryQueryDto subCategoryQueryDto2 = new SubCategoryQueryDto(subCategoryId2, "subCategory2", category);
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
-        Mockito.when(subCategoryQueryService.getAllSubCategories()).thenReturn(
+        Mockito.when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(
                 subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -130,7 +130,7 @@ public class SubCategoryQueryControllerTest {
 
         SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
 
-        when(subCategoryQueryService.getSubCategory(subCategoryId)).thenReturn(subCategoryQueryDto);
+        when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}", categoryId, subCategoryId)

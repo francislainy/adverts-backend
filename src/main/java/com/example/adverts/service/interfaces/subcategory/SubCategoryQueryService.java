@@ -9,8 +9,8 @@ import java.util.UUID;
 @Service
 public interface SubCategoryQueryService {
 
-    SubCategoryQueryDto getSubCategory(UUID id);
+    SubCategoryQueryDto getSubCategory(UUID subCategoryId, UUID categoryId);
 
-    List<SubCategoryQueryDto> getAllSubCategories();
+    List<SubCategoryQueryDto> getAllSubCategories(UUID categoryId);
 
 }

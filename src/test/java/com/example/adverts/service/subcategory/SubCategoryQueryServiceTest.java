@@ -1,6 +1,7 @@
 package com.example.adverts.service.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
+import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.impl.subcategory.SubCategoryQueryServiceImpl;
@@ -37,11 +38,17 @@ public class SubCategoryQueryServiceTest {
     @Test
     public void testGetSubCategory() {
 
-        SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+        UUID subCategoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategoryMocked = new SubCategory(subCategoryId, "subCategory", category, null);
 
         when(subCategoryRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(subCategoryMocked));
 
-        SubCategoryQueryDto subCategoryQueryDto = subCategoryQueryService.getSubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
+        SubCategoryQueryDto subCategoryQueryDto = subCategoryQueryService.getSubCategory(subCategoryId, categoryId);
 
         assertNotNull(subCategoryQueryDto);
         assertEquals(subCategoryMocked.getId(), subCategoryQueryDto.getId());
@@ -50,16 +57,23 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testGetMultipleSubCategory() {
+    public void testGetMultipleSubCategories() {
 
-        SubCategory subCategoryMocked1 = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "sunCategory1", null, null);
-        SubCategory subCategoryMocked2 = new SubCategory(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "subCategory2", null, null);
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+        UUID subCategoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        UUID subCategoryId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategoryMocked1 = new SubCategory(subCategoryId1, "subCategory1", category, null);
+        SubCategory subCategoryMocked2 = new SubCategory(subCategoryId2, "subCategory2", category, null);
 
         List<SubCategory> subCategoryMockedList = List.of(subCategoryMocked1, subCategoryMocked2);
 
         when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
 
-        List<SubCategoryQueryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories();
+        List<SubCategoryQueryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories(categoryId);
 
         assertNotNull(subCategoryQueryDtoList);
         assertEquals(subCategoryMockedList.size(), subCategoryQueryDtoList.size());
