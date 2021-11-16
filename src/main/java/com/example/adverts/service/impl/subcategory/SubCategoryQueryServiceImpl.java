@@ -25,7 +25,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         if (subCategoryRepository.findById(id).isPresent()) {
             SubCategory subCategory = subCategoryRepository.findById(id).get(); //todo: should return category 15/11/2021
 
-            return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle());
+            return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory());
 
         } else {
             return null;
@@ -39,7 +39,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
 
         subCategoryRepository.findAll().forEach(subCategory -> {
-            subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle()));
+            subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory()));
         });
 
         return subCategoryList;
