@@ -23,9 +23,9 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
     public SubCategoryQueryDto getSubCategory(UUID id) {
 
         if (subCategoryRepository.findById(id).isPresent()) {
-            SubCategory category = subCategoryRepository.findById(id).get();
+            SubCategory subCategory = subCategoryRepository.findById(id).get(); //todo: should return category 15/11/2021
 
-            return new SubCategoryQueryDto(category.getId(), category.getTitle());
+            return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle());
 
         } else {
             return null;

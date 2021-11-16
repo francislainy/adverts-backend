@@ -2,11 +2,8 @@ package com.example.adverts.service.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
 import com.example.adverts.model.entity.subcategory.SubCategory;
-import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
-import com.example.adverts.service.impl.category.CategoryQueryServiceImpl;
 import com.example.adverts.service.impl.subcategory.SubCategoryQueryServiceImpl;
-import com.example.adverts.service.interfaces.category.CategoryQueryService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,11 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(CategoryQueryService.class)
+@WebMvcTest(SubCategoryQueryService.class)
 public class SubCategoryQueryServiceTest {
-
-    @Mock
-    CategoryRepository categoryRepository;
 
     @Mock
     SubCategoryRepository subCategoryRepository;
@@ -35,19 +29,14 @@ public class SubCategoryQueryServiceTest {
     @MockBean
     private SubCategoryQueryService subCategoryQueryService;
 
-    @MockBean
-    private CategoryQueryService categoryQueryService;
-
-
     @BeforeEach
     void initUseCase() {
-
         subCategoryQueryService = new SubCategoryQueryServiceImpl(subCategoryRepository);
-        categoryQueryService = new CategoryQueryServiceImpl(categoryRepository);
     }
 
     @Test
-    public void testSubCategoryItemFoundOnDb() {
+    public void testGetSubCategory() {
+
         SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
 
         when(subCategoryRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(subCategoryMocked));
@@ -61,7 +50,7 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testSubCategoryMultipleItemFoundOnDb() {
+    public void testGetMultipleSubCategory() {
 
         SubCategory subCategoryMocked1 = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "sunCategory1", null, null);
         SubCategory subCategoryMocked2 = new SubCategory(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "subCategory2", null, null);
@@ -70,27 +59,27 @@ public class SubCategoryQueryServiceTest {
 
         when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
 
-        List<SubCategoryQueryDto> categoryQueryDtoList = subCategoryQueryService.getAllSubCategories();
+        List<SubCategoryQueryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories();
 
-        assertNotNull(categoryQueryDtoList);
-        assertEquals(subCategoryMockedList.size(), categoryQueryDtoList.size());
-        assertEquals(subCategoryMockedList.get(0).getId(), categoryQueryDtoList.get(0).getId());
-        assertEquals(subCategoryMockedList.get(0).getTitle(), categoryQueryDtoList.get(0).getTitle());
-        assertEquals(subCategoryMockedList.get(1).getId(), categoryQueryDtoList.get(1).getId());
-        assertEquals(subCategoryMockedList.get(1).getTitle(), categoryQueryDtoList.get(1).getTitle());
+        assertNotNull(subCategoryQueryDtoList);
+        assertEquals(subCategoryMockedList.size(), subCategoryQueryDtoList.size());
+        assertEquals(subCategoryMockedList.get(0).getId(), subCategoryQueryDtoList.get(0).getId());
+        assertEquals(subCategoryMockedList.get(0).getTitle(), subCategoryQueryDtoList.get(0).getTitle());
+        assertEquals(subCategoryMockedList.get(1).getId(), subCategoryQueryDtoList.get(1).getId());
+        assertEquals(subCategoryMockedList.get(1).getTitle(), subCategoryQueryDtoList.get(1).getTitle());
     }
 
 
     @Test
-    public void testCategoryItemSavedToDb() {
+    public void testCreateSubCategory() {
 
         SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
 
         when(subCategoryRepository.save(subCategoryMocked)).thenReturn(subCategoryMocked);
 
-        SubCategory category = subCategoryRepository.save(subCategoryMocked);
+        SubCategory subCategory = subCategoryRepository.save(subCategoryMocked);
 
-        assertNotNull(category);
+        assertNotNull(subCategory);
     }
 
 }

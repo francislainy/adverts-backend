@@ -14,13 +14,13 @@ import java.util.UUID;
 public class ProductCommandImpl implements ProductCommandService {
 
     private final ProductRepository productRepository;
-    private final SubCategoryRepository subCategoryRepository;
     private final CategoryRepository categoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
-    public ProductCommandImpl(ProductRepository productRepository, SubCategoryRepository subCategoryRepository, CategoryRepository categoryRepository) {
+    public ProductCommandImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SubCategoryRepository subCategoryRepository) {
         this.productRepository = productRepository;
-        this.subCategoryRepository = subCategoryRepository;
         this.categoryRepository = categoryRepository;
+        this.subCategoryRepository = subCategoryRepository;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ProductCommandImpl implements ProductCommandService {
 
             product = productRepository.save(product);
 
-            return new ProductCreateDto(product.getId(), product.getTitle(), product.getSubCategory().getId(), product.getCategory().getId());
+            return new ProductCreateDto(product.getId(), product.getTitle(),  product.getCategory().getId(), product.getSubCategory().getId());
         } else {
             return null;
         }

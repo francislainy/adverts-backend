@@ -34,7 +34,8 @@ public class CategoryQueryServiceTest {
     }
 
     @Test
-    public void testCategoryItemFoundOnDb() {
+    public void testGetCategory() {
+
         Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
         when(categoryRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(categoryMocked));
@@ -47,7 +48,7 @@ public class CategoryQueryServiceTest {
     }
 
     @Test
-    public void testCategoryMultipleItemFoundOnDb() {
+    public void testGetMultipleCategories() {
 
         Category categoryMocked1 = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category1", null, null);
         Category categoryMocked2 = new Category(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "category2", null, null);
@@ -67,7 +68,7 @@ public class CategoryQueryServiceTest {
     }
 
     @Test
-    public void testCategoryItemSavedToDb() {
+    public void testCreateCategory() {
 
         Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
