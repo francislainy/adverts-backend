@@ -1,10 +1,12 @@
 package com.example.adverts.controller.subcategory;
 
+import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoCategoryDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,31 +44,32 @@ public class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
-        List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
+        SubCategoryQueryNoCategoryDto subCategoryQueryDto = new SubCategoryQueryNoCategoryDto(subCategoryId, "subCategory");
+        List<SubCategoryQueryNoCategoryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        //todo: this should have an id for the category -
-        Mockito.when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(
-                subCategoryQueryDtoList);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
+
+        when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
+        when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
-        HashMap<String, List<SubCategoryQueryDto>> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>();
         result.put("subCategories", subCategoryQueryDtoList);
+        result.put("category", category);
 
         String json = asJsonString(result);
-
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(json, true))
+                .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.category.title").value("category"))
                 .andExpect(jsonPath("$.subCategories.size()").value(1))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
-                .andExpect(jsonPath("$.subCategories[0].category.id").value(categoryId.toString()))
-                .andExpect(jsonPath("$.subCategories[0].category.title").value("category"))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -83,35 +87,35 @@ public class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto1 = new SubCategoryQueryDto(subCategoryId1, "subCategory1", category);
-        SubCategoryQueryDto subCategoryQueryDto2 = new SubCategoryQueryDto(subCategoryId2, "subCategory2", category);
-        List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
+        SubCategoryQueryNoCategoryDto subCategoryQueryDto1 = new SubCategoryQueryNoCategoryDto(subCategoryId1, "subCategory1");
+        SubCategoryQueryNoCategoryDto subCategoryQueryDto2 = new SubCategoryQueryNoCategoryDto(subCategoryId2, "subCategory2");
+        List<SubCategoryQueryNoCategoryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
-        Mockito.when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(
-                subCategoryQueryDtoList);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
+
+        when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(subCategoryQueryDtoList);
+        when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
-        HashMap<String, List<SubCategoryQueryDto>> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>();
         result.put("subCategories", subCategoryQueryDtoList);
+        result.put("category", category);
 
         String json = asJsonString(result);
-
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.subCategories.size()").value(2))
+                .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.category.title").value("category"))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId1.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory1"))
-                .andExpect(jsonPath("$.subCategories[0].category.id").value(categoryId.toString()))
-                .andExpect(jsonPath("$.subCategories[0].category.title").value("category"))
                 .andExpect(jsonPath("$.subCategories[1].id").value(subCategoryId2.toString()))
                 .andExpect(jsonPath("$.subCategories[1].title").value("subCategory2"))
-                .andExpect(jsonPath("$.subCategories[1].category.id").value(categoryId.toString()))
-                .andExpect(jsonPath("$.subCategories[1].category.title").value("category"))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());

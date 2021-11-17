@@ -1,6 +1,9 @@
 package com.example.adverts.service.impl.subcategory;
 
+import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoCategoryDto;
+import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
@@ -27,8 +30,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
 
             if (subCategory.getCategory().getId().equals(categoryId)) {
                 return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory());
-            }
-            else {
+            } else {
                 return null;
             }
 
@@ -40,18 +42,35 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
 
 
     @Override
-    public List<SubCategoryQueryDto> getAllSubCategories(UUID categoryId) {
-        List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
+    public List<SubCategoryQueryNoCategoryDto> getAllSubCategories(UUID categoryId) {
+        List<SubCategoryQueryNoCategoryDto> subCategoryList = new ArrayList<>();
 
         subCategoryRepository.findAll().forEach(subCategory -> {
 
             if (subCategory.getCategory().getId().equals(categoryId)) {
-                subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory()));
+                subCategoryList.add(new SubCategoryQueryNoCategoryDto(subCategory.getId(), subCategory.getTitle()));
             }
 
         });
 
         return subCategoryList;
+
+    }
+
+
+    @Override
+    public CategoryQueryDto getCategory(UUID categoryId) {
+
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto();
+        for (SubCategory subCategory : subCategoryRepository.findAll()) {
+            if (subCategory.getCategory().getId().equals(categoryId)) {
+                categoryQueryDto = new CategoryQueryDto(subCategory.getCategory().getId(), subCategory.getCategory().getTitle());
+                break;
+            }
+
+        }
+
+        return categoryQueryDto;
 
     }
 }
