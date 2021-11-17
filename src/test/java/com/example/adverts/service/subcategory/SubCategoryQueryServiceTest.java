@@ -1,7 +1,7 @@
 package com.example.adverts.service.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
-import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoCategoryDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
@@ -74,7 +74,7 @@ public class SubCategoryQueryServiceTest {
 
         when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
 
-        List<SubCategoryQueryNoCategoryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories(categoryId);
+        List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories(categoryId);
 
         assertNotNull(subCategoryQueryDtoList);
         assertEquals(subCategoryMockedList.size(), subCategoryQueryDtoList.size());

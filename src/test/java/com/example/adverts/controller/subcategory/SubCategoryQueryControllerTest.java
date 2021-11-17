@@ -2,10 +2,9 @@ package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
-import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoCategoryDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
-import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,8 +43,8 @@ public class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoCategoryDto subCategoryQueryDto = new SubCategoryQueryNoCategoryDto(subCategoryId, "subCategory");
-        List<SubCategoryQueryNoCategoryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory");
+        List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
 
@@ -87,9 +86,9 @@ public class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoCategoryDto subCategoryQueryDto1 = new SubCategoryQueryNoCategoryDto(subCategoryId1, "subCategory1");
-        SubCategoryQueryNoCategoryDto subCategoryQueryDto2 = new SubCategoryQueryNoCategoryDto(subCategoryId2, "subCategory2");
-        List<SubCategoryQueryNoCategoryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
+        SubCategoryQueryNoParentDto subCategoryQueryDto1 = new SubCategoryQueryNoParentDto(subCategoryId1, "subCategory1");
+        SubCategoryQueryNoParentDto subCategoryQueryDto2 = new SubCategoryQueryNoParentDto(subCategoryId2, "subCategory2");
+        List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
 

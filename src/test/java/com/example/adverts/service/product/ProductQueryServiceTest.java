@@ -1,6 +1,7 @@
 package com.example.adverts.service.product;
 
 import com.example.adverts.model.dto.product.ProductQueryDto;
+import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
 import com.example.adverts.model.entity.subcategory.SubCategory;
@@ -80,14 +81,25 @@ public class ProductQueryServiceTest {
     @Test
     public void testGetMultipleProducts() {
 
-        Product productMocked1 = new Product(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "sunCategory1", category, subCategory);
-        Product productMocked2 = new Product(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "subCategory2", category, subCategory);
+        UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        Product productMocked1 = new Product(productId1, "product1", category, subCategory);
+        Product productMocked2 = new Product(productId2, "product2", category, subCategory);
 
         List<Product> productMockedList = List.of(productMocked1, productMocked2);
 
         when(productRepository.findAll()).thenReturn(productMockedList);
 
-        List<ProductQueryDto> productQueryDtoList = productQueryService.getAllProducts();
+        List<ProductQueryNoParentDto> productQueryDtoList = productQueryService.getAllProducts(categoryId, subCategoryId);
 
         assertNotNull(productQueryDtoList);
         assertEquals(productMockedList.size(), productQueryDtoList.size());
@@ -101,7 +113,8 @@ public class ProductQueryServiceTest {
     @Test
     public void testCreateProduct() {
 
-        Product productMocked = new Product(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", category, subCategory);
+        UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        Product productMocked = new Product(productId, "product", category, subCategory);
 
         when(productRepository.save(productMocked)).thenReturn(productMocked);
 

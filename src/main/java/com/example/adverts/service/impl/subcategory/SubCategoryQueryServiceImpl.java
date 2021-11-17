@@ -2,8 +2,7 @@ package com.example.adverts.service.impl.subcategory;
 
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
-import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoCategoryDto;
-import com.example.adverts.model.entity.category.Category;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
@@ -42,13 +41,13 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
 
 
     @Override
-    public List<SubCategoryQueryNoCategoryDto> getAllSubCategories(UUID categoryId) {
-        List<SubCategoryQueryNoCategoryDto> subCategoryList = new ArrayList<>();
+    public List<SubCategoryQueryNoParentDto> getAllSubCategories(UUID categoryId) {
+        List<SubCategoryQueryNoParentDto> subCategoryList = new ArrayList<>();
 
         subCategoryRepository.findAll().forEach(subCategory -> {
 
             if (subCategory.getCategory().getId().equals(categoryId)) {
-                subCategoryList.add(new SubCategoryQueryNoCategoryDto(subCategory.getId(), subCategory.getTitle()));
+                subCategoryList.add(new SubCategoryQueryNoParentDto(subCategory.getId(), subCategory.getTitle()));
             }
 
         });

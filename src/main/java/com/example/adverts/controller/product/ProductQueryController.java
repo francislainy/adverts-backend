@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,10 +21,12 @@ public class ProductQueryController {
     private ProductQueryService productQueryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<ProductQueryDto>> listAllProducts() {
+    public Map<String, Object> listAllProducts(@PathVariable(value = "categoryId") UUID categoryId, @PathVariable(value = "subCategoryId") UUID subCategoryId) {
 
-        HashMap<String, List<ProductQueryDto>> result = new HashMap<>();
-        result.put("products", productQueryService.getAllProducts());
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("category", productQueryService.getCategory(categoryId));
+        result.put("subCategory", productQueryService.getSubCategory(categoryId));
+        result.put("products", productQueryService.getAllProducts(categoryId, subCategoryId));
         return result;
     }
 

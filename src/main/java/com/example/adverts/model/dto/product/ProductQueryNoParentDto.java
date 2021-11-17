@@ -1,4 +1,4 @@
-package com.example.adverts.model.dto.subcategory;
+package com.example.adverts.model.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +10,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SubCategoryQueryNoCategoryDto implements Serializable {
+public class ProductQueryNoParentDto implements Serializable {
 
     private UUID id;
     private String title;
+
+    public ProductQueryNoParentDto(String title) {
+        this.title = title;
+    }
 
 }
