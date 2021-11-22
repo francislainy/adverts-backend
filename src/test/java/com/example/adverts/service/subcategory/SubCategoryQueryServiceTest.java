@@ -37,7 +37,7 @@ public class SubCategoryQueryServiceTest {
     }
 
     @Test
-    public void testGetSubCategory() {
+    public void testGetSubCategoryForCategory() {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");

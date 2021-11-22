@@ -58,7 +58,7 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testGetProduct() {
+    public void testGetProductForSubCategoryAndCategory() {
 
 //        Category category = new Category();
 //        category.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
@@ -79,7 +79,43 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testGetMultipleProducts() {
+    public void testGetAllProducts() {
+
+        UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        Product productMocked1 = new Product(productId1, "product1", category, subCategory);
+        Product productMocked2 = new Product(productId2, "product2", category, subCategory);
+
+        List<Product> productMockedList = List.of(productMocked1, productMocked2);
+
+        when(productRepository.findAll()).thenReturn(productMockedList);
+
+        List<ProductQueryDto> productQueryDtoList = productQueryService.getAllProducts();
+
+        assertNotNull(productQueryDtoList);
+        assertEquals(productMockedList.size(), productQueryDtoList.size());
+        assertEquals(productMockedList.get(0).getId(), productQueryDtoList.get(0).getId());
+        assertEquals(productMockedList.get(0).getTitle(), productQueryDtoList.get(0).getTitle());
+        assertEquals(productMockedList.get(0).getCategory(), productQueryDtoList.get(0).getCategory());
+        assertEquals(productMockedList.get(0).getSubCategory(), productQueryDtoList.get(0).getSubCategory());
+        assertEquals(productMockedList.get(1).getId(), productQueryDtoList.get(1).getId());
+        assertEquals(productMockedList.get(1).getTitle(), productQueryDtoList.get(1).getTitle());
+        assertEquals(productMockedList.get(1).getCategory(), productQueryDtoList.get(1).getCategory());
+        assertEquals(productMockedList.get(1).getSubCategory(), productQueryDtoList.get(1).getSubCategory());
+    }
+
+
+    @Test
+    public void testGetProductsForCategoryAndSubCategory() {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");

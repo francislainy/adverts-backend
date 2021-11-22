@@ -35,6 +35,53 @@ public class ProductQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    public void testGetAllProductsOneItemOnly() throws Exception {
+
+        UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+        subCategory.setTitle("subCategory");
+        subCategory.setCategory(category);
+
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", category, subCategory);
+        List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
+
+        when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/product")
+                .accept(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("products", productQueryDtoList);
+
+        String json = asJsonString(result);
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(json, true))
+                .andExpect(jsonPath("$.products.size()").value(1))
+                .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
+                .andExpect(jsonPath("$.products[0].title").value("product"))
+                .andExpect(jsonPath("$.products[0].category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.products[0].category.title").value("category"))
+                .andExpect(jsonPath("$.products[0].subCategory.id").value(subCategoryId.toString()))
+                .andExpect(jsonPath("$.products[0].subCategory.title").value("subCategory"))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+
+    @Test
     public void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
@@ -144,9 +191,6 @@ public class ProductQueryControllerTest {
 
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
-
-
-
 
 
     @Test
