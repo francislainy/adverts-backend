@@ -58,7 +58,7 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testGetMultipleSubCategories() {
+    public void testGetSubCategoriesForCategory() {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
@@ -82,6 +82,36 @@ public class SubCategoryQueryServiceTest {
         assertEquals(subCategoryMockedList.get(0).getTitle(), subCategoryQueryDtoList.get(0).getTitle());
         assertEquals(subCategoryMockedList.get(1).getId(), subCategoryQueryDtoList.get(1).getId());
         assertEquals(subCategoryMockedList.get(1).getTitle(), subCategoryQueryDtoList.get(1).getTitle());
+    }
+
+
+    @Test
+    public void testGetAllSubCategories() {
+
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+        UUID subCategoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        UUID subCategoryId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategoryMocked1 = new SubCategory(subCategoryId1, "subCategory1", category, null);
+        SubCategory subCategoryMocked2 = new SubCategory(subCategoryId2, "subCategory2", category, null);
+
+        List<SubCategory> subCategoryMockedList = List.of(subCategoryMocked1, subCategoryMocked2);
+
+        when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
+
+        List<SubCategoryQueryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories();
+
+        assertNotNull(subCategoryQueryDtoList);
+        assertEquals(subCategoryMockedList.size(), subCategoryQueryDtoList.size());
+        assertEquals(subCategoryMockedList.get(0).getId(), subCategoryQueryDtoList.get(0).getId());
+        assertEquals(subCategoryMockedList.get(0).getTitle(), subCategoryQueryDtoList.get(0).getTitle());
+        assertEquals(subCategoryMockedList.get(0).getCategory(), subCategoryQueryDtoList.get(0).getCategory());
+        assertEquals(subCategoryMockedList.get(1).getId(), subCategoryQueryDtoList.get(1).getId());
+        assertEquals(subCategoryMockedList.get(1).getTitle(), subCategoryQueryDtoList.get(1).getTitle());
+        assertEquals(subCategoryMockedList.get(1).getCategory(), subCategoryQueryDtoList.get(1).getCategory());
     }
 
 

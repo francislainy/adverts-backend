@@ -34,7 +34,7 @@ public class SubCategoryQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetAllSubCategoriesWhenOneItemOnly() throws Exception {
+    public void testGetAllSubCategoriesForCategoryWhenOneItemOnly() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -76,7 +76,7 @@ public class SubCategoryQueryControllerTest {
 
 
     @Test
-    public void testGetAllCategoriesWhenTwoItems() throws Exception {
+    public void testGetAllCategoriesForCategoryWhenTwoItems() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId1 = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -115,6 +115,44 @@ public class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory1"))
                 .andExpect(jsonPath("$.subCategories[1].id").value(subCategoryId2.toString()))
                 .andExpect(jsonPath("$.subCategories[1].title").value("subCategory2"))
+                .andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    public void testGetAllSubCategories() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
+        List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
+
+        when(subCategoryQueryService.getAllSubCategories()).thenReturn(subCategoryQueryDtoList);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/subCategory")
+                .accept(MediaType.APPLICATION_JSON);
+        mockMvc.perform(request).andReturn();
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("subCategories", subCategoryQueryDtoList);
+
+        String json = asJsonString(result);
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(json, true))
+                .andExpect(jsonPath("$.subCategories.size()").value(1))
+                .andExpect(jsonPath("$.subCategories[0].category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.subCategories[0].category.title").value("category"))
+                .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
+                .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());

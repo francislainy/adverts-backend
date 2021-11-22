@@ -13,6 +13,8 @@ public interface SubCategoryQueryService {
 
     SubCategoryQueryDto getSubCategory(UUID subCategoryId, UUID categoryId);
 
+    List<SubCategoryQueryDto> getAllSubCategories();
+
     List<SubCategoryQueryNoParentDto> getAllSubCategories(UUID categoryId);
 
     CategoryQueryDto getCategory(UUID categoryId);
