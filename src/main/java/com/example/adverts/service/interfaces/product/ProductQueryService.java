@@ -14,7 +14,9 @@ public interface ProductQueryService {
 
     ProductQueryDto getProduct(UUID id);
 
-    List<ProductQueryNoParentDto> getAllProducts(UUID categoryId, UUID subCategoryId);
+    List<ProductQueryDto> getAllProducts();
+
+    List<ProductQueryNoParentDto> getAllProductsForCategoryAndSubCategory(UUID categoryId, UUID subCategoryId);
 
     CategoryQueryDto getCategory(UUID categoryId);
 

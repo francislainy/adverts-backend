@@ -35,7 +35,7 @@ public class ProductQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetAllProductsWhenOneItemOnly() throws Exception {
+    public void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -57,7 +57,7 @@ public class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product");
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto);
 
-        when(productQueryService.getAllProducts(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
+        when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
 
@@ -89,7 +89,7 @@ public class ProductQueryControllerTest {
 
 
     @Test
-    public void testGetAllProductsWhenTwoItems() throws Exception {
+    public void testGetAllProductsForCategoryAndSubCategoryWhenTwoItems() throws Exception {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("ad1e7118-2fbe-4cc8-963c-7387d8a13bc7");
@@ -113,7 +113,7 @@ public class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2");
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto1, productQueryDto2);
 
-        when(productQueryService.getAllProducts(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
+        when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
 
@@ -146,8 +146,11 @@ public class ProductQueryControllerTest {
     }
 
 
+
+
+
     @Test
-    public void testGetProductItem() throws Exception {
+    public void testGetProductItemForCategoryAndSubCategory() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");

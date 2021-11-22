@@ -160,7 +160,7 @@ public class SubCategoryQueryControllerTest {
 
 
     @Test
-    public void testGetSubCategoryItem() throws Exception {
+    public void testGetSubCategoryItemForCategory() throws Exception {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");

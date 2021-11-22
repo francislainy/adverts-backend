@@ -99,7 +99,7 @@ public class ProductQueryServiceTest {
 
         when(productRepository.findAll()).thenReturn(productMockedList);
 
-        List<ProductQueryNoParentDto> productQueryDtoList = productQueryService.getAllProducts(categoryId, subCategoryId);
+        List<ProductQueryNoParentDto> productQueryDtoList = productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId);
 
         assertNotNull(productQueryDtoList);
         assertEquals(productMockedList.size(), productQueryDtoList.size());
