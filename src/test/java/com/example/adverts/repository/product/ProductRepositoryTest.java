@@ -3,15 +3,12 @@ package com.example.adverts.repository.product;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
 import com.example.adverts.model.entity.subcategory.SubCategory;
-import com.example.adverts.repository.category.CategoryRepository;
-import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +52,7 @@ public class ProductRepositoryTest {
         subCategory.setCategory(category);
 
         List<Product> productList = List.of(
-                new Product(productId, "product", category, subCategory)
+                new Product(productId, "product", new BigDecimal("100"), category, subCategory)
         );
         productRepository.saveAll(productList);
         List<Product> allProducts = (List<Product>) productRepository.findAll();

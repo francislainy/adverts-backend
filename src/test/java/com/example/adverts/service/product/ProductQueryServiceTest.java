@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,7 +67,7 @@ public class ProductQueryServiceTest {
 //        SubCategory subCategory = new SubCategory();
 //        subCategory.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
-        Product productMocked = new Product(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", category, subCategory);
+        Product productMocked = new Product(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", new BigDecimal("100.0"), category, subCategory);
 
         when(productRepository.findById(Mockito.any(UUID.class))).thenReturn(Optional.of(productMocked));
 
@@ -75,6 +76,9 @@ public class ProductQueryServiceTest {
         assertNotNull(productQueryDto);
         assertEquals(productMocked.getId(), productQueryDto.getId());
         assertEquals(productMocked.getTitle(), productQueryDto.getTitle());
+        assertEquals(productMocked.getPrice(), productQueryDto.getPrice());
+        assertEquals(productMocked.getCategory(), productQueryDto.getCategory());
+        assertEquals(productMocked.getSubCategory(), productQueryDto.getSubCategory());
     }
 
 
@@ -92,8 +96,8 @@ public class ProductQueryServiceTest {
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);
 
-        Product productMocked1 = new Product(productId1, "product1", category, subCategory);
-        Product productMocked2 = new Product(productId2, "product2", category, subCategory);
+        Product productMocked1 = new Product(productId1, "product1", new BigDecimal("100"), category, subCategory);
+        Product productMocked2 = new Product(productId2, "product2", new BigDecimal("100"), category, subCategory);
 
         List<Product> productMockedList = List.of(productMocked1, productMocked2);
 
@@ -105,10 +109,12 @@ public class ProductQueryServiceTest {
         assertEquals(productMockedList.size(), productQueryDtoList.size());
         assertEquals(productMockedList.get(0).getId(), productQueryDtoList.get(0).getId());
         assertEquals(productMockedList.get(0).getTitle(), productQueryDtoList.get(0).getTitle());
+        assertEquals(productMockedList.get(0).getPrice(), productQueryDtoList.get(0).getPrice());
         assertEquals(productMockedList.get(0).getCategory(), productQueryDtoList.get(0).getCategory());
         assertEquals(productMockedList.get(0).getSubCategory(), productQueryDtoList.get(0).getSubCategory());
         assertEquals(productMockedList.get(1).getId(), productQueryDtoList.get(1).getId());
         assertEquals(productMockedList.get(1).getTitle(), productQueryDtoList.get(1).getTitle());
+        assertEquals(productMockedList.get(1).getPrice(), productQueryDtoList.get(1).getPrice());
         assertEquals(productMockedList.get(1).getCategory(), productQueryDtoList.get(1).getCategory());
         assertEquals(productMockedList.get(1).getSubCategory(), productQueryDtoList.get(1).getSubCategory());
     }
@@ -128,8 +134,8 @@ public class ProductQueryServiceTest {
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);
 
-        Product productMocked1 = new Product(productId1, "product1", category, subCategory);
-        Product productMocked2 = new Product(productId2, "product2", category, subCategory);
+        Product productMocked1 = new Product(productId1, "product1", new BigDecimal("100"), category, subCategory);
+        Product productMocked2 = new Product(productId2, "product2", new BigDecimal("100"), category, subCategory);
 
         List<Product> productMockedList = List.of(productMocked1, productMocked2);
 
@@ -141,8 +147,10 @@ public class ProductQueryServiceTest {
         assertEquals(productMockedList.size(), productQueryDtoList.size());
         assertEquals(productMockedList.get(0).getId(), productQueryDtoList.get(0).getId());
         assertEquals(productMockedList.get(0).getTitle(), productQueryDtoList.get(0).getTitle());
+        assertEquals(productMockedList.get(0).getPrice(), productQueryDtoList.get(0).getPrice());
         assertEquals(productMockedList.get(1).getId(), productQueryDtoList.get(1).getId());
         assertEquals(productMockedList.get(1).getTitle(), productQueryDtoList.get(1).getTitle());
+        assertEquals(productMockedList.get(1).getPrice(), productQueryDtoList.get(1).getPrice());
     }
 
 
@@ -150,7 +158,7 @@ public class ProductQueryServiceTest {
     public void testCreateProduct() {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
-        Product productMocked = new Product(productId, "product", category, subCategory);
+        Product productMocked = new Product(productId, "product", new BigDecimal("100"), category, subCategory);
 
         when(productRepository.save(productMocked)).thenReturn(productMocked);
 

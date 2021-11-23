@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,6 +18,8 @@ public class ProductQueryDto implements Serializable {
 
     private UUID id;
     private String title;
+    private BigDecimal price;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "category"})

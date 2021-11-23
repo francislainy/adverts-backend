@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class Product implements Serializable {
     private UUID id;
     @Column(name = "title")
     private String title;
+    @Column(name = "price")
+    private BigDecimal price;
+
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

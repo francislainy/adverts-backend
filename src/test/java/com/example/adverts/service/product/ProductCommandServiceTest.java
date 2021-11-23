@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,19 +79,19 @@ public class ProductCommandServiceTest {
         Product product = new Product();
         product.setId(productId);
 
-        Product productMocked = new Product(productId, "product", category, subCategory);
+        Product productMocked = new Product(productId, "product", new BigDecimal("100"), category, subCategory);
 
         when(productRepository.save(any(Product.class))).thenReturn(productMocked);
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
         when(subCategoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(subCategory));
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", categoryId, subCategoryId);
-
+        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", new BigDecimal("100"), categoryId, subCategoryId);
         productCreateDto = productCommandService.createProduct(productCreateDto, categoryId, subCategoryId);
 
         assertNotNull(productCreateDto);
         assertEquals(productMocked.getId(), productCreateDto.getId());
         assertEquals(productMocked.getTitle(), productCreateDto.getTitle());
+        assertEquals(productMocked.getPrice(), productCreateDto.getPrice());
         assertEquals(productMocked.getCategory().getId(), productCreateDto.getCategoryId());
         assertEquals(productMocked.getSubCategory().getId(), productCreateDto.getSubCategoryId());
     }

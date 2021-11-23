@@ -27,7 +27,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         if (productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
 
-            return new ProductQueryDto(product.getId(), product.getTitle(), product.getCategory(), product.getSubCategory());
+            return new ProductQueryDto(product.getId(), product.getTitle(), product.getPrice(), product.getCategory(), product.getSubCategory());
 
         } else {
             return null;
@@ -39,7 +39,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         List<ProductQueryDto> productList = new ArrayList<>();
 
         productRepository.findAll().forEach(product -> {
-            productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getCategory(), product.getSubCategory()));
+            productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getPrice(), product.getCategory(), product.getSubCategory()));
         });
 
         return productList;
@@ -52,7 +52,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
         productRepository.findAll().forEach(product -> {
 
             if (product.getCategory().getId().equals(categoryId) && product.getSubCategory().getId().equals(subCategoryId)) {
-                productList.add(new ProductQueryNoParentDto(product.getId(), product.getTitle()));
+                productList.add(new ProductQueryNoParentDto(product.getId(), product.getTitle(), product.getPrice()));
             }
 
         });

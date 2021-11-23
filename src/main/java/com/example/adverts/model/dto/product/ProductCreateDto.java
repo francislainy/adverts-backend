@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,6 +15,8 @@ public class ProductCreateDto implements Serializable {
 
     private UUID id;
     private String title;
+    private BigDecimal price;
+
     private UUID categoryId;
     private UUID subCategoryId;
 
