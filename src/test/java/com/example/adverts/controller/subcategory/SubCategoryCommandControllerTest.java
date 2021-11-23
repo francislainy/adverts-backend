@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(SubCategoryCommandController.class)
-public class SubCategoryCommandControllerTest {
+class SubCategoryCommandControllerTest {
 
     @MockBean
     private SubCategoryCommandService subCategoryCommandService;
@@ -39,7 +39,7 @@ public class SubCategoryCommandControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testCreateSubCategory() throws Exception {
+    void testCreateSubCategory() throws Exception {
 
         SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
@@ -72,7 +72,7 @@ public class SubCategoryCommandControllerTest {
 
 
     @Test
-    public void testCreateSubCategoryThrowsErrorWhenCategoryDoesNotExist() throws Exception {
+    void testCreateSubCategoryThrowsErrorWhenCategoryDoesNotExist() throws Exception {
 
         SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
         String jsonCreate = asJsonString(subCategoryCreateDto);
@@ -100,7 +100,7 @@ public class SubCategoryCommandControllerTest {
 
 
     @Test
-    public void testCreateSubCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
+    void testCreateSubCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
 
         SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto(null, UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
         String jsonCreate = asJsonString(subCategoryCreateDto);
@@ -128,7 +128,7 @@ public class SubCategoryCommandControllerTest {
 
 
     @Test
-    public void testUpdateSubCategory() throws Exception {
+    void testUpdateSubCategory() throws Exception {
 
         SubCategoryUpdateDto subCategoryUpdateDto = new SubCategoryUpdateDto();
         subCategoryUpdateDto.setTitle("updated subCategory");

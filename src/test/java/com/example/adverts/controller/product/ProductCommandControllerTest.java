@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {ProductCommandController.class})
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CategoryCommandController.class)
-public class ProductCommandControllerTest {
+class ProductCommandControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,7 +53,7 @@ public class ProductCommandControllerTest {
     private SubCategoryRepository subCategoryRepository;
 
     @Test
-    public void testCreateProduct() throws Exception {
+    void testCreateProduct() throws Exception {
 
         UUID productId = UUID.fromString("78b8f147-c7f1-4b5a-9b52-0c771793bd95");
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
@@ -95,7 +95,7 @@ public class ProductCommandControllerTest {
 
 
     @Test
-    public void testCreateProductThrowsErrorWhenCategoryDoesNotExist() throws Exception {
+    void testCreateProductThrowsErrorWhenCategoryDoesNotExist() throws Exception {
 
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
@@ -127,7 +127,7 @@ public class ProductCommandControllerTest {
 
 
     @Test
-    public void testCreateProductThrowsErrorWhenSubCategoryDoesNotExist() throws Exception {
+    void testCreateProductThrowsErrorWhenSubCategoryDoesNotExist() throws Exception {
 
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
@@ -159,7 +159,7 @@ public class ProductCommandControllerTest {
 
 
     @Test
-    public void testCreateProductThrowsErrorWhenTitleDoesNotExist() throws Exception {
+    void testCreateProductThrowsErrorWhenTitleDoesNotExist() throws Exception {
 
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");

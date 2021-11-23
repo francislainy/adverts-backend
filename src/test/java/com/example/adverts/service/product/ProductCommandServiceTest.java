@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(ProductCommandService.class)
-public class ProductCommandServiceTest {
+class ProductCommandServiceTest {
 
     @MockBean
     Category category;
@@ -64,7 +64,7 @@ public class ProductCommandServiceTest {
     }
 
     @Test
-    public void testProductItemSavedToDb() {
+    void testProductItemSavedToDb() {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");

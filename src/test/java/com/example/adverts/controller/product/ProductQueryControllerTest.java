@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductQueryController.class)
-public class ProductQueryControllerTest {
+class ProductQueryControllerTest {
 
     @MockBean
     private ProductQueryService productQueryService;
@@ -36,7 +36,7 @@ public class ProductQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetAllProductsOneItemOnly() throws Exception {
+    void testGetAllProductsOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -84,7 +84,7 @@ public class ProductQueryControllerTest {
 
 
     @Test
-    public void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
+    void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -140,7 +140,7 @@ public class ProductQueryControllerTest {
 
 
     @Test
-    public void testGetAllProductsForCategoryAndSubCategoryWhenTwoItems() throws Exception {
+    void testGetAllProductsForCategoryAndSubCategoryWhenTwoItems() throws Exception {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("ad1e7118-2fbe-4cc8-963c-7387d8a13bc7");
@@ -202,7 +202,7 @@ public class ProductQueryControllerTest {
 
 
     @Test
-    public void testGetProductItemForCategoryAndSubCategory() throws Exception {
+    void testGetProductItemForCategoryAndSubCategory() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");

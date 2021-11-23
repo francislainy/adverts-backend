@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(SubCategoryQueryController.class)
-public class SubCategoryQueryControllerTest {
+class SubCategoryQueryControllerTest {
 
     @MockBean
     private SubCategoryQueryService subCategoryQueryService;
@@ -34,7 +34,7 @@ public class SubCategoryQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetAllSubCategoriesForCategoryWhenOneItemOnly() throws Exception {
+    void testGetAllSubCategoriesForCategoryWhenOneItemOnly() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -76,7 +76,7 @@ public class SubCategoryQueryControllerTest {
 
 
     @Test
-    public void testGetAllCategoriesForCategoryWhenTwoItems() throws Exception {
+    void testGetAllCategoriesForCategoryWhenTwoItems() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId1 = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -122,7 +122,7 @@ public class SubCategoryQueryControllerTest {
 
 
     @Test
-    public void testGetAllSubCategories() throws Exception {
+    void testGetAllSubCategories() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -160,7 +160,7 @@ public class SubCategoryQueryControllerTest {
 
 
     @Test
-    public void testGetSubCategoryItemForCategory() throws Exception {
+    void testGetSubCategoryItemForCategory() throws Exception {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");

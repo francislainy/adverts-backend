@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(CategoryCommandService.class)
-public class CategoryCommandServiceTest {
+class CategoryCommandServiceTest {
 
     @Mock
     CategoryRepository categoryRepository;
@@ -40,7 +40,7 @@ public class CategoryCommandServiceTest {
     }
 
     @Test
-    public void testCategoryItemSavedToDb() {
+    void testCategoryItemSavedToDb() {
 
         Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
@@ -57,7 +57,7 @@ public class CategoryCommandServiceTest {
 
 
     @Test
-    public void testCategoryItemUpdated() {
+    void testCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
         Category categoryUpdatedMocked = new Category(categoryUuid, "updated", null, null);

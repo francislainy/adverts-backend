@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(CategoryQueryController.class)
-public class CategoryQueryControllerTest {
+class CategoryQueryControllerTest {
 
     @MockBean
     private CategoryQueryService categoryQueryService;
@@ -31,7 +31,7 @@ public class CategoryQueryControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testGetAllCategoriesWhenOneItemOnly() throws Exception {
+    void testGetAllCategoriesWhenOneItemOnly() throws Exception {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
@@ -62,7 +62,7 @@ public class CategoryQueryControllerTest {
 
 
     @Test
-    public void testGetAllCategoriesWhenTwoItems() throws Exception {
+    void testGetAllCategoriesWhenTwoItems() throws Exception {
 
         CategoryQueryDto categoryQueryDto1 = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category1");
         CategoryQueryDto categoryQueryDto2 = new CategoryQueryDto(UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89"), "category2");
@@ -96,7 +96,7 @@ public class CategoryQueryControllerTest {
 
 
     @Test
-    public void testGetCategoryItem() throws Exception {
+    void testGetCategoryItem() throws Exception {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
 

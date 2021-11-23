@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(SubCategoryQueryService.class)
-public class SubCategoryQueryServiceTest {
+class SubCategoryQueryServiceTest {
 
     @Mock
     SubCategoryRepository subCategoryRepository;
@@ -37,7 +37,7 @@ public class SubCategoryQueryServiceTest {
     }
 
     @Test
-    public void testGetSubCategoryForCategory() {
+    void testGetSubCategoryForCategory() {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
@@ -58,7 +58,7 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testGetSubCategoriesForCategory() {
+    void testGetSubCategoriesForCategory() {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
@@ -86,7 +86,7 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testGetAllSubCategories() {
+    void testGetAllSubCategories() {
 
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
         UUID subCategoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
@@ -116,7 +116,7 @@ public class SubCategoryQueryServiceTest {
 
 
     @Test
-    public void testCreateSubCategory() {
+    void testCreateSubCategory() {
 
         SubCategory subCategoryMocked = new SubCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "subCategory", null, null);
 

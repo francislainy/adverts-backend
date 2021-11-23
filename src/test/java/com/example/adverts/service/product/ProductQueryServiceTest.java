@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(ProductQueryService.class)
-public class ProductQueryServiceTest {
+class ProductQueryServiceTest {
 
     @MockBean
     Category category;
@@ -47,7 +47,7 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testGetProductForSubCategoryAndCategory() {
+    void testGetProductForSubCategoryAndCategory() {
 
         Product productMocked = new Product(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "product", "prod description", new BigDecimal("100.0"), category, subCategory);
 
@@ -66,7 +66,7 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testGetAllProducts() {
+    void testGetAllProducts() {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
@@ -106,7 +106,7 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testGetProductsForCategoryAndSubCategory() {
+    void testGetProductsForCategoryAndSubCategory() {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
@@ -142,7 +142,7 @@ public class ProductQueryServiceTest {
 
 
     @Test
-    public void testCreateProduct() {
+    void testCreateProduct() {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         Product productMocked = new Product(productId, "product", "prod description", new BigDecimal("100"), category, subCategory);

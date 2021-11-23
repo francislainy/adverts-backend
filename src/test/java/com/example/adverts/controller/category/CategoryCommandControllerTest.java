@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CategoryCommandController.class)
-public class CategoryCommandControllerTest {
+class CategoryCommandControllerTest {
 
     @MockBean
     private CategoryCommandService categoryCommandService;
@@ -35,7 +35,7 @@ public class CategoryCommandControllerTest {
     private CategoryRepository categoryRepository;
 
     @Test
-    public void testCreateCategory() throws Exception {
+    void testCreateCategory() throws Exception {
 
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
         CategoryCreateDto categoryCreateResponseDto = new CategoryCreateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
@@ -65,7 +65,7 @@ public class CategoryCommandControllerTest {
 
 
     @Test
-    public void testCreateCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
+    void testCreateCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
 
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto();
         String jsonCreate = asJsonString(categoryCreateDto);
@@ -90,7 +90,7 @@ public class CategoryCommandControllerTest {
 
 
     @Test
-    public void testUpdateCategory() throws Exception {
+    void testUpdateCategory() throws Exception {
 
         CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
         categoryUpdateDto.setTitle("updated category");

@@ -2,7 +2,6 @@ package com.example.adverts.model.dto.subcategory;
 
 import com.example.adverts.model.entity.category.Category;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

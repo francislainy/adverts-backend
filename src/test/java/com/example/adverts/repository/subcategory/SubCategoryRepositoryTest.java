@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class SubCategoryRepositoryTest {
+class SubCategoryRepositoryTest {
 
     @Autowired
     private CategoryRepository categoryRepository;

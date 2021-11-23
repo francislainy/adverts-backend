@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(SubCategoryCommandService.class)
-public class SubCategoryCommandServiceTest {
+class SubCategoryCommandServiceTest {
 
     @MockBean
     Category category;
@@ -48,7 +48,7 @@ public class SubCategoryCommandServiceTest {
     }
 
     @Test
-    public void testSubCategoryItemSavedToDb() {
+    void testSubCategoryItemSavedToDb() {
         Category category = new Category();
         category.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
@@ -68,7 +68,7 @@ public class SubCategoryCommandServiceTest {
 
 
     @Test
-    public void testSubCategoryItemUpdated() {
+    void testSubCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
 
