@@ -51,7 +51,7 @@ public class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", new BigDecimal("100.0"), category, subCategory);
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", new BigDecimal("100.00"), category, subCategory);
         List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
 
         when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
@@ -71,7 +71,8 @@ public class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products.size()").value(1))
                 .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
                 .andExpect(jsonPath("$.products[0].title").value("product"))
-                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.0")))
+                .andExpect(jsonPath("$.products[0].description").value("prod description"))
+                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
                 .andExpect(jsonPath("$.products[0].category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.products[0].category.title").value("category"))
                 .andExpect(jsonPath("$.products[0].subCategory.id").value(subCategoryId.toString()))
@@ -102,7 +103,7 @@ public class ProductQueryControllerTest {
 
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
 
-        ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", new BigDecimal("100"));
+        ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", "prod description", new BigDecimal("100.00"));
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto);
 
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
@@ -130,6 +131,8 @@ public class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products.size()").value(1))
                 .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
                 .andExpect(jsonPath("$.products[0].title").value("product"))
+                .andExpect(jsonPath("$.products[0].description").value("prod description"))
+                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -157,8 +160,8 @@ public class ProductQueryControllerTest {
 
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
 
-        ProductQueryNoParentDto productQueryDto1 = new ProductQueryNoParentDto(productId1, "product1", new BigDecimal("100"));
-        ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", new BigDecimal("100"));
+        ProductQueryNoParentDto productQueryDto1 = new ProductQueryNoParentDto(productId1, "product1", "prod description", new BigDecimal("100.00"));
+        ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", "prod description", new BigDecimal("100.00"));
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto1, productQueryDto2);
 
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
@@ -186,8 +189,12 @@ public class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.subCategory.title").value("subCategory"))
                 .andExpect(jsonPath("$.products[0].id").value(productId1.toString()))
                 .andExpect(jsonPath("$.products[0].title").value("product1"))
+                .andExpect(jsonPath("$.products[0].description").value("prod description"))
+                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
                 .andExpect(jsonPath("$.products[1].id").value(productId2.toString()))
                 .andExpect(jsonPath("$.products[1].title").value("product2"))
+                .andExpect(jsonPath("$.products[1].description").value("prod description"))
+                .andExpect(jsonPath("$.products[1].price").value(new BigDecimal("100.00").doubleValue()))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -210,7 +217,7 @@ public class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", new BigDecimal("100.0"), category, subCategory);
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", new BigDecimal("100.0"), category, subCategory);
 
         when(productQueryService.getProduct(productId)).thenReturn(
                 productQueryDto);
@@ -226,6 +233,7 @@ public class ProductQueryControllerTest {
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.id").value(productId.toString()))
                 .andExpect(jsonPath("$.title").value("product"))
+                .andExpect(jsonPath("$.description").value("prod description"))
                 .andExpect(jsonPath("$.price").value(new BigDecimal("100.0")))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))

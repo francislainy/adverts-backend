@@ -15,10 +15,7 @@ public class ProductQueryNoParentDto implements Serializable {
 
     private UUID id;
     private String title;
+    private String description;
     private BigDecimal price;
-
-    public ProductQueryNoParentDto(String title) {
-        this.title = title;
-    }
 
 }

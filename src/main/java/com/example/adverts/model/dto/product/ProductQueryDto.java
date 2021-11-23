@@ -18,15 +18,12 @@ public class ProductQueryDto implements Serializable {
 
     private UUID id;
     private String title;
+    private String description;
     private BigDecimal price;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "category"})
     private SubCategory subCategory;
-
-    public ProductQueryDto(String title) {
-        this.title = title;
-    }
 
 }

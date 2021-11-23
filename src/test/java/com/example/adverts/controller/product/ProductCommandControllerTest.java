@@ -60,7 +60,7 @@ public class ProductCommandControllerTest {
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
         ProductCreateDto productCreateDto = new ProductCreateDto("product");
-        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", new BigDecimal("100"), categoryId, subCategoryId);
+        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", "prod description", new BigDecimal("100"), categoryId, subCategoryId);
 
         String jsonCreate = asJsonString(productCreateDto);
         String jsonResponse = asJsonString(productCreateResponseDto);
@@ -83,6 +83,7 @@ public class ProductCommandControllerTest {
                 .andExpect(content().json(jsonResponse, true))
                 .andExpect(jsonPath("$.id").value(productId.toString()))
                 .andExpect(jsonPath("$.title").value("product"))
+                .andExpect(jsonPath("$.description").value("prod description"))
                 .andExpect(jsonPath("$.price").value(new BigDecimal("100")))
                 .andExpect(jsonPath("$.subCategoryId").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.categoryId").value(categoryId.toString()))

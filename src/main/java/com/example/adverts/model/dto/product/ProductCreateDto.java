@@ -15,6 +15,7 @@ public class ProductCreateDto implements Serializable {
 
     private UUID id;
     private String title;
+    private String description;
     private BigDecimal price;
 
     private UUID categoryId;

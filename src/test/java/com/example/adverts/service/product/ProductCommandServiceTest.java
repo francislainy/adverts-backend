@@ -79,18 +79,19 @@ public class ProductCommandServiceTest {
         Product product = new Product();
         product.setId(productId);
 
-        Product productMocked = new Product(productId, "product", new BigDecimal("100"), category, subCategory);
+        Product productMocked = new Product(productId, "product", "prod description", new BigDecimal("100"), category, subCategory);
 
         when(productRepository.save(any(Product.class))).thenReturn(productMocked);
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
         when(subCategoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(subCategory));
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", new BigDecimal("100"), categoryId, subCategoryId);
+        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", "prod description", new BigDecimal("100"), categoryId, subCategoryId);
         productCreateDto = productCommandService.createProduct(productCreateDto, categoryId, subCategoryId);
 
         assertNotNull(productCreateDto);
         assertEquals(productMocked.getId(), productCreateDto.getId());
         assertEquals(productMocked.getTitle(), productCreateDto.getTitle());
+        assertEquals(productMocked.getDescription(), productCreateDto.getDescription());
         assertEquals(productMocked.getPrice(), productCreateDto.getPrice());
         assertEquals(productMocked.getCategory().getId(), productCreateDto.getCategoryId());
         assertEquals(productMocked.getSubCategory().getId(), productCreateDto.getSubCategoryId());

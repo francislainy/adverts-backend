@@ -25,6 +25,8 @@ public class Product implements Serializable {
     private UUID id;
     @Column(name = "title")
     private String title;
+    @Column(name = "description")
+    private String description;
     @Column(name = "price")
     private BigDecimal price;
 

@@ -52,7 +52,7 @@ public class ProductRepositoryTest {
         subCategory.setCategory(category);
 
         List<Product> productList = List.of(
-                new Product(productId, "product", new BigDecimal("100"), category, subCategory)
+                new Product(productId, "product", "prod description", new BigDecimal("100"), category, subCategory)
         );
         productRepository.saveAll(productList);
         List<Product> allProducts = (List<Product>) productRepository.findAll();
