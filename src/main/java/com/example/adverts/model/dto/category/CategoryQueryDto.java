@@ -14,5 +14,11 @@ public class CategoryQueryDto implements Serializable {
 
     private UUID id;
     private String title;
+    private Long countSubCategories;
+
+    public CategoryQueryDto(UUID id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 
 }

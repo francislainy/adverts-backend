@@ -46,7 +46,7 @@ class SubCategoryQueryControllerTest {
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory");
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
         when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
@@ -57,8 +57,8 @@ class SubCategoryQueryControllerTest {
         mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
+        result.put("category", categoryQueryDto);
         result.put("subCategories", subCategoryQueryDtoList);
-        result.put("category", category);
 
         String json = asJsonString(result);
         MvcResult mvcResult = mockMvc.perform(request)
@@ -66,6 +66,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.category.title").value("category"))
+                .andExpect(jsonPath("$.category.countSubCategories").value(subCategoryQueryDtoList.size()))
                 .andExpect(jsonPath("$.subCategories.size()").value(1))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
@@ -76,7 +77,7 @@ class SubCategoryQueryControllerTest {
 
 
     @Test
-    void testGetAllCategoriesForCategoryWhenTwoItems() throws Exception {
+    void testGetAllSubCategoriesForCategoryWhenTwoItems() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId1 = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -90,7 +91,7 @@ class SubCategoryQueryControllerTest {
         SubCategoryQueryNoParentDto subCategoryQueryDto2 = new SubCategoryQueryNoParentDto(subCategoryId2, "subCategory2");
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle());
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
         when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
@@ -101,8 +102,8 @@ class SubCategoryQueryControllerTest {
         mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
+        result.put("category", categoryQueryDto);
         result.put("subCategories", subCategoryQueryDtoList);
-        result.put("category", category);
 
         String json = asJsonString(result);
         MvcResult mvcResult = mockMvc.perform(request)
@@ -111,6 +112,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories.size()").value(2))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.category.title").value("category"))
+                .andExpect(jsonPath("$.category.countSubCategories").value(subCategoryQueryDtoList.size()))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId1.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory1"))
                 .andExpect(jsonPath("$.subCategories[1].id").value(subCategoryId2.toString()))

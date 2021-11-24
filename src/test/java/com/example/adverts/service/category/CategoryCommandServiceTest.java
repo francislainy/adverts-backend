@@ -57,6 +57,20 @@ class CategoryCommandServiceTest {
 
 
     @Test
+    void testCreateCategory() {
+
+        UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        Category categoryMocked = new Category(categoryId, "category", null, null);
+
+        when(categoryRepository.save(categoryMocked)).thenReturn(categoryMocked);
+
+        Category category = categoryRepository.save(categoryMocked);
+
+        assertNotNull(category);
+    }
+
+
+    @Test
     void testCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);

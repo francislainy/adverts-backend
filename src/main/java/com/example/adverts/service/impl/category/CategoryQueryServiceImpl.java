@@ -26,7 +26,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
         if (categoryRepository.findById(id).isPresent()) {
             Category category = categoryRepository.findById(id).get();
 
-            return new CategoryQueryDto(category.getId(), category.getTitle());
+            return new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(id));
 
         } else {
             return null;
@@ -41,7 +41,8 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
         List<CategoryQueryDto> categoryList = new ArrayList<>();
 
         categoryRepository.findAll().forEach(category -> {
-            categoryList.add(new CategoryQueryDto(category.getId(), category.getTitle()));
+
+            categoryList.add(new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(category.getId())));
         });
 
         return categoryList;
