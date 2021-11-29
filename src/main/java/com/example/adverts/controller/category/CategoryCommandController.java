@@ -36,7 +36,6 @@ public class CategoryCommandController {
 
     }
 
-
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<CategoryUpdateDto> updateCategory(@PathVariable(value = "id") UUID id,

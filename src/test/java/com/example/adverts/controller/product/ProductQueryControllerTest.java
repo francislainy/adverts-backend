@@ -5,6 +5,7 @@ import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
+import com.example.adverts.model.entity.product_address.ProductAddress;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.service.interfaces.product.ProductQueryService;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ class ProductQueryControllerTest {
     void testGetAllProductsOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
@@ -51,7 +53,9 @@ class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", new BigDecimal("100.00"), category, subCategory);
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress, category, subCategory);
         List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
 
         when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
@@ -70,13 +74,26 @@ class ProductQueryControllerTest {
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.products.size()").value(1))
                 .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
-                .andExpect(jsonPath("$.products[0].title").value("product"))
-                .andExpect(jsonPath("$.products[0].description").value("prod description"))
-                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
+                .andExpect(jsonPath("$.products[0].title").value(productQueryDto.getTitle()))
+                .andExpect(jsonPath("$.products[0].description").value(productQueryDto.getDescription()))
+                .andExpect(jsonPath("$.products[0].shortDescription").value(productQueryDto.getShortDescription()))
+                .andExpect(jsonPath("$.products[0].price").value(productQueryDto.getPrice().doubleValue()))
                 .andExpect(jsonPath("$.products[0].category.id").value(categoryId.toString()))
-                .andExpect(jsonPath("$.products[0].category.title").value("category"))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].productAddress.address1").value(productAddress.getAddress1()))
+                .andExpect(jsonPath("$.products[0].productAddress.address2").value(productAddress.getAddress2()))
+                .andExpect(jsonPath("$.products[0].productAddress.address3").value(productAddress.getAddress3()))
+                .andExpect(jsonPath("$.products[0].productAddress.city").value(productAddress.getCity()))
+                .andExpect(jsonPath("$.products[0].productAddress.state").value(productAddress.getState()))
+                .andExpect(jsonPath("$.products[0].productAddress.county").value(productAddress.getCounty()))
+                .andExpect(jsonPath("$.products[0].productAddress.country").value(productAddress.getCountry()))
+                .andExpect(jsonPath("$.products[0].productAddress.zipcode").value(productAddress.getZipcode()))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].category.title").value(productQueryDto.getCategory().getTitle()))
                 .andExpect(jsonPath("$.products[0].subCategory.id").value(subCategoryId.toString()))
-                .andExpect(jsonPath("$.products[0].subCategory.title").value("subCategory"))
+                .andExpect(jsonPath("$.products[0].subCategory.title").value(productQueryDto.getSubCategory().getTitle()))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -87,6 +104,7 @@ class ProductQueryControllerTest {
     void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
@@ -103,7 +121,9 @@ class ProductQueryControllerTest {
 
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
 
-        ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", "prod description", new BigDecimal("100.00"));
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto);
 
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
@@ -130,9 +150,19 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.subCategory.title").value("subCategory"))
                 .andExpect(jsonPath("$.products.size()").value(1))
                 .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
-                .andExpect(jsonPath("$.products[0].title").value("product"))
-                .andExpect(jsonPath("$.products[0].description").value("prod description"))
-                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
+                .andExpect(jsonPath("$.products[0].title").value(productQueryDto.getTitle()))
+                .andExpect(jsonPath("$.products[0].description").value(productQueryDto.getDescription()))
+                .andExpect(jsonPath("$.products[0].shortDescription").value(productQueryDto.getShortDescription()))
+                .andExpect(jsonPath("$.products[0].price").value(productQueryDto.getPrice().doubleValue()))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].productAddress.address1").value(productAddress.getAddress1()))
+                .andExpect(jsonPath("$.products[0].productAddress.address2").value(productAddress.getAddress2()))
+                .andExpect(jsonPath("$.products[0].productAddress.address3").value(productAddress.getAddress3()))
+                .andExpect(jsonPath("$.products[0].productAddress.city").value(productAddress.getCity()))
+                .andExpect(jsonPath("$.products[0].productAddress.state").value(productAddress.getState()))
+                .andExpect(jsonPath("$.products[0].productAddress.county").value(productAddress.getCounty()))
+                .andExpect(jsonPath("$.products[0].productAddress.country").value(productAddress.getCountry()))
+                .andExpect(jsonPath("$.products[0].productAddress.zipcode").value(productAddress.getZipcode()))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -144,6 +174,7 @@ class ProductQueryControllerTest {
 
         UUID productId1 = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productId2 = UUID.fromString("ad1e7118-2fbe-4cc8-963c-7387d8a13bc7");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
@@ -160,8 +191,10 @@ class ProductQueryControllerTest {
 
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
 
-        ProductQueryNoParentDto productQueryDto1 = new ProductQueryNoParentDto(productId1, "product1", "prod description", new BigDecimal("100.00"));
-        ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", "prod description", new BigDecimal("100.00"));
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryNoParentDto productQueryDto1 = new ProductQueryNoParentDto(productId1, "product1", "prod description", "short description", new BigDecimal("100.00"), productAddress);
+        ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto1, productQueryDto2);
 
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
@@ -188,13 +221,33 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategory.title").value("subCategory"))
                 .andExpect(jsonPath("$.products[0].id").value(productId1.toString()))
-                .andExpect(jsonPath("$.products[0].title").value("product1"))
-                .andExpect(jsonPath("$.products[0].description").value("prod description"))
-                .andExpect(jsonPath("$.products[0].price").value(new BigDecimal("100.00").doubleValue()))
+                .andExpect(jsonPath("$.products[0].title").value(productQueryDto1.getTitle()))
+                .andExpect(jsonPath("$.products[0].description").value(productQueryDto1.getDescription()))
+                .andExpect(jsonPath("$.products[0].shortDescription").value(productQueryDto1.getShortDescription()))
+                .andExpect(jsonPath("$.products[0].price").value(productQueryDto1.getPrice().doubleValue()))
+                .andExpect(jsonPath("$.products[0].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[0].productAddress.address1").value(productAddress.getAddress1()))
+                .andExpect(jsonPath("$.products[0].productAddress.address2").value(productAddress.getAddress2()))
+                .andExpect(jsonPath("$.products[0].productAddress.address3").value(productAddress.getAddress3()))
+                .andExpect(jsonPath("$.products[0].productAddress.city").value(productAddress.getCity()))
+                .andExpect(jsonPath("$.products[0].productAddress.state").value(productAddress.getState()))
+                .andExpect(jsonPath("$.products[0].productAddress.county").value(productAddress.getCounty()))
+                .andExpect(jsonPath("$.products[0].productAddress.country").value(productAddress.getCountry()))
+                .andExpect(jsonPath("$.products[0].productAddress.zipcode").value(productAddress.getZipcode()))
                 .andExpect(jsonPath("$.products[1].id").value(productId2.toString()))
-                .andExpect(jsonPath("$.products[1].title").value("product2"))
-                .andExpect(jsonPath("$.products[1].description").value("prod description"))
-                .andExpect(jsonPath("$.products[1].price").value(new BigDecimal("100.00").doubleValue()))
+                .andExpect(jsonPath("$.products[1].title").value(productQueryDto2.getTitle()))
+                .andExpect(jsonPath("$.products[1].description").value(productQueryDto2.getDescription()))
+                .andExpect(jsonPath("$.products[1].shortDescription").value(productQueryDto2.getShortDescription()))
+                .andExpect(jsonPath("$.products[1].price").value(productQueryDto2.getPrice().doubleValue()))
+                .andExpect(jsonPath("$.products[1].productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.products[1].productAddress.address1").value(productAddress.getAddress1()))
+                .andExpect(jsonPath("$.products[1].productAddress.address2").value(productAddress.getAddress2()))
+                .andExpect(jsonPath("$.products[1].productAddress.address3").value(productAddress.getAddress3()))
+                .andExpect(jsonPath("$.products[1].productAddress.city").value(productAddress.getCity()))
+                .andExpect(jsonPath("$.products[1].productAddress.state").value(productAddress.getState()))
+                .andExpect(jsonPath("$.products[1].productAddress.county").value(productAddress.getCounty()))
+                .andExpect(jsonPath("$.products[1].productAddress.country").value(productAddress.getCountry()))
+                .andExpect(jsonPath("$.products[1].productAddress.zipcode").value(productAddress.getZipcode()))
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());
@@ -205,6 +258,7 @@ class ProductQueryControllerTest {
     void testGetProductItemForCategoryAndSubCategory() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
@@ -217,7 +271,9 @@ class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", new BigDecimal("100.0"), category, subCategory);
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.0"), productAddress, category, subCategory);
 
         when(productQueryService.getProduct(productId)).thenReturn(
                 productQueryDto);
@@ -232,9 +288,21 @@ class ProductQueryControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.id").value(productId.toString()))
-                .andExpect(jsonPath("$.title").value("product"))
-                .andExpect(jsonPath("$.description").value("prod description"))
-                .andExpect(jsonPath("$.price").value(new BigDecimal("100.0")))
+                .andExpect(jsonPath("$.title").value(productQueryDto.getTitle()))
+                .andExpect(jsonPath("$.description").value(productQueryDto.getDescription()))
+                .andExpect(jsonPath("$.shortDescription").value(productQueryDto.getShortDescription()))
+                .andExpect(jsonPath("$.price").value(productQueryDto.getPrice()))
+                .andExpect(jsonPath("$.productAddress.id").value(productAddressId.toString()))
+                .andExpect(jsonPath("$.productAddress.address1").value(productQueryDto.getProductAddress().getAddress1()))
+                .andExpect(jsonPath("$.productAddress.address2").value(productQueryDto.getProductAddress().getAddress2()))
+                .andExpect(jsonPath("$.productAddress.address3").value(productQueryDto.getProductAddress().getAddress3()))
+                .andExpect(jsonPath("$.productAddress.city").value(productQueryDto.getProductAddress().getCity()))
+                .andExpect(jsonPath("$.productAddress.state").value(productQueryDto.getProductAddress().getState()))
+                .andExpect(jsonPath("$.productAddress.county").value(productQueryDto.getProductAddress().getCounty()))
+                .andExpect(jsonPath("$.productAddress.country").value(productQueryDto.getProductAddress().getCountry()))
+                .andExpect(jsonPath("$.productAddress.zipcode").value(productQueryDto.getProductAddress().getZipcode()))
+
+
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
                 .andReturn();

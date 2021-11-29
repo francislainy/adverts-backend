@@ -1,6 +1,7 @@
 package com.example.adverts.model.entity.product;
 
 import com.example.adverts.model.entity.category.Category;
+import com.example.adverts.model.entity.product_address.ProductAddress;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,15 @@ public class Product implements Serializable {
     private String title;
     @Column(name = "description")
     private String description;
+    @Column(name = "short_description")
+    private String shortDescription;
     @Column(name = "price")
     private BigDecimal price;
 
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "product_address_id", referencedColumnName = "id", nullable = true)
+    private ProductAddress productAddress;
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -40,6 +47,4 @@ public class Product implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "sub_category_id", referencedColumnName = "id", nullable = false)
     private SubCategory subCategory;
-
-
 }

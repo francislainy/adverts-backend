@@ -35,7 +35,7 @@ public class ProductCommandImpl implements ProductCommandService {
 
             product = productRepository.save(product);
 
-            return new ProductCreateDto(product.getId(), product.getTitle(), product.getDescription(), product.getPrice(), product.getCategory().getId(), product.getSubCategory().getId());
+            return new ProductCreateDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getCategory().getId(), product.getSubCategory().getId());
         } else {
             return null;
         }

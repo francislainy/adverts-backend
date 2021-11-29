@@ -1,10 +1,9 @@
 package com.example.adverts.service.product;
 
 import com.example.adverts.model.dto.product.ProductCreateDto;
-import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
-import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
+import com.example.adverts.model.entity.product_address.ProductAddress;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.product.ProductRepository;
@@ -21,12 +20,17 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(ProductCommandService.class)
@@ -67,6 +71,7 @@ class ProductCommandServiceTest {
     void testProductItemSavedToDb() {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
@@ -76,24 +81,28 @@ class ProductCommandServiceTest {
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);
 
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
         Product product = new Product();
         product.setId(productId);
 
-        Product productMocked = new Product(productId, "product", "prod description", new BigDecimal("100"), category, subCategory);
+        Product productMocked = new Product(productId, "product", "prod description", "short description", new BigDecimal("100"), productAddress, category, subCategory);
 
         when(productRepository.save(any(Product.class))).thenReturn(productMocked);
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
         when(subCategoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(subCategory));
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", "prod description", new BigDecimal("100"), categoryId, subCategoryId);
+        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
         productCreateDto = productCommandService.createProduct(productCreateDto, categoryId, subCategoryId);
 
         assertNotNull(productCreateDto);
         assertEquals(productMocked.getId(), productCreateDto.getId());
         assertEquals(productMocked.getTitle(), productCreateDto.getTitle());
         assertEquals(productMocked.getDescription(), productCreateDto.getDescription());
+        assertEquals(productMocked.getShortDescription(), productCreateDto.getShortDescription());
         assertEquals(productMocked.getPrice(), productCreateDto.getPrice());
         assertEquals(productMocked.getCategory().getId(), productCreateDto.getCategoryId());
+        assertEquals(productMocked.getProductAddress(), productAddress);
         assertEquals(productMocked.getSubCategory().getId(), productCreateDto.getSubCategoryId());
     }
 
