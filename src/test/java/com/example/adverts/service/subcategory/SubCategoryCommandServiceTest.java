@@ -6,13 +6,9 @@ import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
-import com.example.adverts.service.impl.category.CategoryCommandImpl;
-import com.example.adverts.service.impl.subcategory.SubCategoryCommandImpl;
-import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -29,23 +25,14 @@ class SubCategoryCommandServiceTest {
     @MockBean
     Category category;
 
-    @Mock
+    @MockBean
     CategoryRepository categoryRepository;
 
-    @Mock
+    @MockBean
     SubCategoryRepository subCategoryRepository;
 
-    @MockBean
+    @Autowired
     private SubCategoryCommandService subCategoryCommandService;
-
-    @MockBean
-    private CategoryCommandService categoryCommandService;
-
-    @BeforeEach
-    void initUseCase() {
-        subCategoryCommandService = new SubCategoryCommandImpl(categoryRepository, subCategoryRepository);
-        categoryCommandService = new CategoryCommandImpl(categoryRepository);
-    }
 
     @Test
     void testSubCategoryItemSavedToDb() {
@@ -65,7 +52,6 @@ class SubCategoryCommandServiceTest {
         assertEquals(subCategoryMocked.getId(), subCategoryCreateDto.getId());
         assertEquals(subCategoryMocked.getTitle(), subCategoryCreateDto.getTitle());
     }
-
 
     @Test
     void testSubCategoryItemUpdated() {

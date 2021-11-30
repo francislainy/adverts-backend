@@ -8,15 +8,11 @@ import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.product.ProductRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
-import com.example.adverts.service.impl.category.CategoryCommandImpl;
-import com.example.adverts.service.impl.product.ProductCommandImpl;
-import com.example.adverts.service.impl.subcategory.SubCategoryCommandImpl;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.product.ProductCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -37,33 +33,20 @@ class ProductCommandServiceTest {
     @MockBean
     SubCategory subCategory;
 
-    @Mock
+    @MockBean
     CategoryRepository categoryRepository;
 
-    @Mock
+    @MockBean
     SubCategoryRepository subCategoryRepository;
 
-    @Mock
+    @MockBean
     ProductRepository productRepository;
 
-    @MockBean
+    @Autowired
     private ProductCommandService productCommandService;
 
-    @MockBean
-    private CategoryCommandService categoryCommandService;
-
-    @MockBean
-    private SubCategoryCommandService subCategoryCommandService;
-
-    @BeforeEach
-    void initUseCase() {
-        subCategoryCommandService = new SubCategoryCommandImpl(categoryRepository, subCategoryRepository);
-        productCommandService = new ProductCommandImpl(productRepository, categoryRepository, subCategoryRepository);
-        categoryCommandService = new CategoryCommandImpl(categoryRepository);
-    }
-
     @Test
-    void testProductItemSavedToDb() {
+    void testProductItemCreated() {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
         UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");

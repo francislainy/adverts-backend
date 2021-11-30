@@ -4,13 +4,9 @@ import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.repository.category.CategoryRepository;
-import com.example.adverts.service.impl.category.CategoryCommandImpl;
-import com.example.adverts.service.impl.category.CategoryQueryServiceImpl;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
-import com.example.adverts.service.interfaces.category.CategoryQueryService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -24,23 +20,14 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(CategoryCommandService.class)
 class CategoryCommandServiceTest {
 
-    @Mock
+    @MockBean
     CategoryRepository categoryRepository;
 
-    @MockBean
-    private CategoryQueryService categoryQueryService;
-
-    @MockBean
+    @Autowired
     private CategoryCommandService categoryCommandService;
 
-    @BeforeEach
-    void initUseCase() {
-        categoryQueryService = new CategoryQueryServiceImpl(categoryRepository);
-        categoryCommandService = new CategoryCommandImpl(categoryRepository);
-    }
-
     @Test
-    void testCategoryItemSavedToDb() {
+    void testCreateCategory() {
 
         Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
@@ -54,21 +41,6 @@ class CategoryCommandServiceTest {
         assertEquals(categoryMocked.getId(), categoryCreateDto.getId());
         assertEquals(categoryMocked.getTitle(), categoryCreateDto.getTitle());
     }
-
-
-    @Test
-    void testCreateCategory() {
-
-        UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        Category categoryMocked = new Category(categoryId, "category", null, null);
-
-        when(categoryRepository.save(categoryMocked)).thenReturn(categoryMocked);
-
-        Category category = categoryRepository.save(categoryMocked);
-
-        assertNotNull(category);
-    }
-
 
     @Test
     void testCategoryItemUpdated() {
