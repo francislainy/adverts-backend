@@ -1,4 +1,4 @@
-package com.example.adverts.model.entity.userinfo;
+package com.example.adverts.model.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "user_account")
-public class UserAccount implements Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

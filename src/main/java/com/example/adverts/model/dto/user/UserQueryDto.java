@@ -1,4 +1,4 @@
-package com.example.adverts.model.dto.user_account;
+package com.example.adverts.model.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserAccountQueryDto implements Serializable {
+public class UserQueryDto implements Serializable {
 
     private UUID id;
     private String firstname;
