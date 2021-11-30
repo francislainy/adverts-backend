@@ -1,4 +1,4 @@
-package com.example.adverts.controller.user;
+package com.example.adverts.controller.user_account;
 
 import com.example.adverts.model.dto.user_account.UserAccountQueryDto;
 import com.example.adverts.service.interfaces.user_account.UserAccountQueryService;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @CrossOrigin
 @RequestMapping("/api/adverts/user")
 @RestController
-public class UserQueryController {
+public class UserAccountQueryController {
 
     @Autowired
     private UserAccountQueryService userAccountQueryService;
@@ -31,9 +31,9 @@ public class UserQueryController {
 
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UserAccountQueryDto> getUser(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<UserAccountQueryDto> getUser(@PathVariable(value = "userId") UUID id) {
         return new ResponseEntity<>(userAccountQueryService.getUserAccount(id), HttpStatus.OK);
     }
 
