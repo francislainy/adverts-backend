@@ -33,17 +33,17 @@ public class Product implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_address_id", referencedColumnName = "id", nullable = true)
     private ProductAddress productAddress;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private Category category;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "sub_category_id", referencedColumnName = "id", nullable = false)
     private SubCategory subCategory;

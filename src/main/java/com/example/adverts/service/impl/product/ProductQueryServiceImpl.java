@@ -38,9 +38,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     public List<ProductQueryDto> getAllProducts() {
         List<ProductQueryDto> productList = new ArrayList<>();
 
-        productRepository.findAll().forEach(product -> {
-            productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress(), product.getCategory(), product.getSubCategory()));
-        });
+        productRepository.findAll().forEach(product ->
+                productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress(), product.getCategory(), product.getSubCategory())));
 
         return productList;
     }
@@ -63,27 +62,26 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     @Override
     public CategoryQueryDto getCategory(UUID categoryId) {
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto();
+
         for (Product product : productRepository.findAll()) {
             if (product.getCategory().getId().equals(categoryId)) {
                 categoryQueryDto = new CategoryQueryDto(product.getCategory().getId(), product.getCategory().getTitle());
                 break;
             }
-
         }
 
         return categoryQueryDto;
-
     }
 
     @Override
     public SubCategoryQueryNoParentDto getSubCategory(UUID categoryId) {
         SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto();
+
         for (Product product : productRepository.findAll()) {
             if (product.getCategory().getId().equals(categoryId)) {
                 subCategoryQueryDto = new SubCategoryQueryNoParentDto(product.getSubCategory().getId(), product.getSubCategory().getTitle());
                 break;
             }
-
         }
 
         return subCategoryQueryDto;

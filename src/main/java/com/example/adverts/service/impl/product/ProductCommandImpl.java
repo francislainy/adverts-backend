@@ -1,7 +1,9 @@
 package com.example.adverts.service.impl.product;
 
 import com.example.adverts.model.dto.product.ProductCreateDto;
+import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
+import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.product.ProductRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
@@ -28,14 +30,17 @@ public class ProductCommandImpl implements ProductCommandService {
 
         if (categoryRepository.findById(categoryId).isPresent() && subCategoryRepository.findById(subCategoryId).isPresent()) {
 
+            Category category = categoryRepository.findById(categoryId).get();
+            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).get();
+
             Product product = new Product();
-            product.setSubCategory(subCategoryRepository.findById(subCategoryId).get());
-            product.setCategory(categoryRepository.findById(categoryId).get());
             product.setTitle(productCreateDto.getTitle());
+            product.setCategory(category);
+            product.setSubCategory(subCategory);
 
             product = productRepository.save(product);
 
-            return new ProductCreateDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getCategory().getId(), product.getSubCategory().getId());
+            return new ProductCreateDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), category, subCategory);
         } else {
             return null;
         }

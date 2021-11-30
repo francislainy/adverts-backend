@@ -20,17 +20,12 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(ProductCommandService.class)
@@ -92,7 +87,7 @@ class ProductCommandServiceTest {
         when(categoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(category));
         when(subCategoryRepository.findById(any(UUID.class))).thenReturn(java.util.Optional.of(subCategory));
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
+        ProductCreateDto productCreateDto = new ProductCreateDto(productId, "product", "prod description", "short description", new BigDecimal("100"), category, subCategory);
         productCreateDto = productCommandService.createProduct(productCreateDto, categoryId, subCategoryId);
 
         assertNotNull(productCreateDto);
@@ -101,9 +96,9 @@ class ProductCommandServiceTest {
         assertEquals(productMocked.getDescription(), productCreateDto.getDescription());
         assertEquals(productMocked.getShortDescription(), productCreateDto.getShortDescription());
         assertEquals(productMocked.getPrice(), productCreateDto.getPrice());
-        assertEquals(productMocked.getCategory().getId(), productCreateDto.getCategoryId());
+        assertEquals(productMocked.getCategory(), productCreateDto.getCategory());
         assertEquals(productMocked.getProductAddress(), productAddress);
-        assertEquals(productMocked.getSubCategory().getId(), productCreateDto.getSubCategoryId());
+        assertEquals(productMocked.getSubCategory(), productCreateDto.getSubCategory());
     }
 
 }

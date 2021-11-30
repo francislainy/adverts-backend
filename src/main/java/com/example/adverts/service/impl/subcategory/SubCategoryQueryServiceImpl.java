@@ -39,19 +39,15 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
 
     }
 
-
     @Override
     public List<SubCategoryQueryDto> getAllSubCategories() {
         List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
 
-        subCategoryRepository.findAll().forEach(subCategory -> {
-            subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory()));
-        });
+        subCategoryRepository.findAll().forEach(subCategory ->
+                subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory())));
 
         return subCategoryList;
-
     }
-
 
     @Override
     public List<SubCategoryQueryNoParentDto> getAllSubCategories(UUID categoryId) {
@@ -66,9 +62,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         });
 
         return subCategoryList;
-
     }
-
 
     @Override
     public CategoryQueryDto getCategory(UUID categoryId) {
@@ -79,11 +73,9 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
                 categoryQueryDto = new CategoryQueryDto(subCategory.getCategory().getId(), subCategory.getCategory().getTitle());
                 break;
             }
-
         }
 
         return categoryQueryDto;
-
     }
 
 }

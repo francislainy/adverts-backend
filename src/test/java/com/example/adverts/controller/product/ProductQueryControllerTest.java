@@ -146,8 +146,10 @@ class ProductQueryControllerTest {
                 .andExpect(content().json(json, true))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.category.title").value("category"))
+                .andExpect(jsonPath("$.category.countSubCategories").doesNotExist())
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategory.title").value("subCategory"))
+                .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andExpect(jsonPath("$.products.size()").value(1))
                 .andExpect(jsonPath("$.products[0].id").value(productId.toString()))
                 .andExpect(jsonPath("$.products[0].title").value(productQueryDto.getTitle()))
@@ -218,8 +220,10 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products.size()").value(2))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.category.title").value("category"))
+                .andExpect(jsonPath("$.category.countSubCategories").doesNotExist())
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategory.title").value("subCategory"))
+                .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andExpect(jsonPath("$.products[0].id").value(productId1.toString()))
                 .andExpect(jsonPath("$.products[0].title").value(productQueryDto1.getTitle()))
                 .andExpect(jsonPath("$.products[0].description").value(productQueryDto1.getDescription()))
@@ -301,10 +305,12 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.productAddress.county").value(productQueryDto.getProductAddress().getCounty()))
                 .andExpect(jsonPath("$.productAddress.country").value(productQueryDto.getProductAddress().getCountry()))
                 .andExpect(jsonPath("$.productAddress.zipcode").value(productQueryDto.getProductAddress().getZipcode()))
-
-
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.category.title").value(category.getTitle()))
+                .andExpect(jsonPath("$.category.subCategories").doesNotExist())
                 .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
+                .andExpect(jsonPath("$.subCategory.title").value(subCategory.getTitle()))
+                .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andReturn();
 
         System.out.println(mvcResult.getResponse().getContentAsString());

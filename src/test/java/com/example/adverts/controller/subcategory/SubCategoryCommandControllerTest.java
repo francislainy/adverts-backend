@@ -30,9 +30,6 @@ class SubCategoryCommandControllerTest {
     private SubCategoryCommandService subCategoryCommandService;
 
     @MockBean
-    private CategoryCommandService categoryCommandService;
-
-    @MockBean
     private CategoryRepository categoryRepository;
 
     @Autowired

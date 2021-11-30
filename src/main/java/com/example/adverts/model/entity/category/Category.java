@@ -30,7 +30,7 @@ public class Category implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<SubCategory> subCategories;
 
-    @JsonBackReference
+//    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Product> products;
 

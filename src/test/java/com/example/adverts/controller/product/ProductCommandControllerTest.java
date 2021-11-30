@@ -2,6 +2,8 @@ package com.example.adverts.controller.product;
 
 import com.example.adverts.controller.category.CategoryCommandController;
 import com.example.adverts.model.dto.product.ProductCreateDto;
+import com.example.adverts.model.entity.category.Category;
+import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.product.ProductCommandService;
@@ -59,8 +61,16 @@ class ProductCommandControllerTest {
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
-        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
-        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+        subCategory.setTitle("subCategory");
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), category, subCategory);
+        ProductCreateDto productCreateResponseDto = new ProductCreateDto(productId, "product", "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
         String jsonCreate = asJsonString(productCreateDto);
         String jsonResponse = asJsonString(productCreateResponseDto);
@@ -86,8 +96,12 @@ class ProductCommandControllerTest {
                 .andExpect(jsonPath("$.description").value(productCreateDto.getDescription()))
                 .andExpect(jsonPath("$.shortDescription").value(productCreateDto.getShortDescription()))
                 .andExpect(jsonPath("$.price").value(productCreateDto.getPrice()))
-                .andExpect(jsonPath("$.subCategoryId").value(subCategoryId.toString()))
-                .andExpect(jsonPath("$.categoryId").value(categoryId.toString()))
+                .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
+                .andExpect(jsonPath("$.category.title").value(productCreateDto.getCategory().getTitle()))
+                .andExpect(jsonPath("$.category.products").doesNotExist())
+                .andExpect(jsonPath("$.subCategory.id").value(subCategoryId.toString()))
+                .andExpect(jsonPath("$.subCategory.title").value(productCreateDto.getSubCategory().getTitle()))
+                .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andReturn();
 
 
@@ -101,7 +115,13 @@ class ProductCommandControllerTest {
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
-        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
         String jsonCreate = asJsonString(productCreateDto);
 
@@ -133,7 +153,13 @@ class ProductCommandControllerTest {
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
-        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("product", "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
         String jsonCreate = asJsonString(productCreateDto);
 
@@ -160,12 +186,18 @@ class ProductCommandControllerTest {
 
 
     @Test
-    void testCreateProductThrowsErrorWhenTitleDoesNotExist() throws Exception {
+    void testCreateProductThrowsErrorWhenMandatoryTitleDoesNotExist() throws Exception {
 
         UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
         UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(null, "prod description", "short description", new BigDecimal("100"), categoryId, subCategoryId);
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto(null, "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
 
         String jsonCreate = asJsonString(productCreateDto);
@@ -184,7 +216,7 @@ class ProductCommandControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"message\": \"Missing title\"}", true))
+                .andExpect(content().json("{\"message\": \"Missing mandatory field\"}", true))
                 .andReturn();
 
 
@@ -194,11 +226,21 @@ class ProductCommandControllerTest {
 
     @Test
     void testCreateProductAutogenerated() throws Exception {
+
+        UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
         ProductCreateDto productCreateDto = new ProductCreateDto();
-        productCreateDto.setSubCategoryId(UUID.randomUUID());
+        productCreateDto.setSubCategory(subCategory);
         productCreateDto.setId(UUID.randomUUID());
         productCreateDto.setTitle("Product");
-        productCreateDto.setCategoryId(UUID.randomUUID());
+        productCreateDto.setCategory(category);
         String content = (new ObjectMapper()).writeValueAsString(productCreateDto);
         UUID randomUUIDResult = UUID.randomUUID();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

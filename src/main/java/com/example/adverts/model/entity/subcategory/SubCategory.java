@@ -27,7 +27,7 @@ public class SubCategory implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private Category category;

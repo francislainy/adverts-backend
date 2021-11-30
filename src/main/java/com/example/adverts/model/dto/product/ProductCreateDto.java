@@ -1,5 +1,8 @@
 package com.example.adverts.model.dto.product;
 
+import com.example.adverts.model.entity.category.Category;
+import com.example.adverts.model.entity.subcategory.SubCategory;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,15 +22,18 @@ public class ProductCreateDto implements Serializable {
     private String shortDescription;
     private BigDecimal price;
 
-    private UUID categoryId;
-    private UUID subCategoryId;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "countSubCategories", "products"})
+    private Category category;
 
-    public ProductCreateDto(String title, String description, String shortDescription, BigDecimal price, UUID categoryId, UUID subCategoryId) {
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "category"})
+    private SubCategory subCategory;
+
+    public ProductCreateDto(String title, String description, String shortDescription, BigDecimal price, Category category, SubCategory subCategory) {
         this.title = title;
         this.description = description;
         this.shortDescription = shortDescription;
         this.price = price;
-        this.categoryId = categoryId;
-        this.subCategoryId = subCategoryId;
+        this.category = category;
+        this.subCategory = subCategory;
     }
 }
