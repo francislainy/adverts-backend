@@ -23,7 +23,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
     public CategoryQueryDto getCategory(UUID id) {
 
         if (categoryRepository.findById(id).isPresent()) {
-            
+
             Category category = categoryRepository.findById(id).get();
 
             return new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(id));
