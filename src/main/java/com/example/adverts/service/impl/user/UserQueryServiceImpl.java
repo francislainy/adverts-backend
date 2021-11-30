@@ -19,7 +19,6 @@ public class UserQueryServiceImpl implements UserQueryService {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public UserQueryDto getUser(UUID id) {
         if (userRepository.findById(id).isPresent()) {

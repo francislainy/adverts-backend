@@ -31,4 +31,5 @@ public class User implements Serializable {
     private String email;
     @Column(name = "role")
     private String role;
+
 }
