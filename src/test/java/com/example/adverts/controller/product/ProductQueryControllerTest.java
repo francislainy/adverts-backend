@@ -9,6 +9,8 @@ import com.example.adverts.model.entity.product_address.ProductAddress;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.service.interfaces.product.ProductQueryService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductQueryController.class)
 class ProductQueryControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(ProductQueryController.class);
 
     @MockBean
     private ProductQueryService productQueryService;
@@ -96,7 +100,7 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products[0].subCategory.title").value(productQueryDto.getSubCategory().getTitle()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -167,7 +171,7 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products[0].productAddress.zipcode").value(productAddress.getZipcode()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -254,7 +258,7 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.products[1].productAddress.zipcode").value(productAddress.getZipcode()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -313,7 +317,7 @@ class ProductQueryControllerTest {
                 .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

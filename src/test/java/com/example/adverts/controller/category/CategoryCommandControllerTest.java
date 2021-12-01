@@ -5,6 +5,8 @@ import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CategoryCommandController.class)
 class CategoryCommandControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(CategoryCommandController.class);
 
     @MockBean
     private CategoryCommandService categoryCommandService;
@@ -60,7 +64,7 @@ class CategoryCommandControllerTest {
                 .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -85,7 +89,7 @@ class CategoryCommandControllerTest {
                 .andReturn();
 
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -116,7 +120,7 @@ class CategoryCommandControllerTest {
                 .andExpect(jsonPath("$.title").value("updated category"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

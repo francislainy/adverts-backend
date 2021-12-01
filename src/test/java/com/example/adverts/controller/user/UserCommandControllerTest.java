@@ -3,6 +3,7 @@ package com.example.adverts.controller.user;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,8 +19,12 @@ import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.slf4j.Logger;
+
 @WebMvcTest(UserCommandController.class)
 class UserCommandControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(UserCommandControllerTest.class);
 
     @MockBean
     private UserCommandService userCommandService;
@@ -59,7 +64,7 @@ class UserCommandControllerTest {
                 .andExpect(jsonPath("$.role").value(userCreateResponseDto.getRole()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -81,7 +86,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -103,7 +108,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -125,7 +130,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -147,7 +152,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -169,7 +174,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -191,7 +196,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -213,7 +218,7 @@ class UserCommandControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -248,7 +253,7 @@ class UserCommandControllerTest {
                 .andExpect(jsonPath("$.role").value(userCreateResponseDto.getRole()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

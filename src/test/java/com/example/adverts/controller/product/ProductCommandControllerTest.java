@@ -10,6 +10,8 @@ import com.example.adverts.service.interfaces.product.ProductCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CategoryCommandController.class)
 class ProductCommandControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(ProductCommandControllerTest.class);
 
     @Autowired
     private MockMvc mockMvc;
@@ -104,8 +108,7 @@ class ProductCommandControllerTest {
                 .andExpect(jsonPath("$.subCategory.category").doesNotExist())
                 .andReturn();
 
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -142,8 +145,7 @@ class ProductCommandControllerTest {
                 .andExpect(content().json("{\"message\": \"Entity not found\"}", true))
                 .andReturn();
 
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -180,8 +182,7 @@ class ProductCommandControllerTest {
                 .andExpect(content().json("{\"message\": \"Entity not found\"}", true))
                 .andReturn();
 
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -220,7 +221,7 @@ class ProductCommandControllerTest {
                 .andReturn();
 
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 

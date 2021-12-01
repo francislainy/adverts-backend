@@ -3,6 +3,8 @@ package com.example.adverts.controller.category;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.service.interfaces.category.CategoryQueryService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CategoryQueryController.class)
 class CategoryQueryControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(CategoryQueryController.class);
 
     @MockBean
     private CategoryQueryService categoryQueryService;
@@ -58,7 +62,7 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.categories[0].countSubCategories").value(2))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -95,7 +99,7 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.categories[1].countSubCategories").value(1))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -121,7 +125,7 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.countSubCategories").value(1))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

@@ -3,9 +3,10 @@ package com.example.adverts.controller.subcategory;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.repository.category.CategoryRepository;
-import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SubCategoryCommandController.class)
 class SubCategoryCommandControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(SubCategoryCommandController.class);
 
     @MockBean
     private SubCategoryCommandService subCategoryCommandService;
@@ -64,7 +67,7 @@ class SubCategoryCommandControllerTest {
                 .andExpect(jsonPath("$.categoryId").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -92,7 +95,7 @@ class SubCategoryCommandControllerTest {
                 .andExpect(content().json("{\"message\": \"Entity not found\"}", true))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -120,7 +123,7 @@ class SubCategoryCommandControllerTest {
                 .andExpect(content().json("{\"message\": \"Missing title\"}", true))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -151,7 +154,7 @@ class SubCategoryCommandControllerTest {
                 .andExpect(jsonPath("$.title").value("updated subCategory"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

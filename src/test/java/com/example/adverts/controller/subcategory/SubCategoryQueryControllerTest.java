@@ -6,6 +6,8 @@ import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SubCategoryQueryController.class)
 class SubCategoryQueryControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(SubCategoryQueryController.class);
 
     @MockBean
     private SubCategoryQueryService subCategoryQueryService;
@@ -72,7 +76,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -119,7 +123,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories[1].title").value("subCategory2"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -157,7 +161,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -190,7 +194,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.category.title").value("category"))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }

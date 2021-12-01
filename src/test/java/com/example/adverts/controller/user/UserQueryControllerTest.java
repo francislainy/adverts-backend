@@ -3,6 +3,8 @@ package com.example.adverts.controller.user;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.service.interfaces.user.UserQueryService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserQueryController.class)
 class UserQueryControllerTest {
+
+    Logger logger = LoggerFactory.getLogger(UserQueryController.class);
 
     @MockBean
     private UserQueryService userQueryService;
@@ -61,7 +65,7 @@ class UserQueryControllerTest {
                 .andExpect(jsonPath("$.users[0].role").value(userQueryDto.getRole()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -106,7 +110,7 @@ class UserQueryControllerTest {
                 .andExpect(jsonPath("$.users[1].role").value(userQueryDto2.getRole()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -136,7 +140,7 @@ class UserQueryControllerTest {
                 .andExpect(jsonPath("$.role").value(userQueryDto.getRole()))
                 .andReturn();
 
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        logger.info(mvcResult.getResponse().getContentAsString());
     }
 
 }
