@@ -1,6 +1,5 @@
 package com.example.adverts.controller.user;
 
-import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.repository.user.UserRepository;
 import com.example.adverts.service.interfaces.user.UserCommandService;
