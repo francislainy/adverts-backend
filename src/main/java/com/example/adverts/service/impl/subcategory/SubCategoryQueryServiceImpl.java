@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,15 +25,14 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
     @Override
     public SubCategoryQueryDto getSubCategory(UUID subCategoryId, UUID categoryId) {
 
-        if (subCategoryRepository.findById(subCategoryId).isPresent()) {
-            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).get(); //todo: should return category 15/11/2021
-
+        Optional<SubCategory> optional = subCategoryRepository.findById(subCategoryId);
+        if (optional.isPresent()) {
+            SubCategory subCategory = optional.get(); //todo: should return category 15/11/2021
             if (subCategory.getCategory().getId().equals(categoryId)) {
                 return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory());
             } else {
                 return null;
             }
-
         } else {
             return null;
         }

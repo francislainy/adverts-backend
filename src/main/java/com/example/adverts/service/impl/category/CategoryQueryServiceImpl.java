@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,9 +23,11 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
     @Override
     public CategoryQueryDto getCategory(UUID id) {
 
-        if (categoryRepository.findById(id).isPresent()) {
+        Optional<Category> optional = categoryRepository.findById(id);
 
-            Category category = categoryRepository.findById(id).get();
+        if (optional.isPresent()) {
+
+            Category category = optional.get();
 
             return new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(id));
 

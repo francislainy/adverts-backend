@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,8 +25,11 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
     @Override
     public ProductQueryDto getProduct(UUID id) {
-        if (productRepository.findById(id).isPresent()) {
-            Product product = productRepository.findById(id).get();
+
+        Optional<Product> optional = productRepository.findById(id);
+
+        if (optional.isPresent()) {
+            Product product = optional.get();
 
             return new ProductQueryDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress(), product.getCategory(), product.getSubCategory());
 

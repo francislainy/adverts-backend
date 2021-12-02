@@ -17,7 +17,7 @@ public class CustomExceptionHandler {
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();
         Map<String, String> map = new HashMap<>(errors.size());
-        errors.forEach((error) -> {
+        errors.forEach(error -> {
             String key = ((FieldError) error).getField();
             String val = error.getDefaultMessage();
             map.put(key, val);

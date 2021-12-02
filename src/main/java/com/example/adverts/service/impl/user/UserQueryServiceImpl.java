@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,9 +22,12 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public UserQueryDto getUser(UUID id) {
-        if (userRepository.findById(id).isPresent()) {
 
-            User u = userRepository.findById(id).get();
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isPresent()) {
+
+            User u = optional.get();
 
             return new UserQueryDto(u.getId(), u.getFirstname(), u.getLastname(), u.getEmail(), u.getUsername(), u.getPassword(), u.getRole());
 

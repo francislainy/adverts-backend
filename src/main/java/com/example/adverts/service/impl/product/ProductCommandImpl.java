@@ -10,6 +10,7 @@ import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.product.ProductCommandService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -28,10 +29,13 @@ public class ProductCommandImpl implements ProductCommandService {
     @Override
     public ProductCreateDto createProduct(ProductCreateDto productCreateDto, UUID categoryId, UUID subCategoryId) {
 
-        if (categoryRepository.findById(categoryId).isPresent() && subCategoryRepository.findById(subCategoryId).isPresent()) {
+        Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
+        Optional<SubCategory> optionalSubCategory = subCategoryRepository.findById(subCategoryId);
 
-            Category category = categoryRepository.findById(categoryId).get();
-            SubCategory subCategory = subCategoryRepository.findById(subCategoryId).get();
+        if (optionalCategory.isPresent() && optionalSubCategory.isPresent()) {
+
+            Category category = optionalCategory.get();
+            SubCategory subCategory = optionalSubCategory.get();
 
             Product product = new Product();
             product.setTitle(productCreateDto.getTitle());
