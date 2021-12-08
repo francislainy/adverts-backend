@@ -48,11 +48,11 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                .authorizeRequests()
-//                .antMatchers(SIGN_UP_URL).permitAll();
-                .anyRequest().authenticated()
-                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable();
+//                .authorizeRequests()
+////                .antMatchers(SIGN_UP_URL).permitAll();
+//                .anyRequest().authenticated()
+//                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

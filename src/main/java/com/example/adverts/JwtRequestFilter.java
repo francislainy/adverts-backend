@@ -47,6 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         } else {
 
             response.setStatus(HttpStatus.FORBIDDEN.value());
+            return;
         }
 
 
@@ -64,11 +65,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
 
-            chain.doFilter(request, response);
+//            chain.doFilter(request, response);
 
         }
 
-
+        chain.doFilter(request, response);
     }
 
 }
