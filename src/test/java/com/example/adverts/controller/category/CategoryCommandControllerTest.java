@@ -13,11 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -28,12 +30,14 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CategoryCommandController.class)
+//@AutoConfigureMockMvc(addFilters = false)
 class CategoryCommandControllerTest {
 
     Logger logger = LoggerFactory.getLogger(CategoryCommandController.class);
@@ -57,7 +61,6 @@ class CategoryCommandControllerTest {
     private JwtRequestFilter filter;
 
 
-//    @WithMockUser
     @Test
     void testCreateCategory() throws Exception {
 
@@ -70,8 +73,8 @@ class CategoryCommandControllerTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category")
                 .content(jsonCreate)
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AZW1haWwuY29tIiwiZXhwIjoxNjM4ODU1MzA1LCJpYXQiOjE2Mzg4MTkzMDV9.q4FWV7yVDAs_DREiF524VZ-udnqwV81GEOgdCj6QQAs")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AZW1haWwuY29tIiwiZXhwIjoxNjM4OTkzNDU2LCJpYXQiOjE2Mzg5NTc0NTZ9.0btVQMdxl7eQ1aRPPq862TIvPj0E_X2MToXhMqW_KrM")
                 .accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(request).andReturn();
 
@@ -80,10 +83,15 @@ class CategoryCommandControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
-//                .andExpect(content().json(jsonResponse, true))
+                .andExpect(content().json(jsonResponse, true))
                 .andExpect(jsonPath("$.id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
-//                .andExpect(jsonPath("$.title").value("category"))
+                .andExpect(jsonPath("$.title").value("category"))
                 .andReturn();
+
+
+        String actualJson = mvcResult.getResponse().getContentAsString();
+
+        assertEquals(jsonResponse, actualJson);
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
