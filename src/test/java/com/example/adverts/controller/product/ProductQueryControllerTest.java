@@ -1,5 +1,7 @@
 package com.example.adverts.controller.product;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
@@ -8,28 +10,37 @@ import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product_address.ProductAddress;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.service.interfaces.product.ProductQueryService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProductQueryController.class)
+@WebMvcTest(value = ProductQueryController.class, includeFilters = {
+        // to include JwtUtil in spring context
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})
 class ProductQueryControllerTest {
 
     Logger logger = LoggerFactory.getLogger(ProductQueryController.class);
@@ -39,6 +50,21 @@ class ProductQueryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private static UserDetails dummy;
+    private static String jwtToken;
+
+    @BeforeEach
+    public void setUp() {
+        dummy = new User("foo@email.com", "foo", new ArrayList<>());
+        jwtToken = jwtUtil.generateToken(dummy);
+    }
 
     @Test
     void testGetAllProductsOneItemOnly() throws Exception {
@@ -62,12 +88,13 @@ class ProductQueryControllerTest {
         ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress, category, subCategory);
         List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/product")
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("products", productQueryDtoList);
@@ -130,14 +157,15 @@ class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", categoryQueryDto);
@@ -203,14 +231,15 @@ class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto1, productQueryDto2);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", categoryQueryDto);
@@ -283,13 +312,14 @@ class ProductQueryControllerTest {
 
         ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.0"), productAddress, category, subCategory);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getProduct(productId)).thenReturn(
                 productQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product/{productId}", categoryId, subCategoryId, productId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         String json = asJsonString(productQueryDto);
         MvcResult mvcResult = mockMvc.perform(request)

@@ -1,32 +1,43 @@
 package com.example.adverts.controller.subcategory;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(SubCategoryQueryController.class)
+@WebMvcTest(value = SubCategoryQueryController.class, includeFilters = {
+        // to include JwtUtil in spring context
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})
 class SubCategoryQueryControllerTest {
 
     Logger logger = LoggerFactory.getLogger(SubCategoryQueryController.class);
@@ -36,6 +47,21 @@ class SubCategoryQueryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private static UserDetails dummy;
+    private static String jwtToken;
+
+    @BeforeEach
+    public void setUp() {
+        dummy = new User("foo@email.com", "foo", new ArrayList<>());
+        jwtToken = jwtUtil.generateToken(dummy);
+    }
 
     @Test
     void testGetAllSubCategoriesForCategoryWhenOneItemOnly() throws Exception {
@@ -52,13 +78,14 @@ class SubCategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", categoryQueryDto);
@@ -97,13 +124,14 @@ class SubCategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", categoryQueryDto);
@@ -140,12 +168,13 @@ class SubCategoryQueryControllerTest {
         SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories()).thenReturn(subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/subCategory")
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("subCategories", subCategoryQueryDtoList);
@@ -177,12 +206,13 @@ class SubCategoryQueryControllerTest {
 
         SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         String json = asJsonString(subCategoryQueryDto);
         MvcResult mvcResult = mockMvc.perform(request)

@@ -1,6 +1,7 @@
 package com.example.adverts.controller.product;
 
-import com.example.adverts.controller.category.CategoryCommandController;
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.product.ProductCreateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
@@ -8,16 +9,18 @@ import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.product.ProductCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -26,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -33,12 +37,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ContextConfiguration(classes = {ProductCommandController.class})
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(CategoryCommandController.class)
+@WebMvcTest(value = ProductCommandController.class, includeFilters = {
+        // to include JwtUtil in spring context
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})
 class ProductCommandControllerTest {
 
     Logger logger = LoggerFactory.getLogger(ProductCommandControllerTest.class);
@@ -57,6 +62,21 @@ class ProductCommandControllerTest {
 
     @MockBean
     private SubCategoryRepository subCategoryRepository;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private static UserDetails dummy;
+    private static String jwtToken;
+
+    @BeforeEach
+    public void setUp() {
+        dummy = new User("foo@email.com", "foo", new ArrayList<>());
+        jwtToken = jwtUtil.generateToken(dummy);
+    }
 
     @Test
     void testCreateProduct() throws Exception {
@@ -81,14 +101,14 @@ class ProductCommandControllerTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
-
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(
                 productCreateResponseDto);
 
@@ -130,14 +150,14 @@ class ProductCommandControllerTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(false);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
-
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
 
         MvcResult mvcResult = mockMvc.perform(request)
@@ -167,14 +187,14 @@ class ProductCommandControllerTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(false);
-
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
 
         MvcResult mvcResult = mockMvc.perform(request)
@@ -200,19 +220,18 @@ class ProductCommandControllerTest {
 
         ProductCreateDto productCreateDto = new ProductCreateDto(null, "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
-
         String jsonCreate = asJsonString(productCreateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
-
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
 
         MvcResult mvcResult = mockMvc.perform(request)

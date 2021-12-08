@@ -1,28 +1,39 @@
 package com.example.adverts.controller.user;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.service.interfaces.user.UserQueryService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserQueryController.class)
+@WebMvcTest(value = UserQueryController.class, includeFilters = {
+        // to include JwtUtil in spring context
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})
 class UserQueryControllerTest {
 
     Logger logger = LoggerFactory.getLogger(UserQueryController.class);
@@ -33,6 +44,21 @@ class UserQueryControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private static UserDetails dummy;
+    private static String jwtToken;
+
+    @BeforeEach
+    public void setUp() {
+        dummy = new User("foo@email.com", "foo", new ArrayList<>());
+        jwtToken = jwtUtil.generateToken(dummy);
+    }
+
     @Test
     void testGetAllUsersWhenOneItemOnly() throws Exception {
 
@@ -41,12 +67,13 @@ class UserQueryControllerTest {
         UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
         List<UserQueryDto> categoryQueryDtoList = List.of(userQueryDto);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getAllUsers()).thenReturn(categoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/user")
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, List<UserQueryDto>> result = new HashMap<>();
         result.put("users", categoryQueryDtoList);
@@ -79,12 +106,13 @@ class UserQueryControllerTest {
         UserQueryDto userQueryDto2 = new UserQueryDto(userId2, "fran2", "campos2", "fran2@gmail.com", "fran2@gmail.com", "223456", "basic");
         List<UserQueryDto> userQueryDtoList = List.of(userQueryDto1, userQueryDto2);
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getAllUsers()).thenReturn(userQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/user")
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         HashMap<String, List<UserQueryDto>> result = new HashMap<>();
         result.put("users", userQueryDtoList);
@@ -120,12 +148,13 @@ class UserQueryControllerTest {
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
 
+        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getUser(userId)).thenReturn(userQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/user/{userId}", userId)
+                .header("Authorization", "Bearer " + jwtToken)
                 .accept(MediaType.APPLICATION_JSON);
-        mockMvc.perform(request).andReturn();
 
         String json = asJsonString(userQueryDto);
         MvcResult mvcResult = mockMvc.perform(request)
