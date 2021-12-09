@@ -35,9 +35,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@ContextConfiguration(classes = {CategoryQueryController.class})
-@ExtendWith(SpringExtension.class)
-
 @WebMvcTest(value = CategoryQueryController.class, includeFilters = {
         // to include JwtUtil in spring context
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})

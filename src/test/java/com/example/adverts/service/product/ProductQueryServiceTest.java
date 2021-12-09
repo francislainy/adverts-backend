@@ -1,5 +1,7 @@
 package com.example.adverts.service.product;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
@@ -42,6 +44,12 @@ class ProductQueryServiceTest {
 
     @MockBean
     private ProductQueryService productQueryService;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @BeforeEach
     void initUseCase() {

@@ -1,19 +1,25 @@
 package com.example.adverts.service.user;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.model.entity.user.User;
 import com.example.adverts.repository.user.UserRepository;
 import com.example.adverts.service.interfaces.user.UserCommandService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(UserCommandService.class)
@@ -25,13 +31,20 @@ class UserCommandServiceTest {
     @Autowired
     private UserCommandService userCommandService;
 
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
     @Test
     void testCreateUser() {
 
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        User userMocked = new User(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        User userMocked = new User(userId, "fran", "campos", "fran@gmail.com", "123456", "fran@gmail.com", "basic");
         UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
 
+//        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userRepository.save(any(User.class))).thenReturn(userMocked);
 
         UserCreateDto userCreateDto1 = userCommandService.createUser(userCreateDto);

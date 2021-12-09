@@ -1,5 +1,7 @@
 package com.example.adverts.service.user;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.model.entity.user.User;
 import com.example.adverts.repository.user.UserRepository;
@@ -8,9 +10,12 @@ import com.example.adverts.service.interfaces.user.UserQueryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,6 +33,21 @@ class UserQueryServiceTest {
 
     @MockBean
     private UserQueryService userQueryService;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    private static UserDetails dummy;
+    private static String jwtToken;
+
+    @BeforeEach
+    public void setUp() {
+        dummy = new org.springframework.security.core.userdetails.User("foo@email.com", "foo", new ArrayList<>());
+        jwtToken = jwtUtil.generateToken(dummy);
+    }
 
     @BeforeEach
     void initUseCase() {

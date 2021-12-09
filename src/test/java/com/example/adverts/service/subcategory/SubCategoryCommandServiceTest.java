@@ -1,5 +1,7 @@
 package com.example.adverts.service.subcategory;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
@@ -33,6 +35,12 @@ class SubCategoryCommandServiceTest {
 
     @Autowired
     private SubCategoryCommandService subCategoryCommandService;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     void testSubCategoryItemSavedToDb() {

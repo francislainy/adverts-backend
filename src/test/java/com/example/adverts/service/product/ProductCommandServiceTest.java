@@ -1,5 +1,7 @@
 package com.example.adverts.service.product;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.product.ProductCreateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.product.Product;
@@ -42,6 +44,12 @@ class ProductCommandServiceTest {
 
     @Autowired
     private ProductCommandService productCommandService;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     void testProductItemCreated() {

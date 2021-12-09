@@ -14,11 +14,11 @@
     <name>adverts</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <data-jpa.version>2.5.5</data-jpa.version>
         <data-validation.version>2.6.1</data-validation.version>
         <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <sonar.version>3.4.0.905</sonar.version>
     </properties>
     <dependencies>
@@ -226,7 +226,7 @@
                 <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
                 <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
                 <sonar.jacoco.reportPaths>${basedir}/target/jacoco.exec</sonar.jacoco.reportPaths>
-                <java.version>1.8</java.version>
+                <java.version>17</java.version>
                 <sonar.coverage.exclusions>
                     **/ViaductService.java, **/*Exception*.java, **/dao/**, **/dto/**, **/entity/**
                 </sonar.coverage.exclusions>

@@ -1,5 +1,7 @@
 package com.example.adverts.service.category;
 
+import com.example.adverts.JwtUtil;
+import com.example.adverts.MyUserDetailsService;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
@@ -7,6 +9,7 @@ import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -18,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(CategoryCommandService.class)
+@AutoConfigureMockMvc(addFilters = false)
 class CategoryCommandServiceTest {
 
     @MockBean
@@ -25,6 +29,12 @@ class CategoryCommandServiceTest {
 
     @Autowired
     private CategoryCommandService categoryCommandService;
+
+    @MockBean
+    private MyUserDetailsService myUserDetailsService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     void testCreateCategory() {

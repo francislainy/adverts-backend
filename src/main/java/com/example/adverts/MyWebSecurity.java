@@ -22,7 +22,7 @@ import static com.example.adverts.SecurityConstants.SIGN_UP_URL;
 public class MyWebSecurity extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -36,7 +36,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
 
     public MyWebSecurity(MyUserDetailsService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public void configure(WebSecurity web) throws Exception { //not triggered
@@ -48,11 +48,11 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable();
-//                .authorizeRequests()
-////                .antMatchers(SIGN_UP_URL).permitAll();
-//                .anyRequest().authenticated()
-//                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable()
+                .authorizeRequests()
+//                .antMatchers(SIGN_UP_URL).permitAll();
+                .anyRequest().authenticated()
+                .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
