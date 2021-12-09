@@ -8,11 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,11 +19,17 @@ import static com.example.adverts.SecurityConstants.SIGN_UP_URL;
 public class MyWebSecurity extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetailsService userDetailsService;
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
+    @Autowired private PasswordEncoder passwordEncoder;
+
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
 
     @Override
     @Bean
@@ -35,9 +37,8 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    public MyWebSecurity(MyUserDetailsService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public MyWebSecurity(MyUserDetailsService userService) {
         this.userDetailsService = userService;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public void configure(WebSecurity web) {
@@ -48,18 +49,6 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-    }
-
-    @Autowired private PasswordEncoder passwordEncoder;
-
-    @Bean public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean
