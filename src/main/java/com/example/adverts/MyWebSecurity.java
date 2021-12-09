@@ -50,6 +50,8 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
+    @Autowired private PasswordEncoder passwordEncoder;
+
     @Bean public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
@@ -57,7 +59,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean
