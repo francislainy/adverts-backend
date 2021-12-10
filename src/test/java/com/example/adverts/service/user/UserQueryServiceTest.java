@@ -57,7 +57,7 @@ class UserQueryServiceTest {
     void testGetUser() {
 
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        User userMocked = new User(userId, "fran1", "campos1", "fran1@gmail.com", "fran1@gmail.com", "123456", "admin");
+        User userMocked = new User(userId, "user1", "test1", "user1@gmail.com", "user1@gmail.com", "123456", "admin");
 
         when(userRepository.findById(any(UUID.class))).thenReturn(Optional.of(userMocked));
 
@@ -79,8 +79,8 @@ class UserQueryServiceTest {
         UUID userId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         UUID userId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
 
-        User userMocked1 = new User(userId1, "fran1", "campos1", "fran1@gmail.com", "fran1@gmail.com", "123456", "admin");
-        User userMocked2 = new User(userId2, "fran2", "campos2", "fran2@gmail.com", "fran2@gmail.com", "223456", "basic");
+        User userMocked1 = new User(userId1, "user1", "test1", "user1@gmail.com", "user1@gmail.com", "123456", "admin");
+        User userMocked2 = new User(userId2, "user2", "test2", "user2@gmail.com", "user2@gmail.com", "223456", "basic");
 
         List<User> userMockedList = List.of(userMocked1, userMocked2);
 

@@ -19,7 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -73,14 +72,36 @@ class UserCommandControllerTest {
         jwtToken = jwtUtil.generateToken(dummy);
     }
 
+    @Test
+    void testCreateUserThrows403WhenNoAuthHeader() throws Exception {
+
+        UserCreateDto userCreateDto = new UserCreateDto("", "test", "user@email.com", "user@email.com", "123456", "basic");
+
+        String jsonCreate = asJsonString(userCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/user")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
     //region
     @Test
     void testCreateUser() throws Exception {
 
         UUID userId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
-        UserCreateDto userCreateResponseDto = new UserCreateDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@email.com", "user@email.com", "123456", "basic");
+        UserCreateDto userCreateResponseDto = new UserCreateDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
         String jsonResponse = asJsonString(userCreateResponseDto);
@@ -110,11 +131,10 @@ class UserCommandControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
     void testCreateUserThrowsErrorWhenEmptyFirstname() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("", "test", "user@email.com", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -133,12 +153,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenEmptyLastname() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "", "user@email.com", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -157,12 +176,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenEmptyEmail() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -181,12 +199,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenInvalidEmail() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "invalid_email", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "invalid_email", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -205,12 +222,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenEmptyUsername() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@email.com", "", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -229,12 +245,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenInvalidUsername() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "invalid_username", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@email.com", "invalid_username", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -253,12 +268,11 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserThrowsErrorWhenEmptyPassword() throws Exception {
 
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "fran@gmail.com", "", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@email.com", "user@email.com", "", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
 
@@ -277,14 +291,13 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateUserDoesNotThrowErrorWhenEmptyRole() throws Exception {
 
         UUID userId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "");
-        UserCreateDto userCreateResponseDto = new UserCreateDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@email.com", "user@email.com", "123456", "");
+        UserCreateDto userCreateResponseDto = new UserCreateDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "basic");
 
         String jsonCreate = asJsonString(userCreateDto);
         String jsonResponse = asJsonString(userCreateResponseDto);
@@ -315,7 +328,6 @@ class UserCommandControllerTest {
     }
 
     //endregion
-
     @Disabled("to be finished")
     @Test
     void testLoginReturnsJwt() throws Exception {

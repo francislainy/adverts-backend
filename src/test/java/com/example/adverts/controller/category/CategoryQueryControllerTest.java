@@ -61,6 +61,28 @@ class CategoryQueryControllerTest {
     }
 
     @Test
+    void testGetAllCategoriesThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 2L);
+        List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryQueryService.getAllCategories()).thenReturn(categoryQueryDtoList);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/category")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testGetAllCategoriesWhenOneItemOnly() throws Exception {
 
         UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
@@ -91,7 +113,6 @@ class CategoryQueryControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testGetAllCategoriesWhenTwoItems() throws Exception {
@@ -130,6 +151,25 @@ class CategoryQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
+    @Test
+    void testGetCategoryItemThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 1L);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/category/{categoryId}", categoryId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
 
     @Test
     void testGetCategoryItem() throws Exception {

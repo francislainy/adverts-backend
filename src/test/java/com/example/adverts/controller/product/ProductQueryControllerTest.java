@@ -67,6 +67,42 @@ class ProductQueryControllerTest {
     }
 
     @Test
+    void testGetAllProductsThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+        subCategory.setTitle("subCategory");
+        subCategory.setCategory(category);
+
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress, category, subCategory);
+        List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/product")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testGetAllProductsOneItemOnly() throws Exception {
 
         UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
@@ -129,7 +165,6 @@ class ProductQueryControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testGetAllProductsForCategoryAndSubCategoryWhenOneItemOnly() throws Exception {
@@ -201,7 +236,6 @@ class ProductQueryControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testGetAllProductsForCategoryAndSubCategoryWhenTwoItems() throws Exception {
@@ -290,6 +324,41 @@ class ProductQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
+    @Test
+    void testGetProductItemForCategoryAndSubCategoryThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID productId = UUID.fromString("ac358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID productAddressId = UUID.fromString("4c358df7-4a38-4ad0-b070-59adcd57dde0");
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+        subCategory.setTitle("subCategory");
+        subCategory.setCategory(category);
+
+        ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
+
+        ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.0"), productAddress, category, subCategory);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(productQueryService.getProduct(productId)).thenReturn(
+                productQueryDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product/{productId}", categoryId, subCategoryId, productId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
 
     @Test
     void testGetProductItemForCategoryAndSubCategory() throws Exception {

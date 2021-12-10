@@ -31,10 +31,10 @@ public class CategoryQueryController {
 
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CategoryQueryDto> getCategory(@PathVariable(value = "id") UUID id) {
-        return new ResponseEntity<>(categoryQueryService.getCategory(id), HttpStatus.OK);
+    public ResponseEntity<CategoryQueryDto> getCategory(@PathVariable(value = "categoryId") UUID categoryId) {
+        return new ResponseEntity<>(categoryQueryService.getCategory(categoryId), HttpStatus.OK);
     }
 
 }

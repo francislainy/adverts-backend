@@ -60,11 +60,33 @@ class UserQueryControllerTest {
     }
 
     @Test
+    void testGetAllUsersThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+
+        UserQueryDto userQueryDto = new UserQueryDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "admin");
+        List<UserQueryDto> categoryQueryDtoList = List.of(userQueryDto);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userQueryService.getAllUsers()).thenReturn(categoryQueryDtoList);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/user")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testGetAllUsersWhenOneItemOnly() throws Exception {
 
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
 
-        UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
+        UserQueryDto userQueryDto = new UserQueryDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "admin");
         List<UserQueryDto> categoryQueryDtoList = List.of(userQueryDto);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -95,15 +117,14 @@ class UserQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
     void testGetAllUsersWhenTwoItems() throws Exception {
 
         UUID userId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         UUID userId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
 
-        UserQueryDto userQueryDto1 = new UserQueryDto(userId1, "fran1", "campos1", "fra1n@gmail.com", "fran1@gmail.com", "123456", "admin");
-        UserQueryDto userQueryDto2 = new UserQueryDto(userId2, "fran2", "campos2", "fran2@gmail.com", "fran2@gmail.com", "223456", "basic");
+        UserQueryDto userQueryDto1 = new UserQueryDto(userId1, "user1", "test1", "user1@gmail.com", "user1@gmail.com", "123456", "admin");
+        UserQueryDto userQueryDto2 = new UserQueryDto(userId2, "user2", "test2", "user2@gmail.com", "user2@gmail.com", "223456", "basic");
         List<UserQueryDto> userQueryDtoList = List.of(userQueryDto1, userQueryDto2);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -141,12 +162,31 @@ class UserQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
+    @Test
+    void testGetUserItemThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
+        UserQueryDto userQueryDto = new UserQueryDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "admin");
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userQueryService.getUser(userId)).thenReturn(userQueryDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/user/{userId}", userId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
 
     @Test
     void testGetUserItem() throws Exception {
 
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
+        UserQueryDto userQueryDto = new UserQueryDto(userId, "user", "test", "user@email.com", "user@email.com", "123456", "admin");
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getUser(userId)).thenReturn(userQueryDto);

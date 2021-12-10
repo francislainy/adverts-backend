@@ -21,7 +21,7 @@ class UserRepositoryTest {
     @Test
     void findOne() {
         User user = new User();
-        user.setFirstname("fran");
+        user.setFirstname("user");
         user = userRepository.save(user);
         User fetchedUser = userRepository.findById(user.getId()).get();
         assertNotNull(fetchedUser);
@@ -30,8 +30,10 @@ class UserRepositoryTest {
 
     @Test
     void findAll() {
+
+        UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         List<User> users = List.of(
-                new User(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin")
+                new User(userId, "user", "test", "user@email.com", "user@email.com", "123456", "admin")
         );
         userRepository.saveAll(users);
         List<User> userList = (List<User>) userRepository.findAll();

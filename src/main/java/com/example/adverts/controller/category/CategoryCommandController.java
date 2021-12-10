@@ -36,17 +36,17 @@ public class CategoryCommandController {
 
     }
 
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<CategoryUpdateDto> updateCategory(@PathVariable(value = "id") UUID id,
+    public ResponseEntity<CategoryUpdateDto> updateCategory(@PathVariable(value = "categoryId") UUID categoryId,
                                                             @RequestBody CategoryUpdateDto categoryUpdateDto) {
-        return new ResponseEntity<>(categoryCommandService.updateCategory(id, categoryUpdateDto), HttpStatus.OK);
+        return new ResponseEntity<>(categoryCommandService.updateCategory(categoryId, categoryUpdateDto), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FeedbackMessage> deleteCategory(@PathVariable(value = "id") UUID id) {
-        if (categoryRepository.findById(id).isPresent()) {
-            if (categoryCommandService.deleteCategory(id)) {
+    @DeleteMapping(value = "/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FeedbackMessage> deleteCategory(@PathVariable(value = "categoryId") UUID categoryId) {
+        if (categoryRepository.findById(categoryId).isPresent()) {
+            if (categoryCommandService.deleteCategory(categoryId)) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(new FeedbackMessage("Item not deleted"), HttpStatus.INTERNAL_SERVER_ERROR);

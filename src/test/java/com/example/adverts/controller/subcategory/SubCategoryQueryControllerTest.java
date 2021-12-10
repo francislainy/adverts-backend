@@ -64,6 +64,36 @@ class SubCategoryQueryControllerTest {
     }
 
     @Test
+    void testGetAllSubCategoriesForCategoryThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory");
+        List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
+
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
+        when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testGetAllSubCategoriesForCategoryWhenOneItemOnly() throws Exception {
 
         UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
@@ -105,7 +135,6 @@ class SubCategoryQueryControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testGetAllSubCategoriesForCategoryWhenTwoItems() throws Exception {
@@ -154,7 +183,6 @@ class SubCategoryQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
     void testGetAllSubCategories() throws Exception {
 
@@ -193,6 +221,31 @@ class SubCategoryQueryControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
+    @Test
+    void testGetSubCategoryItemForCategoryThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+        UUID subCategoryId = UUID.fromString("3ba4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setTitle("category");
+
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .get("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}", categoryId, subCategoryId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
 
     @Test
     void testGetSubCategoryItemForCategory() throws Exception {

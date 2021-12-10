@@ -64,20 +64,51 @@ class SubCategoryCommandControllerTest {
     }
 
     @Test
-    void testCreateSubCategory() throws Exception {
+    void testCreateSubCategoryThrows403WhenNoAuthHeader() throws Exception {
 
-        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", subCategoryId);
 
         String jsonCreate = asJsonString(subCategoryCreateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
+                .post("/api/adverts/category/{categoryId}/subCategory", categoryId)
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(subCategoryId, "subCategory", categoryId);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
+                subCategoryCreateResponseDto);
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testCreateSubCategory() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", subCategoryId);
+
+        String jsonCreate = asJsonString(subCategoryCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/{categoryId}/subCategory", categoryId)
                 .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(subCategoryId, "subCategory", categoryId);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
@@ -88,29 +119,31 @@ class SubCategoryCommandControllerTest {
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
-                .andExpect(jsonPath("$.id").value("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andExpect(jsonPath("$.id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.title").value("subCategory"))
-                .andExpect(jsonPath("$.categoryId").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andExpect(jsonPath("$.categoryId").value(categoryId.toString()))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
     void testCreateSubCategoryThrowsErrorWhenCategoryDoesNotExist() throws Exception {
 
-        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto("subCategory", subCategoryId);
         String jsonCreate = asJsonString(subCategoryCreateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
+                .post("/api/adverts/category/{categoryId}/subCategory", categoryId)
                 .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(subCategoryId, "subCategory", categoryId);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
@@ -125,21 +158,23 @@ class SubCategoryCommandControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
     void testCreateSubCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
 
-        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto(null, UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        SubCategoryCreateDto subCategoryCreateDto = new SubCategoryCreateDto(null, subCategoryId);
         String jsonCreate = asJsonString(subCategoryCreateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory")
+                .post("/api/adverts/category/{categoryId}/subCategory", categoryId)
                 .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonCreate)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
+        SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(subCategoryId, "subCategory", categoryId);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
@@ -154,18 +189,50 @@ class SubCategoryCommandControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
-    void testUpdateSubCategory() throws Exception {
+    void testUpdateSubCategoryThrows403WhenNoAuthHeader() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
 
         SubCategoryUpdateDto subCategoryUpdateDto = new SubCategoryUpdateDto();
         subCategoryUpdateDto.setTitle("updated subCategory");
-        SubCategoryUpdateDto subCategoryUpdateResponseDto = new SubCategoryUpdateDto(UUID.fromString("e7bd0ce8-579c-4554-b8ee-d70a537a3aaf"), "updated subCategory");
+        SubCategoryUpdateDto subCategoryUpdateResponseDto = new SubCategoryUpdateDto(subCategoryId, "updated subCategory");
 
         String jsonUpdateBody = asJsonString(subCategoryUpdateDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41/subCategory/e7bd0ce8-579c-4554-b8ee-d70a537a3aaf")
+                .put("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}", categoryId, subCategoryId)
+                .content(jsonUpdateBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(subCategoryCommandService.updateSubCategory(any(UUID.class), eq(subCategoryUpdateDto), any(UUID.class))).thenReturn(
+                subCategoryUpdateResponseDto);
+
+        String jsonResponse = asJsonString(subCategoryUpdateResponseDto);
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testUpdateSubCategory() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        UUID subCategoryId = UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41");
+
+        SubCategoryUpdateDto subCategoryUpdateDto = new SubCategoryUpdateDto();
+        subCategoryUpdateDto.setTitle("updated subCategory");
+        SubCategoryUpdateDto subCategoryUpdateResponseDto = new SubCategoryUpdateDto(subCategoryId, "updated subCategory");
+
+        String jsonUpdateBody = asJsonString(subCategoryUpdateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}", categoryId, subCategoryId)
                 .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonUpdateBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -179,7 +246,7 @@ class SubCategoryCommandControllerTest {
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
-                .andExpect(jsonPath("$.id").value("e7bd0ce8-579c-4554-b8ee-d70a537a3aaf"))
+                .andExpect(jsonPath("$.id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.title").value("updated subCategory"))
                 .andReturn();
 

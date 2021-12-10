@@ -65,6 +65,31 @@ class CategoryCommandControllerTest {
     }
 
     @Test
+    void testCreateCategoryThrows403WhenNoAuthHeader() throws Exception {
+
+        CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
+        CategoryCreateDto categoryCreateResponseDto = new CategoryCreateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "category");
+
+        String jsonCreate = asJsonString(categoryCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category")
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
+                categoryCreateResponseDto);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
     void testCreateCategory() throws Exception {
 
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto("category");
@@ -98,10 +123,8 @@ class CategoryCommandControllerTest {
 //
 //        assertEquals(jsonResponse, actualJson);
 
-
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
 
     @Test
     void testCreateCategoryThrowsErrorWhenTitleDoesNotExist() throws Exception {
@@ -132,19 +155,47 @@ class CategoryCommandControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-
     @Test
-    void testUpdateCategory() throws Exception {
+    void testUpdateCategoryThrows403WhenNoAuthHeader() throws Exception {
 
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
         CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
         categoryUpdateDto.setTitle("updated category");
-        CategoryUpdateDto categoryUpdateResponseDto = new CategoryUpdateDto(UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"), "updated category");
+        CategoryUpdateDto categoryUpdateResponseDto = new CategoryUpdateDto(categoryId, "updated category");
 
         String jsonUpdateBody = asJsonString(categoryUpdateDto);
         String jsonResponse = asJsonString(categoryUpdateResponseDto);
 
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/api/adverts/category/2da4002a-31c5-4cc7-9b92-cbf0db998c41")
+                .put("/api/adverts/category/{categoryId}", categoryId)
+                .content(jsonUpdateBody)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryCommandService.updateCategory(any(UUID.class), eq(categoryUpdateDto))).thenReturn(
+                categoryUpdateResponseDto);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isForbidden())
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testUpdateCategory() throws Exception {
+
+        UUID categoryId = UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41");
+        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
+        categoryUpdateDto.setTitle("updated category");
+        CategoryUpdateDto categoryUpdateResponseDto = new CategoryUpdateDto(categoryId, "updated category");
+
+        String jsonUpdateBody = asJsonString(categoryUpdateDto);
+        String jsonResponse = asJsonString(categoryUpdateResponseDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/api/adverts/category/{categoryId}", categoryId)
                 .header("Authorization", "Bearer " + jwtToken)
                 .content(jsonUpdateBody)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -158,7 +209,7 @@ class CategoryCommandControllerTest {
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
-                .andExpect(jsonPath("$.id").value("2da4002a-31c5-4cc7-9b92-cbf0db998c41"))
+                .andExpect(jsonPath("$.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.title").value("updated category"))
                 .andReturn();
 
