@@ -4,7 +4,6 @@ import com.example.adverts.*;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -320,7 +319,7 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-    
+
     @Test
     void testLoginReturnsJwt() throws Exception {
 
