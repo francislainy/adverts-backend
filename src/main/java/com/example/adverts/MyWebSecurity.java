@@ -18,7 +18,7 @@ import static com.example.adverts.SecurityConstants.SIGN_UP_URL;
 @EnableWebSecurity
 public class MyWebSecurity extends WebSecurityConfigurerAdapter {
 
-    private final MyUserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
@@ -37,7 +37,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    public MyWebSecurity(MyUserDetailsService userService) {
+    public MyWebSecurity(UserDetailsServiceImpl userService) {
         this.userDetailsService = userService;
     }
 

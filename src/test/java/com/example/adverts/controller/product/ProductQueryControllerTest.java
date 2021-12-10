@@ -1,7 +1,7 @@
 package com.example.adverts.controller.product;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
@@ -52,7 +52,7 @@ class ProductQueryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -88,7 +88,7 @@ class ProductQueryControllerTest {
         ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress, category, subCategory);
         List<ProductQueryDto> productQueryDtoList = List.of(productQueryDto);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProducts()).thenReturn(productQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -157,7 +157,7 @@ class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto = new ProductQueryNoParentDto(productId, "product", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
@@ -231,7 +231,7 @@ class ProductQueryControllerTest {
         ProductQueryNoParentDto productQueryDto2 = new ProductQueryNoParentDto(productId2, "product2", "prod description", "short description", new BigDecimal("100.00"), productAddress);
         List<ProductQueryNoParentDto> productQueryDtoList = List.of(productQueryDto1, productQueryDto2);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId)).thenReturn(productQueryDtoList);
         when(productQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
         when(productQueryService.getSubCategory(categoryId)).thenReturn(subCategoryQueryDto);
@@ -312,7 +312,7 @@ class ProductQueryControllerTest {
 
         ProductQueryDto productQueryDto = new ProductQueryDto(productId, "product", "prod description", "short description", new BigDecimal("100.0"), productAddress, category, subCategory);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(productQueryService.getProduct(productId)).thenReturn(
                 productQueryDto);
 

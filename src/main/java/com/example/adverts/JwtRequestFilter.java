@@ -21,7 +21,7 @@ import static com.example.adverts.SecurityConstants.SIGN_UP_URL;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

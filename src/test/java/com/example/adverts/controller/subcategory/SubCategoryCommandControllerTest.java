@@ -1,7 +1,7 @@
 package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.repository.category.CategoryRepository;
@@ -49,7 +49,7 @@ class SubCategoryCommandControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -79,7 +79,7 @@ class SubCategoryCommandControllerTest {
 
         SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
                 subCategoryCreateResponseDto);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
@@ -112,7 +112,7 @@ class SubCategoryCommandControllerTest {
 
         SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
                 subCategoryCreateResponseDto);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(false);
@@ -141,7 +141,7 @@ class SubCategoryCommandControllerTest {
 
         SubCategoryCreateDto subCategoryCreateResponseDto = new SubCategoryCreateDto(UUID.fromString("3fa4002a-31c5-4cc7-9b92-cbf0db998c41"), "subCategory", UUID.fromString("2da4002a-31c5-4cc7-9b92-cbf0db998c41"));
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.createSubCategory(eq(subCategoryCreateDto), any(UUID.class))).thenReturn(
                 subCategoryCreateResponseDto);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
@@ -171,7 +171,7 @@ class SubCategoryCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryCommandService.updateSubCategory(any(UUID.class), eq(subCategoryUpdateDto), any(UUID.class))).thenReturn(
                 subCategoryUpdateResponseDto);
 

@@ -1,7 +1,7 @@
 package com.example.adverts.controller.category;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.repository.category.CategoryRepository;
@@ -50,7 +50,7 @@ class CategoryCommandControllerTest {
     private CategoryRepository categoryRepository;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -81,7 +81,7 @@ class CategoryCommandControllerTest {
                 .accept(MediaType.APPLICATION_JSON);
 
         // Mock Service method used in JwtRequestFilter
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         // Should be createCategory(eq(categoryCreateDto))?
         when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(
@@ -120,7 +120,7 @@ class CategoryCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryCommandService.createCategory(categoryCreateDto)).thenReturn(null);
 
         MvcResult mvcResult = mockMvc.perform(request)
@@ -150,7 +150,7 @@ class CategoryCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryCommandService.updateCategory(any(UUID.class), eq(categoryUpdateDto))).thenReturn(
                 categoryUpdateResponseDto);
 

@@ -1,7 +1,7 @@
 package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
@@ -49,7 +49,7 @@ class SubCategoryQueryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -78,7 +78,7 @@ class SubCategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
@@ -124,7 +124,7 @@ class SubCategoryQueryControllerTest {
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size());
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
@@ -168,7 +168,7 @@ class SubCategoryQueryControllerTest {
         SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories()).thenReturn(subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -206,7 +206,7 @@ class SubCategoryQueryControllerTest {
 
         SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders

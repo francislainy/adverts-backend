@@ -1,7 +1,7 @@
 package com.example.adverts.service.category;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.repository.category.CategoryRepository;
@@ -31,7 +31,7 @@ class CategoryQueryServiceTest {
     private CategoryQueryService categoryQueryService;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @MockBean
     private JwtUtil jwtUtil;

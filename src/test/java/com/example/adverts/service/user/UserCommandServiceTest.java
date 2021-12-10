@@ -1,7 +1,7 @@
 package com.example.adverts.service.user;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.TestConfig;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.model.entity.user.User;
@@ -31,7 +31,7 @@ class UserCommandServiceTest {
     private UserCommandService userCommandService;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @MockBean
     private JwtUtil jwtUtil;

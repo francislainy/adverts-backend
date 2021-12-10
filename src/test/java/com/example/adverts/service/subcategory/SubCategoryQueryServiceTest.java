@@ -1,7 +1,7 @@
 package com.example.adverts.service.subcategory;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;
@@ -34,7 +34,7 @@ class SubCategoryQueryServiceTest {
     private SubCategoryQueryService subCategoryQueryService;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @MockBean
     private JwtUtil jwtUtil;

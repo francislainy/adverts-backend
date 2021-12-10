@@ -1,7 +1,7 @@
 package com.example.adverts.controller.user;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.service.interfaces.user.UserQueryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +45,7 @@ class UserQueryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -67,7 +67,7 @@ class UserQueryControllerTest {
         UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
         List<UserQueryDto> categoryQueryDtoList = List.of(userQueryDto);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getAllUsers()).thenReturn(categoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -106,7 +106,7 @@ class UserQueryControllerTest {
         UserQueryDto userQueryDto2 = new UserQueryDto(userId2, "fran2", "campos2", "fran2@gmail.com", "fran2@gmail.com", "223456", "basic");
         List<UserQueryDto> userQueryDtoList = List.of(userQueryDto1, userQueryDto2);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getAllUsers()).thenReturn(userQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -148,7 +148,7 @@ class UserQueryControllerTest {
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         UserQueryDto userQueryDto = new UserQueryDto(userId, "fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "admin");
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userQueryService.getUser(userId)).thenReturn(userQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders

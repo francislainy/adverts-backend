@@ -1,7 +1,7 @@
 package com.example.adverts.controller.user;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ class UserCommandControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -76,7 +76,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userCommandService.createUser(userCreateDto)).thenReturn(userCreateResponseDto);
 
         MvcResult mvcResult = mockMvc.perform(request)
@@ -109,7 +109,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -133,7 +133,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -157,7 +157,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -181,7 +181,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -205,7 +205,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -229,7 +229,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -253,7 +253,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -280,7 +280,7 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(userCommandService.createUser(userCreateDto)).thenReturn(userCreateResponseDto);
 
         MvcResult mvcResult = mockMvc.perform(request)

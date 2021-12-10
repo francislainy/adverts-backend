@@ -1,7 +1,7 @@
 package com.example.adverts.controller.product;
 
 import com.example.adverts.JwtUtil;
-import com.example.adverts.MyUserDetailsService;
+import com.example.adverts.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.product.ProductCreateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
@@ -64,7 +64,7 @@ class ProductCommandControllerTest {
     private SubCategoryRepository subCategoryRepository;
 
     @MockBean
-    private MyUserDetailsService myUserDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -106,7 +106,7 @@ class ProductCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(
@@ -155,7 +155,7 @@ class ProductCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(false);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
@@ -192,7 +192,7 @@ class ProductCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(false);
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
@@ -229,7 +229,7 @@ class ProductCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        when(myUserDetailsService.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
         when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
