@@ -1,11 +1,13 @@
 package com.example.adverts.controller.user;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import com.example.adverts.*;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
+import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -13,8 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -24,7 +29,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,18 +52,28 @@ class UserCommandControllerTest {
     @MockBean
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @Autowired
+    @MockBean
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @MockBean
+    Authentication mockedAuthentication;
 
     private static UserDetails dummy;
     private static String jwtToken;
 
     @BeforeEach
     public void setUp() {
-        dummy = new User("foo@email.com", "foo", new ArrayList<>());
+        dummy = new User("user@email.com", "123456", new ArrayList<>());
         jwtToken = jwtUtil.generateToken(dummy);
     }
 
+    //region
     @Test
     void testCreateUser() throws Exception {
 
@@ -293,6 +309,42 @@ class UserCommandControllerTest {
                 .andExpect(jsonPath("$.username").value(userCreateResponseDto.getUsername()))
                 .andExpect(jsonPath("$.password").value(userCreateResponseDto.getPassword()))
                 .andExpect(jsonPath("$.role").value(userCreateResponseDto.getRole()))
+                .andReturn();
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    //endregion
+
+    @Disabled("to be finished")
+    @Test
+    void testLoginReturnsJwt() throws Exception {
+
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest("user@email.com", "123456");
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse("124");
+
+        String jsonRequest = asJsonString(authenticationRequest);
+        String jsonResponse = asJsonString(authenticationResponse);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/user/login")
+                .content(jsonRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        Authentication authentication = mock(Authentication.class);
+        authentication.setAuthenticated(true);
+//        when(authentication.isAuthenticated()).thenReturn(true);
+
+        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(mockedAuthentication);
+
+        when(jwtUtil.generateToken(dummy)).thenReturn("124");
+        when(userDetailsServiceImpl.loadUserByUsername(eq("user@email.com"))).thenReturn(dummy);
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(jsonResponse, true))
+                .andExpect(jsonPath("$.jwt").value(isNotNull()))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());

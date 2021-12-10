@@ -40,8 +40,8 @@ class UserCommandServiceTest {
     void testCreateUser() {
 
         UUID userId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        User userMocked = new User(userId, "fran", "campos", "fran@gmail.com", "123456", "fran@gmail.com", "basic");
-        UserCreateDto userCreateDto = new UserCreateDto("fran", "campos", "fran@gmail.com", "fran@gmail.com", "123456", "basic");
+        User userMocked = new User(userId, "user", "test", "user@gmail.com", "123456", "user@gmail.com", "basic");
+        UserCreateDto userCreateDto = new UserCreateDto("user", "test", "user@gmail.com", "user@gmail.com", "123456", "basic");
 
         when(userRepository.save(any(User.class))).thenReturn(userMocked);
 

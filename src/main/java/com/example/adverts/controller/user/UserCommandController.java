@@ -55,7 +55,6 @@ public class UserCommandController extends CustomExceptionHandler {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         String jwt = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(jwt);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }

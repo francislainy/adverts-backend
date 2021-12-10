@@ -20,10 +20,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 
-        com.example.adverts.model.entity.user.User user =  userRepository.findUserByUsername(username);
+        com.example.adverts.model.entity.user.User user =  userRepository.findByUsername(username);
 
         return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
-
-
     }
 }
