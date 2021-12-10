@@ -48,7 +48,7 @@ public class UserCommandController extends CustomExceptionHandler {
     public ResponseEntity<Object> loginUser(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         try {
-            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new Exception("incorrect username or password", e);
         }
