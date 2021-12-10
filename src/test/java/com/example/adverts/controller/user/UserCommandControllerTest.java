@@ -3,11 +3,9 @@ package com.example.adverts.controller.user;
 import com.example.adverts.*;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
-import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,7 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,8 +25,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,11 +55,8 @@ class UserCommandControllerTest {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-
     @MockBean
-    Authentication mockedAuthentication;
+    AuthenticationManager authenticationManager;
 
     private static UserDetails dummy;
     private static String jwtToken;
@@ -94,7 +89,6 @@ class UserCommandControllerTest {
         logger.info(mvcResult.getResponse().getContentAsString());
     }
 
-    //region
     @Test
     void testCreateUser() throws Exception {
 
@@ -326,14 +320,12 @@ class UserCommandControllerTest {
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
-
-    //endregion
-    @Disabled("to be finished")
+    
     @Test
     void testLoginReturnsJwt() throws Exception {
 
         AuthenticationRequest authenticationRequest = new AuthenticationRequest("user@email.com", "123456");
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse("124");
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse("anyToken");
 
         String jsonRequest = asJsonString(authenticationRequest);
         String jsonResponse = asJsonString(authenticationResponse);
@@ -344,19 +336,14 @@ class UserCommandControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON);
 
-        Authentication authentication = mock(Authentication.class);
-        authentication.setAuthenticated(true);
-//        when(authentication.isAuthenticated()).thenReturn(true);
-
-        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(mockedAuthentication);
-
-        when(jwtUtil.generateToken(dummy)).thenReturn("124");
+        when(jwtUtil.generateToken(dummy)).thenReturn("anyToken");
         when(userDetailsServiceImpl.loadUserByUsername(eq("user@email.com"))).thenReturn(dummy);
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(jsonResponse, true))
-                .andExpect(jsonPath("$.jwt").value(isNotNull()))
+                .andExpect(jsonPath("$.jwt").value(is(notNullValue())))
+                .andExpect(jsonPath("$.jwt").value("anyToken"))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
