@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -136,7 +138,6 @@ class CategoryCommandControllerTest {
         dummy = new User("foo@email.com", "foo", new ArrayList<>());
         jwtToken = jwtUtil.generateToken(dummy);
 
-
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/api/adverts/category")
                 .header("Authorization", "Bearer " + jwtToken)
@@ -149,7 +150,7 @@ class CategoryCommandControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"message\": \"Missing title\"}", true))
+                .andExpect(jsonPath("$.errors.[0]").value(is("Title cannot be empty")))
                 .andReturn();
 
 

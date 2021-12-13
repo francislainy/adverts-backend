@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -17,9 +20,13 @@ import java.util.UUID;
 public class ProductCreateDto implements Serializable {
 
     private UUID id;
+    @NotEmpty(message = "Title cannot be empty")
     private String title;
+    @NotEmpty(message = "Description cannot be empty")
     private String description;
+    @NotEmpty(message = "Short description cannot be empty")
     private String shortDescription;
+    @NotNull(message = "Price cannot be empty")
     private BigDecimal price;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "countSubCategories", "products"})

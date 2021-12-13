@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @CrossOrigin
@@ -28,14 +29,9 @@ public class ProductCommandController {
     private SubCategoryRepository subCategoryRepository;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createProduct(@RequestBody ProductCreateDto productCreateDto, @PathVariable UUID categoryId, @PathVariable UUID subCategoryId) {
+    public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductCreateDto productCreateDto, @PathVariable UUID categoryId, @PathVariable UUID subCategoryId) {
         if (categoryRepository.existsById(categoryId) && subCategoryRepository.existsById(subCategoryId)) {
-
-            if (productCreateDto.getTitle() != null && productCreateDto.getPrice() != null && productCreateDto.getDescription() != null) {
-                return new ResponseEntity<>(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId), HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(new FeedbackMessage("Missing mandatory field"), HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(new FeedbackMessage("Entity not found"), HttpStatus.BAD_REQUEST);
         }

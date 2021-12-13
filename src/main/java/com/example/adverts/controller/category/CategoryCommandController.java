@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @CrossOrigin
@@ -25,15 +26,9 @@ public class CategoryCommandController {
     private CategoryRepository categoryRepository;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createCategory(@RequestBody CategoryCreateDto categoryCreateDto) {
+    public ResponseEntity<Object> createCategory(@Valid @RequestBody CategoryCreateDto categoryCreateDto) {
 
-        if (categoryCreateDto.getTitle() != null) {
-            return new ResponseEntity<>(categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
-        }
-        else {
-            return new ResponseEntity<>(new FeedbackMessage("Missing title"), HttpStatus.BAD_REQUEST);
-        }
-
+        return new ResponseEntity<>(categoryCommandService.createCategory(categoryCreateDto), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
