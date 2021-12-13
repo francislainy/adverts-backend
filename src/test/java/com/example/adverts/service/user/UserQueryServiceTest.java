@@ -1,7 +1,7 @@
 package com.example.adverts.service.user;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.model.entity.user.User;
 import com.example.adverts.repository.user.UserRepository;

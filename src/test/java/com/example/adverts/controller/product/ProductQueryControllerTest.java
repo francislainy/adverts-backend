@@ -1,7 +1,7 @@
 package com.example.adverts.controller.product;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
@@ -38,6 +38,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ComponentScan({"jwt"})
 @WebMvcTest(value = ProductQueryController.class, includeFilters = {
         // to include JwtUtil in spring context
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})

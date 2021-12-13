@@ -1,8 +1,8 @@
 package com.example.adverts.controller.user;
 
-import com.example.adverts.*;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
+import jwt.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.slf4j.Logger;
 
+@ComponentScan({"jwt"})
 @WebMvcTest(value = UserCommandController.class, includeFilters = {
         // to include JwtUtil in spring context
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})

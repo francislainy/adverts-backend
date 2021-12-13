@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;

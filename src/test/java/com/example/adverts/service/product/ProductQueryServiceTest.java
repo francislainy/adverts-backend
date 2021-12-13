@@ -1,7 +1,7 @@
 package com.example.adverts.service.product;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.product.ProductQueryDto;
 import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
 import com.example.adverts.model.entity.category.Category;

@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import com.example.adverts.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

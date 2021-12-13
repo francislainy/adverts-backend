@@ -1,7 +1,7 @@
 package com.example.adverts.service.subcategory;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;

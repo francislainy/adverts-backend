@@ -1,7 +1,7 @@
 package com.example.adverts.controller.subcategory;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
@@ -35,6 +35,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ComponentScan({"jwt"})
 @WebMvcTest(value = SubCategoryQueryController.class, includeFilters = {
         // to include JwtUtil in spring context
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})

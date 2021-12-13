@@ -1,7 +1,7 @@
 package com.example.adverts.controller.user;
 
-import com.example.adverts.JwtUtil;
-import com.example.adverts.UserDetailsServiceImpl;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.user.UserQueryDto;
 import com.example.adverts.service.interfaces.user.UserQueryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ComponentScan({"jwt"})
 @WebMvcTest(value = UserQueryController.class, includeFilters = {
         // to include JwtUtil in spring context
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtUtil.class)})

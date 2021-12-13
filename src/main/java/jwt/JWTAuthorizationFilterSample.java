@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.example.adverts.SecurityConstants.*;
+import static jwt.SecurityConstants.*;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JWTAuthorizationFilterSample extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilterSample(AuthenticationManager authManager) {
         super(authManager);
     }
 

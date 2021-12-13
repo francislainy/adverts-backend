@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 public class SecurityConstants {
 

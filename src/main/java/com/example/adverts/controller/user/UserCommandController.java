@@ -1,10 +1,14 @@
 package com.example.adverts.controller.user;
 
-import com.example.adverts.*;
 import com.example.adverts.model.dto.user.UserCreateDto;
 import com.example.adverts.service.interfaces.user.UserCommandService;
 import com.example.adverts.util.CustomExceptionHandler;
+import jwt.AuthenticationRequest;
+import jwt.AuthenticationResponse;
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@ComponentScan({"jwt"})
 @CrossOrigin
 @RequestMapping("/api/adverts/user")
 @RestController

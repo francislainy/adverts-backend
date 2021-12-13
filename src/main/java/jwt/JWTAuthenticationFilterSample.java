@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.example.adverts.SecurityConstants.*;
+import static jwt.SecurityConstants.*;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTAuthenticationFilterSample extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilterSample(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
         setFilterProcessesUrl(SIGN_UP_URL);

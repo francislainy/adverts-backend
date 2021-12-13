@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

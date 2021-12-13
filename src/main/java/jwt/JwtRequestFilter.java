@@ -1,4 +1,4 @@
-package com.example.adverts;
+package jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.adverts.SecurityConstants.SIGN_UP_URL;
+import static jwt.SecurityConstants.SIGN_UP_URL;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
