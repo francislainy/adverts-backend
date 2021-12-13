@@ -1,6 +1,8 @@
 package com.example.adverts.service.impl.subcategory;
 
+import com.example.adverts.model.dto.category.CategoryQueryDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
+import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,31 +23,61 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
     }
 
     @Override
-    public SubCategoryQueryDto getSubCategory(UUID id) {
+    public SubCategoryQueryDto getSubCategory(UUID subCategoryId, UUID categoryId) {
 
-        if (subCategoryRepository.findById(id).isPresent()) {
-            SubCategory category = subCategoryRepository.findById(id).get();
-
-            return new SubCategoryQueryDto(category.getId(), category.getTitle());
-
+        Optional<SubCategory> optional = subCategoryRepository.findById(subCategoryId);
+        if (optional.isPresent()) {
+            SubCategory subCategory = optional.get(); //todo: should return category 15/11/2021
+            if (subCategory.getCategory().getId().equals(categoryId)) {
+                return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory());
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
 
     }
 
-
     @Override
     public List<SubCategoryQueryDto> getAllSubCategories() {
         List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
 
+        subCategoryRepository.findAll().forEach(subCategory ->
+                subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory())));
+
+        return subCategoryList;
+    }
+
+    @Override
+    public List<SubCategoryQueryNoParentDto> getAllSubCategories(UUID categoryId) {
+        List<SubCategoryQueryNoParentDto> subCategoryList = new ArrayList<>();
+
         subCategoryRepository.findAll().forEach(subCategory -> {
-            subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle()));
+
+            if (subCategory.getCategory().getId().equals(categoryId)) {
+                subCategoryList.add(new SubCategoryQueryNoParentDto(subCategory.getId(), subCategory.getTitle()));
+            }
+
         });
 
         return subCategoryList;
-
     }
+
+    @Override
+    public CategoryQueryDto getCategory(UUID categoryId) {
+
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto();
+        for (SubCategory subCategory : subCategoryRepository.findAll()) {
+            if (subCategory.getCategory().getId().equals(categoryId)) {
+                categoryQueryDto = new CategoryQueryDto(subCategory.getCategory().getId(), subCategory.getCategory().getTitle());
+                break;
+            }
+        }
+
+        return categoryQueryDto;
+    }
+
 }
 
 

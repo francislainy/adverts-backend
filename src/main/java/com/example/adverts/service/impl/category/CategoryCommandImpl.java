@@ -7,6 +7,7 @@ import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,9 +35,11 @@ public class CategoryCommandImpl implements CategoryCommandService {
     @Override
     public CategoryUpdateDto updateCategory(UUID id, CategoryUpdateDto categoryUpdateDto) {
 
-        if (categoryRepository.findById(id).isPresent()) {
+        Optional<Category> optional = categoryRepository.findById(id);
 
-            Category category = categoryRepository.findById(id).get();
+        if (optional.isPresent()) {
+
+            Category category = optional.get();
 
             category.setTitle(categoryUpdateDto.getTitle());
 
@@ -53,9 +56,11 @@ public class CategoryCommandImpl implements CategoryCommandService {
     @Override
     public boolean deleteCategory(UUID id) {
 
-        if (categoryRepository.findById(id).isPresent()) {
+        Optional<Category> optional = categoryRepository.findById(id);
 
-            Category category = categoryRepository.findById(id).get();
+        if (optional.isPresent()) {
+
+            Category category = optional.get();
 
             categoryRepository.delete(category);
 

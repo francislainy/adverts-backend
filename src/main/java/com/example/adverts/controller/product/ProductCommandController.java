@@ -31,14 +31,12 @@ public class ProductCommandController {
     public ResponseEntity<Object> createProduct(@RequestBody ProductCreateDto productCreateDto, @PathVariable UUID categoryId, @PathVariable UUID subCategoryId) {
         if (categoryRepository.existsById(categoryId) && subCategoryRepository.existsById(subCategoryId)) {
 
-            if (productCreateDto.getTitle()!=null) {
+            if (productCreateDto.getTitle() != null && productCreateDto.getPrice() != null && productCreateDto.getDescription() != null) {
                 return new ResponseEntity<>(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(new FeedbackMessage("Missing mandatory field"), HttpStatus.BAD_REQUEST);
             }
-            else {
-                return new ResponseEntity<>(new FeedbackMessage("Missing title"), HttpStatus.BAD_REQUEST);
-            }
-        }
-        else {
+        } else {
             return new ResponseEntity<>(new FeedbackMessage("Entity not found"), HttpStatus.BAD_REQUEST);
         }
     }

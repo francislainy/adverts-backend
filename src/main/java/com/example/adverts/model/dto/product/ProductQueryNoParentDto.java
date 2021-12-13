@@ -1,0 +1,27 @@
+package com.example.adverts.model.dto.product;
+
+import com.example.adverts.model.entity.product_address.ProductAddress;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ProductQueryNoParentDto implements Serializable {
+
+    private UUID id;
+    private String title;
+    private String description;
+    private String shortDescription;
+    private BigDecimal price;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private ProductAddress productAddress;
+
+}

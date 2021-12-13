@@ -1,18 +1,16 @@
 package com.example.adverts.service.subcategory;
 
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.subcategory.SubCategoryCreateDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.category.CategoryRepository;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
-import com.example.adverts.service.impl.category.CategoryCommandImpl;
-import com.example.adverts.service.impl.subcategory.SubCategoryCommandImpl;
-import com.example.adverts.service.interfaces.category.CategoryCommandService;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryCommandService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -24,31 +22,28 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(SubCategoryCommandService.class)
-public class SubCategoryCommandServiceTest {
+class SubCategoryCommandServiceTest {
 
     @MockBean
     Category category;
 
-    @Mock
+    @MockBean
     CategoryRepository categoryRepository;
 
-    @Mock
+    @MockBean
     SubCategoryRepository subCategoryRepository;
 
-    @MockBean
+    @Autowired
     private SubCategoryCommandService subCategoryCommandService;
 
     @MockBean
-    private CategoryCommandService categoryCommandService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @BeforeEach
-    void initUseCase() {
-        subCategoryCommandService = new SubCategoryCommandImpl(categoryRepository, subCategoryRepository);
-        categoryCommandService = new CategoryCommandImpl(categoryRepository);
-    }
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
-    public void testSubCategoryItemSavedToDb() {
+    void testSubCategoryItemSavedToDb() {
         Category category = new Category();
         category.setId(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"));
 
@@ -66,9 +61,8 @@ public class SubCategoryCommandServiceTest {
         assertEquals(subCategoryMocked.getTitle(), subCategoryCreateDto.getTitle());
     }
 
-
     @Test
-    public void testSubCategoryItemUpdated() {
+    void testSubCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
 

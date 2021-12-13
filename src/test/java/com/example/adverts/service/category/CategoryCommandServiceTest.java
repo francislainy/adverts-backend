@@ -1,16 +1,15 @@
 package com.example.adverts.service.category;
 
+import jwt.JwtUtil;
+import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryCreateDto;
 import com.example.adverts.model.dto.category.CategoryUpdateDto;
 import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.repository.category.CategoryRepository;
-import com.example.adverts.service.impl.category.CategoryCommandImpl;
-import com.example.adverts.service.impl.category.CategoryQueryServiceImpl;
 import com.example.adverts.service.interfaces.category.CategoryCommandService;
-import com.example.adverts.service.interfaces.category.CategoryQueryService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -22,25 +21,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(CategoryCommandService.class)
-public class CategoryCommandServiceTest {
+@AutoConfigureMockMvc(addFilters = false)
+class CategoryCommandServiceTest {
 
-    @Mock
+    @MockBean
     CategoryRepository categoryRepository;
 
-    @MockBean
-    private CategoryQueryService categoryQueryService;
-
-    @MockBean
+    @Autowired
     private CategoryCommandService categoryCommandService;
 
-    @BeforeEach
-    void initUseCase() {
-        categoryQueryService = new CategoryQueryServiceImpl(categoryRepository);
-        categoryCommandService = new CategoryCommandImpl(categoryRepository);
-    }
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
-    public void testCategoryItemSavedToDb() {
+    void testCreateCategory() {
 
         Category categoryMocked = new Category(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb"), "category", null, null);
 
@@ -55,9 +52,8 @@ public class CategoryCommandServiceTest {
         assertEquals(categoryMocked.getTitle(), categoryCreateDto.getTitle());
     }
 
-
     @Test
-    public void testCategoryItemUpdated() {
+    void testCategoryItemUpdated() {
         UUID categoryUuid = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         Category categoryRetrievedMocked = new Category(categoryUuid, "title", null, null);
         Category categoryUpdatedMocked = new Category(categoryUuid, "updated", null, null);
