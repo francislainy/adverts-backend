@@ -66,7 +66,7 @@ class CategoryQueryControllerTest {
 
         UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 2L);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 2L, 10L);
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -88,7 +88,7 @@ class CategoryQueryControllerTest {
 
         UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 2L);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 2L, 10L);
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -110,6 +110,7 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.categories[0].id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.categories[0].title").value("category"))
                 .andExpect(jsonPath("$.categories[0].countSubCategories").value(2))
+                .andExpect(jsonPath("$.categories[0].countProducts").value(10))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -121,8 +122,8 @@ class CategoryQueryControllerTest {
         UUID categoryId1 = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
         UUID categoryId2 = UUID.fromString("7bc5102a-31c5-1cc7-9b92-cbf0db865c89");
 
-        CategoryQueryDto categoryQueryDto1 = new CategoryQueryDto(categoryId1, "category1", 2L);
-        CategoryQueryDto categoryQueryDto2 = new CategoryQueryDto(categoryId2, "category2", 1L);
+        CategoryQueryDto categoryQueryDto1 = new CategoryQueryDto(categoryId1, "category1", 2L, 10L);
+        CategoryQueryDto categoryQueryDto2 = new CategoryQueryDto(categoryId2, "category2", 1L, 100L);
         List<CategoryQueryDto> categoryQueryDtoList = List.of(categoryQueryDto1, categoryQueryDto2);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -144,9 +145,11 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.categories[0].id").value(categoryId1.toString()))
                 .andExpect(jsonPath("$.categories[0].title").value("category1"))
                 .andExpect(jsonPath("$.categories[0].countSubCategories").value(2))
+                .andExpect(jsonPath("$.categories[0].countProducts").value(10))
                 .andExpect(jsonPath("$.categories[1].id").value(categoryId2.toString()))
                 .andExpect(jsonPath("$.categories[1].title").value("category2"))
                 .andExpect(jsonPath("$.categories[1].countSubCategories").value(1))
+                .andExpect(jsonPath("$.categories[1].countProducts").value(100))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -156,7 +159,7 @@ class CategoryQueryControllerTest {
     void testGetCategoryItemThrows403WhenNoAuthHeader() throws Exception {
 
         UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 1L);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 1L, 10L);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
@@ -176,7 +179,7 @@ class CategoryQueryControllerTest {
     void testGetCategoryItem() throws Exception {
 
         UUID categoryId = UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb");
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 1L);
+        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, "category", 1L, 10L);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(categoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
@@ -193,6 +196,7 @@ class CategoryQueryControllerTest {
                 .andExpect(jsonPath("$.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.title").value("category"))
                 .andExpect(jsonPath("$.countSubCategories").value(1))
+                .andExpect(jsonPath("$.countProducts").value(10))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());

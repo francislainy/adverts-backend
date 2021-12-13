@@ -4,12 +4,10 @@ import com.example.adverts.model.entity.category.Category;
 import com.example.adverts.model.entity.subcategory.SubCategory;
 import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,8 +60,8 @@ class CategoryRepositoryTest {
         category = categoryRepository.save(category);
 
         subCategoryRepository.save(subCategory);
-        categoryRepository.findAllChildrenCount(category.getId());
-        Long subCategoriesCount = categoryRepository.findAllChildrenCount(category.getId());
+        categoryRepository.countSubCategories(category.getId());
+        Long subCategoriesCount = categoryRepository.countSubCategories(category.getId());
         assertEquals(1, subCategoriesCount);
     }
 }

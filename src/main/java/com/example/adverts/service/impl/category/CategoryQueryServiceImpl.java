@@ -29,7 +29,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
             Category category = optional.get();
 
-            return new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(id));
+            return new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.countSubCategories(id), categoryRepository.countProducts(id));
 
         } else {
             return null;
@@ -43,8 +43,8 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
         List<CategoryQueryDto> categoryList = new ArrayList<>();
 
-        categoryRepository.findAll().forEach(category ->
-                categoryList.add(new CategoryQueryDto(category.getId(), category.getTitle(), categoryRepository.findAllChildrenCount(category.getId()))));
+        categoryRepository.findAll().forEach(c ->
+                categoryList.add(new CategoryQueryDto(c.getId(), c.getTitle(), categoryRepository.countSubCategories(c.getId()), categoryRepository.countProducts(c.getId()))));
 
         return categoryList;
     }
