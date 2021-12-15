@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -255,7 +256,7 @@ class ProductCommandControllerTest {
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);
 
-        ProductCreateDto productCreateDto = new ProductCreateDto(null, "prod description", "short description", new BigDecimal("100"), category, subCategory);
+        ProductCreateDto productCreateDto = new ProductCreateDto("", "prod description", "short description", new BigDecimal("100"), category, subCategory);
 
         String jsonCreate = asJsonString(productCreateDto);
 
@@ -273,12 +274,124 @@ class ProductCommandControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"message\": \"Missing mandatory field\"}", true))
+                .andExpect(jsonPath("$.errors.[0]").value(is("Title cannot be empty")))
                 .andReturn();
 
 
         logger.info(mvcResult.getResponse().getContentAsString());
     }
+
+    @Test
+    void testCreateProductThrowsErrorWhenMandatoryDescriptionDoesNotExist() throws Exception {
+
+        UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("prod title", "", "short description", new BigDecimal("100"), category, subCategory);
+
+        String jsonCreate = asJsonString(productCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.[0]").value(is("Description cannot be empty")))
+                .andReturn();
+
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testCreateProductThrowsErrorWhenMandatoryShortDescriptionDoesNotExist() throws Exception {
+
+        UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("prod title", "prod description", "", new BigDecimal("100"), category, subCategory);
+
+        String jsonCreate = asJsonString(productCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.[0]").value(is("Short description cannot be empty")))
+                .andReturn();
+
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    void testCreateProductThrowsErrorWhenMandatoryPriceDoesNotExist() throws Exception {
+
+        UUID subCategoryId = UUID.fromString("067fe1bb-6378-4493-a83b-629c304994dc");
+        UUID categoryId = UUID.fromString("2483d126-0e02-419f-ac34-e48bfced8cf5");
+
+        Category category = new Category();
+        category.setId(categoryId);
+
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(subCategoryId);
+
+        ProductCreateDto productCreateDto = new ProductCreateDto("prod title", "prod description", "short description", null, category, subCategory);
+
+        String jsonCreate = asJsonString(productCreateDto);
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/api/adverts/category/{categoryId}/subCategory/{subCategoryId}/product", categoryId, subCategoryId)
+                .header("Authorization", "Bearer " + jwtToken)
+                .content(jsonCreate)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(categoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(subCategoryRepository.existsById(any(UUID.class))).thenReturn(true);
+        when(productCommandService.createProduct(productCreateDto, categoryId, subCategoryId)).thenReturn(any());
+
+        MvcResult mvcResult = mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.[0]").value(is("Price cannot be empty")))
+                .andReturn();
+
+
+        logger.info(mvcResult.getResponse().getContentAsString());
+    }
+
 
     @Test
     void testCreateProductAutogenerated() throws Exception {

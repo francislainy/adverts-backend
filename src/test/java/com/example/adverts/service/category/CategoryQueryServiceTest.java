@@ -48,7 +48,7 @@ class CategoryQueryServiceTest {
         Category categoryMocked = new Category(categoryId, "category", null, null);
 
         when(categoryRepository.findById(any(UUID.class))).thenReturn(Optional.of(categoryMocked));
-        when(categoryRepository.findAllChildrenCount(any(UUID.class))).thenReturn(2L);
+        when(categoryRepository.countSubCategories(any(UUID.class))).thenReturn(2L);
 
         CategoryQueryDto categoryQueryDto = categoryQueryService.getCategory(UUID.fromString("02c903f7-7a55-470d-8449-cf7587f5a3fb")); // use categoryQueryServiceImpl when autowired instead of controller
 
@@ -70,8 +70,8 @@ class CategoryQueryServiceTest {
         List<Category> categoryMockedList = List.of(categoryMocked1, categoryMocked2);
 
         when(categoryRepository.findAll()).thenReturn(categoryMockedList);
-        when(categoryRepository.findAllChildrenCount(categoryId1)).thenReturn(2L);
-        when(categoryRepository.findAllChildrenCount(categoryId2)).thenReturn(1L);
+        when(categoryRepository.countSubCategories(categoryId1)).thenReturn(2L);
+        when(categoryRepository.countSubCategories(categoryId2)).thenReturn(1L);
 
         List<CategoryQueryDto> categoryQueryDtoList = categoryQueryService.getAllCategories();
 

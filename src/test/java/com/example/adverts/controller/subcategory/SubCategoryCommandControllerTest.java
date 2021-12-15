@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -184,7 +185,7 @@ class SubCategoryCommandControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\"message\": \"Missing title\"}", true))
+                .andExpect(jsonPath("$.errors.[0]").value(is("Title cannot be empty")))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());

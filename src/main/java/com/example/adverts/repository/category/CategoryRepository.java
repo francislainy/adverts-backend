@@ -12,5 +12,8 @@ import java.util.UUID;
 public interface CategoryRepository extends CrudRepository<Category, UUID> {
 
     @Query("select size(c.subCategories) from Category c where c.id=:parentID")
-    Long findAllChildrenCount(@Param("parentID") UUID parentID);
+    Long countSubCategories(@Param("parentID") UUID parentID);
+
+    @Query("select size(c.products) from Category c where c.id=:parentID")
+    Long countProducts(@Param("parentID") UUID parentID);
 }

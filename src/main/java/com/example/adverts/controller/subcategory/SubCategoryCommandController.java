@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @CrossOrigin
@@ -25,18 +26,11 @@ public class SubCategoryCommandController {
     private CategoryRepository categoryRepository;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createSubCategory(@RequestBody SubCategoryCreateDto subCategoryCreateDto, @PathVariable(value = "categoryId") UUID categoryId) {
+    public ResponseEntity<Object> createSubCategory(@Valid @RequestBody SubCategoryCreateDto subCategoryCreateDto, @PathVariable(value = "categoryId") UUID categoryId) {
 
         if (categoryRepository.existsById(categoryId)) {
-
-            if (subCategoryCreateDto.getTitle() != null) {
-                return new ResponseEntity<>(subCategoryCommandService.createSubCategory(subCategoryCreateDto, categoryId), HttpStatus.CREATED);
-            }
-            else {
-                return new ResponseEntity<>(new FeedbackMessage("Missing title"), HttpStatus.BAD_REQUEST);
-            }
-        }
-        else {
+            return new ResponseEntity<>(subCategoryCommandService.createSubCategory(subCategoryCreateDto, categoryId), HttpStatus.CREATED);
+        } else {
             return new ResponseEntity<>(new FeedbackMessage("Entity not found"), HttpStatus.BAD_REQUEST);
         }
     }

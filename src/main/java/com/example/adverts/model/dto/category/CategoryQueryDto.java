@@ -17,6 +17,8 @@ public class CategoryQueryDto implements Serializable {
     private String title;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long countSubCategories;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long countProducts;
 
     public CategoryQueryDto(UUID id, String title) {
         this.id = id;
