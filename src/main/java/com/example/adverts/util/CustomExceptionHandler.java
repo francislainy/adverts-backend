@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class CustomExceptionHandler {
 
-    // ✨ 👇 Exception handler - overwrite the method on the CustomGlobalExceptionHandler class ✨
+    // ✨ 👇 Exception handler - overwrites the method on the CustomGlobalExceptionHandler class ✨
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();

@@ -43,7 +43,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
 
         List<CategoryQueryDto> categoryList = new ArrayList<>();
 
-        categoryRepository.findAll().forEach(c ->
+        categoryRepository.findByOrderByTitle().forEach(c ->
                 categoryList.add(new CategoryQueryDto(c.getId(), c.getTitle(), categoryRepository.countSubCategories(c.getId()), categoryRepository.countProducts(c.getId()))));
 
         return categoryList;
