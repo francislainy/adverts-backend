@@ -43,7 +43,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
     public List<SubCategoryQueryDto> getAllSubCategories() {
         List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
 
-        subCategoryRepository.findAll().forEach(subCategory ->
+        subCategoryRepository.findByOrderByTitle().forEach(subCategory ->
                 subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory())));
 
         return subCategoryList;
@@ -53,7 +53,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
     public List<SubCategoryQueryNoParentDto> getAllSubCategories(UUID categoryId) {
         List<SubCategoryQueryNoParentDto> subCategoryList = new ArrayList<>();
 
-        subCategoryRepository.findAll().forEach(subCategory -> {
+        subCategoryRepository.findByOrderByTitle().forEach(subCategory -> {
 
             if (subCategory.getCategory().getId().equals(categoryId)) {
                 subCategoryList.add(new SubCategoryQueryNoParentDto(subCategory.getId(), subCategory.getTitle()));

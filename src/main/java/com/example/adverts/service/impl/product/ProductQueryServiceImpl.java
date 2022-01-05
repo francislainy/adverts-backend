@@ -42,7 +42,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     public List<ProductQueryDto> getAllProducts() {
         List<ProductQueryDto> productList = new ArrayList<>();
 
-        productRepository.findAll().forEach(product ->
+        productRepository.findByOrderByTitle().forEach(product ->
                 productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress(), product.getCategory(), product.getSubCategory())));
 
         return productList;
@@ -52,7 +52,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     public List<ProductQueryNoParentDto> getAllProductsForCategoryAndSubCategory(UUID categoryId, UUID subCategoryId) {
         List<ProductQueryNoParentDto> productList = new ArrayList<>();
 
-        productRepository.findAll().forEach(product -> {
+        productRepository.findByOrderByTitle().forEach(product -> {
 
             if (product.getCategory().getId().equals(categoryId) && product.getSubCategory().getId().equals(subCategoryId)) {
                 productList.add(new ProductQueryNoParentDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress()));
