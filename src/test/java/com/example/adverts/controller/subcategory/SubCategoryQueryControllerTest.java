@@ -74,7 +74,7 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory");
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory", 2L);
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
@@ -104,7 +104,7 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory");
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory", 2L);
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
@@ -132,6 +132,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories.size()").value(1))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
+                .andExpect(jsonPath("$.subCategories[0].countProducts").value(2))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -148,8 +149,8 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto1 = new SubCategoryQueryNoParentDto(subCategoryId1, "subCategory1");
-        SubCategoryQueryNoParentDto subCategoryQueryDto2 = new SubCategoryQueryNoParentDto(subCategoryId2, "subCategory2");
+        SubCategoryQueryNoParentDto subCategoryQueryDto1 = new SubCategoryQueryNoParentDto(subCategoryId1, "subCategory1", 2L);
+        SubCategoryQueryNoParentDto subCategoryQueryDto2 = new SubCategoryQueryNoParentDto(subCategoryId2, "subCategory2", 1L);
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
@@ -177,8 +178,10 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.category.countSubCategories").value(subCategoryQueryDtoList.size()))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId1.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory1"))
+                .andExpect(jsonPath("$.subCategories[0].countProducts").value(2))
                 .andExpect(jsonPath("$.subCategories[1].id").value(subCategoryId2.toString()))
                 .andExpect(jsonPath("$.subCategories[1].title").value("subCategory2"))
+                .andExpect(jsonPath("$.subCategories[1].countProducts").value(1))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -194,7 +197,7 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
@@ -217,6 +220,7 @@ class SubCategoryQueryControllerTest {
                 .andExpect(jsonPath("$.subCategories[0].category.title").value("category"))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
+                .andExpect(jsonPath("$.subCategories[0].countProducts").value(2))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -232,7 +236,7 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
@@ -258,7 +262,7 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", category);
+        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
 
         when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);

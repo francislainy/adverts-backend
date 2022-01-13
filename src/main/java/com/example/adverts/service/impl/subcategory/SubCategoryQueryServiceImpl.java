@@ -29,7 +29,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         if (optional.isPresent()) {
             SubCategory subCategory = optional.get(); //todo: should return category 15/11/2021
             if (subCategory.getCategory().getId().equals(categoryId)) {
-                return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory());
+                return new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategoryRepository.countProducts(subCategory.getId()), subCategory.getCategory());
             } else {
                 return null;
             }
@@ -44,7 +44,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         List<SubCategoryQueryDto> subCategoryList = new ArrayList<>();
 
         subCategoryRepository.findByOrderByTitle().forEach(subCategory ->
-                subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategory.getCategory())));
+                subCategoryList.add(new SubCategoryQueryDto(subCategory.getId(), subCategory.getTitle(), subCategoryRepository.countProducts(subCategory.getId()), subCategory.getCategory())));
 
         return subCategoryList;
     }
@@ -56,7 +56,7 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         subCategoryRepository.findByOrderByTitle().forEach(subCategory -> {
 
             if (subCategory.getCategory().getId().equals(categoryId)) {
-                subCategoryList.add(new SubCategoryQueryNoParentDto(subCategory.getId(), subCategory.getTitle()));
+                subCategoryList.add(new SubCategoryQueryNoParentDto(subCategory.getId(), subCategory.getTitle(), subCategoryRepository.countProducts(subCategory.getId())));
             }
 
         });

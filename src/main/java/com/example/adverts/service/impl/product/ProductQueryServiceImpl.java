@@ -6,6 +6,7 @@ import com.example.adverts.model.dto.product.ProductQueryNoParentDto;
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryNoParentDto;
 import com.example.adverts.model.entity.product.Product;
 import com.example.adverts.repository.product.ProductRepository;
+import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import com.example.adverts.service.interfaces.product.ProductQueryService;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,11 @@ import java.util.UUID;
 public class ProductQueryServiceImpl implements ProductQueryService {
 
     private final ProductRepository productRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
-    public ProductQueryServiceImpl(ProductRepository productRepository) {
+    public ProductQueryServiceImpl(ProductRepository productRepository, SubCategoryRepository subCategoryRepository) {
         this.productRepository = productRepository;
+        this.subCategoryRepository = subCategoryRepository;
     }
 
     @Override
@@ -83,7 +86,7 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         for (Product product : productRepository.findAll()) {
             if (product.getCategory().getId().equals(categoryId)) {
-                subCategoryQueryDto = new SubCategoryQueryNoParentDto(product.getSubCategory().getId(), product.getSubCategory().getTitle());
+                subCategoryQueryDto = new SubCategoryQueryNoParentDto(product.getSubCategory().getId(), product.getSubCategory().getTitle(), subCategoryRepository.countProducts(product.getId()));
                 break;
             }
         }

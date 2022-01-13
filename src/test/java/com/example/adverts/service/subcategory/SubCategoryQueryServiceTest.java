@@ -80,7 +80,7 @@ class SubCategoryQueryServiceTest {
 
         List<SubCategory> subCategoryMockedList = List.of(subCategoryMocked1, subCategoryMocked2);
 
-        when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
+        when(subCategoryRepository.findByOrderByTitle()).thenReturn(subCategoryMockedList);
 
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories(categoryId);
 
@@ -108,7 +108,7 @@ class SubCategoryQueryServiceTest {
 
         List<SubCategory> subCategoryMockedList = List.of(subCategoryMocked1, subCategoryMocked2);
 
-        when(subCategoryRepository.findAll()).thenReturn(subCategoryMockedList);
+        when(subCategoryRepository.findByOrderByTitle()).thenReturn(subCategoryMockedList);
 
         List<SubCategoryQueryDto> subCategoryQueryDtoList = subCategoryQueryService.getAllSubCategories();
 

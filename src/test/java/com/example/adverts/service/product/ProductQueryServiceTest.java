@@ -1,5 +1,6 @@
 package com.example.adverts.service.product;
 
+import com.example.adverts.repository.subcategory.SubCategoryRepository;
 import jwt.JwtUtil;
 import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.product.ProductQueryDto;
@@ -42,6 +43,9 @@ class ProductQueryServiceTest {
     @Mock
     ProductRepository productRepository;
 
+    @Mock
+    SubCategoryRepository subCategoryRepository;
+
     @MockBean
     private ProductQueryService productQueryService;
 
@@ -54,7 +58,7 @@ class ProductQueryServiceTest {
     @BeforeEach
     void initUseCase() {
 
-        productQueryService = new ProductQueryServiceImpl(productRepository);
+        productQueryService = new ProductQueryServiceImpl(productRepository, subCategoryRepository);
     }
 
 
@@ -101,7 +105,7 @@ class ProductQueryServiceTest {
 
         List<Product> productMockedList = List.of(productMocked1, productMocked2);
 
-        when(productRepository.findAll()).thenReturn(productMockedList);
+        when(productRepository.findByOrderByTitle()).thenReturn(productMockedList);
 
         List<ProductQueryDto> productQueryDtoList = productQueryService.getAllProducts();
 
@@ -144,7 +148,7 @@ class ProductQueryServiceTest {
 
         List<Product> productMockedList = List.of(productMocked1, productMocked2);
 
-        when(productRepository.findAll()).thenReturn(productMockedList);
+        when(productRepository.findByOrderByTitle()).thenReturn(productMockedList);
 
         List<ProductQueryNoParentDto> productQueryDtoList = productQueryService.getAllProductsForCategoryAndSubCategory(categoryId, subCategoryId);
 

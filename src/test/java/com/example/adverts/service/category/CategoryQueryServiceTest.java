@@ -69,7 +69,7 @@ class CategoryQueryServiceTest {
 
         List<Category> categoryMockedList = List.of(categoryMocked1, categoryMocked2);
 
-        when(categoryRepository.findAll()).thenReturn(categoryMockedList);
+        when(categoryRepository.findByOrderByTitle()).thenReturn(categoryMockedList);
         when(categoryRepository.countSubCategories(categoryId1)).thenReturn(2L);
         when(categoryRepository.countSubCategories(categoryId2)).thenReturn(1L);
 

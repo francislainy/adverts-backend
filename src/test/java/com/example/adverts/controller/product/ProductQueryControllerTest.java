@@ -186,7 +186,7 @@ class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle(), 2L);
 
         ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
 
@@ -258,7 +258,7 @@ class ProductQueryControllerTest {
         subCategory.setTitle("subCategory");
         subCategory.setCategory(category);
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle());
+        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, subCategory.getTitle(), 2L);
 
         ProductAddress productAddress = new ProductAddress(productAddressId, "address1", "address2", "address3", "city", "state", "county", "country", "zipcode", null);
 
