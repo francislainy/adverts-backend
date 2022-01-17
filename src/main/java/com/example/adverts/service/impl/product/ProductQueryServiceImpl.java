@@ -52,6 +52,21 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
 
     @Override
+    public List<ProductQueryDto> getAllProductsForAllSubCategoriesInsideCategory(UUID categoryId) {
+        List<ProductQueryDto> productList = new ArrayList<>();
+
+        productRepository.findByOrderByTitle().forEach(product -> {
+
+            if (product.getCategory().getId().equals(categoryId)) {
+                productList.add(new ProductQueryDto(product.getId(), product.getTitle(), product.getDescription(), product.getShortDescription(), product.getPrice(), product.getProductAddress(), product.getCategory(), product.getSubCategory()));
+            }
+
+        });
+
+        return productList;
+    }
+
+    @Override
     public List<ProductQueryNoParentDto> getAllProductsForCategoryAndSubCategory(UUID categoryId, UUID subCategoryId) {
         List<ProductQueryNoParentDto> productList = new ArrayList<>();
 

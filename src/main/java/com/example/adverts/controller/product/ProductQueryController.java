@@ -22,7 +22,6 @@ public class ProductQueryController {
 
     @GetMapping(value="/product",produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listAllProducts() {
-
         HashMap<String, Object> result = new HashMap<>();
         result.put("products", productQueryService.getAllProducts());
         return result;
@@ -30,7 +29,6 @@ public class ProductQueryController {
 
     @GetMapping(value="/category/{categoryId}/subCategory/{subCategoryId}/product",produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listAllProducts(@PathVariable(value = "categoryId") UUID categoryId, @PathVariable(value = "subCategoryId") UUID subCategoryId) {
-
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", productQueryService.getCategory(categoryId));
         result.put("subCategory", productQueryService.getSubCategory(categoryId));
@@ -38,11 +36,10 @@ public class ProductQueryController {
         return result;
     }
 
-    @GetMapping(value="/category/product",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listAllProductsAllCategories() {
-
+    @GetMapping(value="/category/{categoryId}/product",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listAllProductsForAllSubCategoriesInsideCategory(@PathVariable(value = "categoryId") UUID categoryId) {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("products", productQueryService.getAllProducts());
+        result.put("products", productQueryService.getAllProductsForAllSubCategoriesInsideCategory(categoryId));
         return result;
     }
 
