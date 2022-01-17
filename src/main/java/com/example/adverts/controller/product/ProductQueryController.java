@@ -38,6 +38,14 @@ public class ProductQueryController {
         return result;
     }
 
+    @GetMapping(value="/category/product",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listAllProductsAllCategories() {
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("products", productQueryService.getAllProducts());
+        return result;
+    }
+
     @GetMapping(value = "/category/{categoryId}/subCategory/{subCategoryId}/product/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProductQueryDto> getProduct(@PathVariable(value = "productId") UUID productId) {

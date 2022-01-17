@@ -26,7 +26,7 @@ public class ProductQueryDto implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ProductAddress productAddress;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "countSubCategories"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "countSubCategories", "products"})
     private Category category;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "category"})
