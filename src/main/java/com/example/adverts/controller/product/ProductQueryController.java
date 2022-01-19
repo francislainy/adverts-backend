@@ -1,6 +1,7 @@
 package com.example.adverts.controller.product;
 
 import com.example.adverts.model.dto.product.ProductQueryDto;
+import com.example.adverts.repository.product.ProductRepository;
 import com.example.adverts.service.interfaces.product.ProductQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,15 +21,15 @@ public class ProductQueryController {
     @Autowired
     private ProductQueryService productQueryService;
 
-    @GetMapping(value="/product",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listAllProducts() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("products", productQueryService.getAllProducts());
         return result;
     }
 
-    @GetMapping(value="/category/{categoryId}/subCategory/{subCategoryId}/product",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> listAllProducts(@PathVariable(value = "categoryId") UUID categoryId, @PathVariable(value = "subCategoryId") UUID subCategoryId) {
+    @GetMapping(value = "/category/{categoryId}/subCategory/{subCategoryId}/product", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> listAllProductsForSubCategoryInsideCategory(@PathVariable(value = "categoryId") UUID categoryId, @PathVariable(value = "subCategoryId") UUID subCategoryId) {
         HashMap<String, Object> result = new HashMap<>();
         result.put("category", productQueryService.getCategory(categoryId));
         result.put("subCategory", productQueryService.getSubCategory(categoryId));
@@ -36,7 +37,7 @@ public class ProductQueryController {
         return result;
     }
 
-    @GetMapping(value="/category/{categoryId}/product",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/category/{categoryId}/product", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listAllProductsForAllSubCategoriesInsideCategory(@PathVariable(value = "categoryId") UUID categoryId) {
         HashMap<String, Object> result = new HashMap<>();
         result.put("products", productQueryService.getAllProductsForAllSubCategoriesInsideCategory(categoryId));

@@ -70,7 +70,10 @@ public class SubCategoryQueryServiceImpl implements SubCategoryQueryService {
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto();
         for (SubCategory subCategory : subCategoryRepository.findAll()) {
             if (subCategory.getCategory().getId().equals(categoryId)) {
-                categoryQueryDto = new CategoryQueryDto(subCategory.getCategory().getId(), subCategory.getCategory().getTitle());
+                categoryQueryDto = CategoryQueryDto.builder()
+                        .id(subCategory.getCategory().getId())
+                        .title(subCategory.getCategory().getTitle())
+                        .build();
                 break;
             }
         }

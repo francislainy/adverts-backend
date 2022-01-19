@@ -179,7 +179,7 @@ class ProductQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, category.getTitle());
+        CategoryQueryDto categoryQueryDto = CategoryQueryDto.builder().id(categoryId).title(category.getTitle()).build();
 
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);
@@ -251,7 +251,7 @@ class ProductQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(categoryId, category.getTitle());
+        CategoryQueryDto categoryQueryDto = CategoryQueryDto.builder().id(categoryId).title(category.getTitle()).build();
 
         SubCategory subCategory = new SubCategory();
         subCategory.setId(subCategoryId);

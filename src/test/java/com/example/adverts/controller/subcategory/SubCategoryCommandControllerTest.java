@@ -41,20 +41,20 @@ class SubCategoryCommandControllerTest {
 
     Logger logger = LoggerFactory.getLogger(SubCategoryCommandController.class);
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @MockBean
     private SubCategoryCommandService subCategoryCommandService;
 
     @MockBean
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @MockBean
     private UserDetailsServiceImpl userDetailsServiceImpl;
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     private static UserDetails dummy;
     private static String jwtToken;

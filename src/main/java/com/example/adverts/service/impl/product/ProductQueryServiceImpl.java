@@ -87,7 +87,10 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         for (Product product : productRepository.findAll()) {
             if (product.getCategory().getId().equals(categoryId)) {
-                categoryQueryDto = new CategoryQueryDto(product.getCategory().getId(), product.getCategory().getTitle());
+                categoryQueryDto = CategoryQueryDto.builder()
+                        .id(product.getCategory().getId())
+                        .title(product.getCategory().getTitle())
+                        .build();
                 break;
             }
         }
@@ -110,5 +113,3 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
 
 }
-
-

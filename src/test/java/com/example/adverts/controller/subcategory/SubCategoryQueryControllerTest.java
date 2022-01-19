@@ -1,5 +1,6 @@
 package com.example.adverts.controller.subcategory;
 
+import com.example.adverts.repository.category.CategoryRepository;
 import jwt.JwtUtil;
 import jwt.UserDetailsServiceImpl;
 import com.example.adverts.model.dto.category.CategoryQueryDto;
@@ -31,7 +32,6 @@ import java.util.UUID;
 
 import static com.example.adverts.Utils.asJsonString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -43,17 +43,20 @@ class SubCategoryQueryControllerTest {
 
     Logger logger = LoggerFactory.getLogger(SubCategoryQueryController.class);
 
-    @MockBean
-    private SubCategoryQueryService subCategoryQueryService;
-
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private SubCategoryQueryService subCategoryQueryService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    @MockBean
+    private CategoryRepository categoryRepository;
 
     private static UserDetails dummy;
     private static String jwtToken;
@@ -74,12 +77,13 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory", 2L);
+        SubCategoryQueryNoParentDto subCategoryQueryDto = SubCategoryQueryNoParentDto.builder().id(subCategoryId).build();
+
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
+        CategoryQueryDto categoryQueryDto = CategoryQueryDto.builder().id(categoryId).build();
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
 
@@ -104,14 +108,19 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto = new SubCategoryQueryNoParentDto(subCategoryId, "subCategory", 2L);
+        SubCategoryQueryNoParentDto subCategoryQueryDto = SubCategoryQueryNoParentDto.builder().id(subCategoryId).title("subCategory").countProducts(1L).build();
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
+        CategoryQueryDto categoryQueryDto = CategoryQueryDto.builder()
+                .id(category.getId())
+                .title(category.getTitle())
+                .countSubCategories((long) subCategoryQueryDtoList.size())
+                .countProducts(1L).build();
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(any())).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
+        when(categoryRepository.countProducts(categoryId)).thenReturn(1L);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
@@ -119,6 +128,7 @@ class SubCategoryQueryControllerTest {
                 .accept(MediaType.APPLICATION_JSON);
 
         HashMap<String, Object> result = new HashMap<>();
+        result.put("numProducts", 1);
         result.put("category", categoryQueryDto);
         result.put("subCategories", subCategoryQueryDtoList);
 
@@ -126,13 +136,14 @@ class SubCategoryQueryControllerTest {
         MvcResult mvcResult = mockMvc.perform(request)
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(json, true))
+                .andExpect(jsonPath("$.numProducts").value(1))
                 .andExpect(jsonPath("$.category.id").value(categoryId.toString()))
                 .andExpect(jsonPath("$.category.title").value("category"))
                 .andExpect(jsonPath("$.category.countSubCategories").value(subCategoryQueryDtoList.size()))
                 .andExpect(jsonPath("$.subCategories.size()").value(1))
                 .andExpect(jsonPath("$.subCategories[0].id").value(subCategoryId.toString()))
                 .andExpect(jsonPath("$.subCategories[0].title").value("subCategory"))
-                .andExpect(jsonPath("$.subCategories[0].countProducts").value(2))
+                .andExpect(jsonPath("$.subCategories[0].countProducts").value(1))
                 .andReturn();
 
         logger.info(mvcResult.getResponse().getContentAsString());
@@ -149,15 +160,16 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryNoParentDto subCategoryQueryDto1 = new SubCategoryQueryNoParentDto(subCategoryId1, "subCategory1", 2L);
-        SubCategoryQueryNoParentDto subCategoryQueryDto2 = new SubCategoryQueryNoParentDto(subCategoryId2, "subCategory2", 1L);
+        SubCategoryQueryNoParentDto subCategoryQueryDto1 = SubCategoryQueryNoParentDto.builder().id(subCategoryId1).title("subCategory1").countProducts(2L).build();
+        SubCategoryQueryNoParentDto subCategoryQueryDto2 = SubCategoryQueryNoParentDto.builder().id(subCategoryId2).title("subCategory2").countProducts(1L).build();
         List<SubCategoryQueryNoParentDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto1, subCategoryQueryDto2);
 
         CategoryQueryDto categoryQueryDto = new CategoryQueryDto(category.getId(), category.getTitle(), (long) subCategoryQueryDtoList.size(), null);
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories(categoryId)).thenReturn(subCategoryQueryDtoList);
         when(subCategoryQueryService.getCategory(categoryId)).thenReturn(categoryQueryDto);
+        when(categoryRepository.countProducts(categoryId)).thenReturn(2L);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/api/adverts/category/{categoryId}/subCategory", categoryId)
@@ -165,6 +177,7 @@ class SubCategoryQueryControllerTest {
                 .accept(MediaType.APPLICATION_JSON);
 
         HashMap<String, Object> result = new HashMap<>();
+        result.put("numProducts", 2);
         result.put("category", categoryQueryDto);
         result.put("subCategories", subCategoryQueryDtoList);
 
@@ -197,10 +210,10 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
+        SubCategoryQueryDto subCategoryQueryDto = SubCategoryQueryDto.builder().id(subCategoryId).title("subCategory").countProducts(2L).category(category).build();
         List<SubCategoryQueryDto> subCategoryQueryDtoList = List.of(subCategoryQueryDto);
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getAllSubCategories()).thenReturn(subCategoryQueryDtoList);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -236,9 +249,9 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
+        SubCategoryQueryDto subCategoryQueryDto = SubCategoryQueryDto.builder().id(subCategoryId).build();
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -262,9 +275,9 @@ class SubCategoryQueryControllerTest {
         category.setId(categoryId);
         category.setTitle("category");
 
-        SubCategoryQueryDto subCategoryQueryDto = new SubCategoryQueryDto(subCategoryId, "subCategory", 2L, category);
+        SubCategoryQueryDto subCategoryQueryDto = SubCategoryQueryDto.builder().id(subCategoryId).title("subCategory").countProducts(2L).category(category).build();
 
-        when(userDetailsServiceImpl.loadUserByUsername(eq("foo@email.com"))).thenReturn(dummy);
+        when(userDetailsServiceImpl.loadUserByUsername("foo@email.com")).thenReturn(dummy);
         when(subCategoryQueryService.getSubCategory(subCategoryId, categoryId)).thenReturn(subCategoryQueryDto);
 
         RequestBuilder request = MockMvcRequestBuilders

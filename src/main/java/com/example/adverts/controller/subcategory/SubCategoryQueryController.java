@@ -1,6 +1,8 @@
 package com.example.adverts.controller.subcategory;
 
 import com.example.adverts.model.dto.subcategory.SubCategoryQueryDto;
+import com.example.adverts.repository.category.CategoryRepository;
+import com.example.adverts.repository.product.ProductRepository;
 import com.example.adverts.service.interfaces.subcategory.SubCategoryQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class SubCategoryQueryController {
     @Autowired
     private SubCategoryQueryService subCategoryQueryService;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping(value="/subCategory", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> listAllSubCategoriesForAllCategories() {
 
@@ -32,6 +37,7 @@ public class SubCategoryQueryController {
     public Map<String, Object> listAllSubCategoriesForCategory(@PathVariable(value = "categoryId") UUID categoryId) {
 
         HashMap<String, Object> result = new HashMap<>();
+        result.put("numProducts", categoryRepository.countProducts(categoryId));
         result.put("category", subCategoryQueryService.getCategory(categoryId));
         result.put("subCategories", subCategoryQueryService.getAllSubCategories(categoryId));
         return result;
