@@ -37,10 +37,15 @@ public class ProductCommandImpl implements ProductCommandService {
             Category category = optionalCategory.get();
             SubCategory subCategory = optionalSubCategory.get();
 
-            Product product = new Product();
-            product.setTitle(productCreateDto.getTitle());
-            product.setCategory(category);
-            product.setSubCategory(subCategory);
+            Product product = Product.builder()
+                    .title(productCreateDto.getTitle())
+                    .description(productCreateDto.getDescription())
+                    .description(productCreateDto.getDescription())
+                    .shortDescription(productCreateDto.getShortDescription())
+                    .price(productCreateDto.getPrice())
+                    .category(category)
+                    .subCategory(subCategory)
+                    .build();
 
             product = productRepository.save(product);
 
